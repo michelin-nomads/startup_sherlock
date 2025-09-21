@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { getApiUrl } from "@/lib/config"
 import { TrendingUp, TrendingDown, Minus, GitCompare, AlertCircle } from "lucide-react"
+import { formatCurrency } from "@/lib/utils"
 
 interface AnalysisData {
   startup: {
@@ -140,9 +141,6 @@ export default function AnalysisComparison({ analysisData }: ComparisonProps) {
       .join(' ')
   }
 
-  const formatCurrency = (value: number) => {
-    return `$${(value / 1000000).toFixed(1)}M`
-  }
 
   return (
     <Card>

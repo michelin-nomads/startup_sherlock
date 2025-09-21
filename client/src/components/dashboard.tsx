@@ -5,11 +5,12 @@ import { Badge } from "@/components/ui/badge"
 import { MetricsCard } from "./metrics-card"
 import { RiskFlags } from "./risk-flags"
 import { StartupChart } from "./startup-chart"
-import { FileUp, TrendingUp, AlertTriangle, Target, Users, DollarSign, Eye } from "lucide-react"
+import { FileUp, TrendingUp, AlertTriangle, Target, Users, IndianRupee, Eye } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import type { StartupMetrics, RiskFlag } from "@shared/schema"
 import {getApiUrl} from "@/lib/config.ts";
+import { formatCurrency } from "@/lib/utils"
 
 // Base metrics configuration for dashboard cards
 const BASE_METRICS_CONFIG = [
@@ -171,19 +172,6 @@ const calculatePortfolioInvestment = (startups: any[]): { totalInvestment: numbe
   }
 }
 
-// Format currency values
-const formatCurrency = (value: number): string => {
-  if (value >= 1000000000) {
-    return `$${(value / 1000000000).toFixed(1)}B`
-  } else if (value >= 1000000) {
-    return `$${(value / 1000000).toFixed(1)}M`
-  } else if (value >= 1000) {
-    return `$${(value / 1000).toFixed(1)}K`
-  } else {
-    return `$${value.toFixed(0)}`
-  }
-}
-
 export function Dashboard() {
   const navigate = useNavigate()
   const [selectedPeriod, setSelectedPeriod] = useState("30d")
@@ -298,13 +286,13 @@ export function Dashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Investments</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <IndianRupee className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {portfolioInvestment.totalInvestment > 0 
                 ? formatCurrency(portfolioInvestment.totalInvestment)
-                : '$0'
+                : '₹0'
               }
             </div>
             <p className="text-xs text-muted-foreground">

@@ -336,7 +336,7 @@ export function Upload() {
   return (
     <div className="space-y-0" data-testid="upload-main">
       {/* Header */}
-      <div className="text-center space-y-4">
+      <div className="text-center space-y-4 mb-6">
         <div className="flex items-center justify-center gap-3 mb-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
             <Sparkles className="h-6 w-6 text-primary" />
