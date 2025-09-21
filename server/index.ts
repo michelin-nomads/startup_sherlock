@@ -10,10 +10,7 @@ const app = express();
 app.use(cors({
   origin: [
     'https://startup-sherlock.web.app',
-    'https://startup-sherlock.firebaseapp.com',
-    'http://localhost:3000',
-    'http://localhost:5000',
-    'http://localhost:5173'
+    'https://startup-sherlock.firebaseapp.com'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

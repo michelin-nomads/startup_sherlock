@@ -65,7 +65,7 @@ This application analyzes startup companies by examining their business document
    npm run dev
    ```
 
-The application will be available at `http://localhost:5001`
+The application will be available at `https://startup-sherlock.web.app/`
 
 ## Usage
 

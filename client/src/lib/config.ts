@@ -1,4 +1,4 @@
-export const API_BASE_URL = process.env.BE_HOST_URL;
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // Helper function to build full API URLs  
 export function getApiUrl(path: string): string {
