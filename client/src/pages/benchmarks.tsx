@@ -812,15 +812,6 @@ export default function BenchmarksPage() {
         </div>
       )}
 
-      {/* Industry Performance Trends */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Industry Performance Trends</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <StartupChart />
-        </CardContent>
-      </Card>
 
       {/* Detailed Benchmarks */}
       <Card>
