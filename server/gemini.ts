@@ -143,6 +143,50 @@ function parseAnalysisResponse(responseText: string): StartupAnalysisResult {
   }
 }
 
+// Helper functions for dynamic calculations
+function calculateDynamicInvestment(overallScore: number, metrics: any): number {
+  // Calculate average metric value for normalization
+  const avgMetric = (metrics.marketSize + metrics.team + metrics.product + metrics.traction + metrics.financials + metrics.competition) / 6;
+  
+  // Base investment scales with overall score relative to average
+  const scoreRatio = overallScore / avgMetric;
+  const baseInvestment = avgMetric * scoreRatio * (overallScore * 1000000); // Scale with score
+  
+  // Adjust based on relative metric strengths
+  const marketWeight = metrics.marketSize / avgMetric;
+  const teamWeight = metrics.team / avgMetric;
+  const productWeight = metrics.product / avgMetric;
+  
+  const dynamicInvestment = baseInvestment * marketWeight * teamWeight * productWeight;
+  
+  // Dynamic bounds based on metric values
+  const minBound = avgMetric * (overallScore / 100) * 500000;
+  const maxBound = avgMetric * (overallScore / 100) * 5000000;
+  
+  return Math.max(minBound, Math.min(maxBound, Math.round(dynamicInvestment)));
+}
+
+function calculateDynamicReturn(overallScore: number, metrics: any): number {
+  // Calculate average metric value for normalization
+  const avgMetric = (metrics.marketSize + metrics.team + metrics.product + metrics.traction + metrics.financials + metrics.competition) / 6;
+  
+  // Base return scales with score relative to average metrics
+  const scoreRatio = overallScore / avgMetric;
+  const baseReturn = scoreRatio * (avgMetric / 100) * 6; // Scale with metrics
+  
+  // Adjust based on traction and financials relative to average
+  const tractionWeight = metrics.traction / avgMetric;
+  const financialWeight = metrics.financials / avgMetric;
+  
+  const dynamicReturn = baseReturn * tractionWeight * financialWeight;
+  
+  // Dynamic bounds based on metric performance
+  const minReturn = Math.max(1.5, avgMetric / 50);
+  const maxReturn = Math.min(8.0, avgMetric / 10);
+  
+  return Math.max(minReturn, Math.min(maxReturn, Math.round(dynamicReturn * 10) / 10));
+}
+
 // Extract analysis from unstructured text (fallback for open source models)
 function extractAnalysisFromText(text: string): StartupAnalysisResult {
   console.log('📝 Extracting analysis from unstructured text...');
@@ -198,8 +242,8 @@ function extractAnalysisFromText(text: string): StartupAnalysisResult {
     recommendation: {
       decision,
       reasoning: `Based on overall score of ${overallScore}, this appears to be a ${decision.replace('_', ' ')} opportunity.`,
-      targetInvestment: 1000000,
-      expectedReturn: overallScore > 80 ? 5.0 : 3.0
+      targetInvestment: calculateDynamicInvestment(overallScore, metrics),
+      expectedReturn: calculateDynamicReturn(overallScore, metrics)
     },
     riskLevel
   };
@@ -736,6 +780,171 @@ Make the data realistic and varied. Use actual percentage values for trends. Ret
   
   // This should never be reached, but just in case
   return fallbackMetrics;
+}
+
+export interface MarketRecommendation {
+  targetInvestment: number;
+  expectedReturn: number;
+}
+
+export async function generateMarketRecommendation(benchmarks: IndustryBenchmark[], metrics: BenchmarkMetrics): Promise<MarketRecommendation> {
+  const models = ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-1.5-pro"];
+  
+  // Calculate avgScore once at the beginning
+  const avgScore = benchmarks.reduce((sum, b) => sum + b.avgScore, 0) / benchmarks.length;
+  
+  for (const model of models) {
+    try {
+      console.log(`🤖 Generating market recommendation with ${model}...`);
+      
+      const prompt = `Based on the following market data, generate realistic investment recommendations for the Indian startup ecosystem. 
+
+Market Context:
+- Average industry score: ${avgScore}
+- Market penetration: ${metrics.marketPenetration.value}%
+- Team experience score: ${metrics.teamExperience.value}
+- Revenue growth: ${metrics.revenueGrowth.value}%
+- Burn rate efficiency: ${metrics.burnRateEfficiency.value}
+
+Industry benchmarks:
+${benchmarks.map(b => `- ${b.industry}: ${b.companies} companies, avg score ${b.avgScore}, growth ${b.growth}`).join('\n')}
+
+Generate investment recommendations in INR (Indian Rupees). Consider:
+- Target investment should be realistic for Indian market (₹5Cr to ₹50Cr range)
+- Expected return should be based on market conditions (2x to 8x range)
+- Higher scores should correlate with higher investment amounts and returns
+
+Return ONLY a valid JSON object with these exact fields:
+{
+  "targetInvestment": number (in INR, realistic amount between 50000000 and 500000000),
+  "expectedReturn": number (multiplier like 3.5 for 3.5x return)
+}
+
+IMPORTANT: Return ONLY the JSON object, no markdown, no code blocks, no explanations.`;
+
+      const result = await ai.models.generateContent({
+        model: model,
+        contents: prompt,
+      });
+      const text = result.text;
+
+      if (!text) {
+        throw new Error("Gemini response missing text");
+      }
+      console.log(`✅ ${model} response received for market recommendation`);
+      console.log("📝 Raw response:", text.substring(0, 200) + "...");
+
+      // Clean the response - remove markdown code blocks if present
+      let cleanText = text.trim();
+
+      // Remove markdown code blocks
+      if (cleanText.startsWith('```json')) {
+        cleanText = cleanText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+      } else if (cleanText.startsWith('```')) {
+        cleanText = cleanText.replace(/^```\s*/, '').replace(/\s*```$/, '');
+      }
+
+      // Remove any leading/trailing whitespace
+      cleanText = cleanText.trim();
+
+      console.log("🧹 Cleaned response:", cleanText.substring(0, 200) + "...");
+
+      // Parse the JSON response
+      const recommendation = JSON.parse(cleanText);
+
+      // Validate the structure
+      if (!recommendation.targetInvestment || !recommendation.expectedReturn) {
+        throw new Error("Invalid recommendation structure");
+      }
+
+      // Validate ranges
+      if (recommendation.targetInvestment < 50000000 || recommendation.targetInvestment > 500000000) {
+        throw new Error("Target investment out of range");
+      }
+
+      if (recommendation.expectedReturn < 2 || recommendation.expectedReturn > 6) {
+        throw new Error("Expected return out of range");
+      }
+
+      console.log(`🎯 Generated market recommendation successfully with ${model}`);
+      return recommendation;
+
+    } catch (error) {
+      console.error(`❌ Error generating market recommendation with ${model}:`, error);
+      
+      // If this is the last model, generate dynamic fallback based on input data
+      if (model === models[models.length - 1]) {
+        console.log("🔄 All Gemini models failed, generating dynamic fallback based on market data");
+        
+        // Generate realistic base investment (₹5Cr to ₹50Cr range)
+        const avgIndustryScore = benchmarks.reduce((sum, b) => sum + b.avgScore, 0) / benchmarks.length;
+        const avgGrowth = benchmarks.reduce((sum, b) => {
+          return sum + parseFloat(b.growth.replace('%', '').replace('+', ''));
+        }, 0) / benchmarks.length;
+        
+        // Base investment scales with industry performance
+        const baseInvestment = 50000000 + (avgIndustryScore - 50) * 1000000 + (avgGrowth * 2000000);
+        
+        // Conservative multipliers (0.5 to 1.5 range)
+        const scoreMultiplier = 0.5 + (avgScore / 100);
+        const marketMultiplier = 0.5 + (metrics.marketPenetration.value / 200);
+        const teamMultiplier = 0.5 + (metrics.teamExperience.value / 200);
+        
+        const dynamicInvestment = Math.round(baseInvestment * scoreMultiplier * marketMultiplier * teamMultiplier);
+        const clampedInvestment = Math.max(50000000, Math.min(500000000, dynamicInvestment));
+        
+        // Calculate realistic expected return (2x to 6x range)
+        const baseReturn = 2.0 + (avgScore / 100) * 2; // 2x to 4x based on score
+        
+        // Growth and efficiency adjustments (small increments)
+        const growthAdjustment = (metrics.revenueGrowth.value - 100) / 200; // -0.5 to +0.5
+        const efficiencyAdjustment = (metrics.burnRateEfficiency.value - 50) / 100; // -0.5 to +0.5
+        
+        const dynamicReturn = baseReturn + growthAdjustment + efficiencyAdjustment;
+        const clampedReturn = Math.max(2.0, Math.min(6.0, dynamicReturn));
+        
+        return {
+          targetInvestment: clampedInvestment,
+          expectedReturn: Math.round(clampedReturn * 10) / 10 // Round to 1 decimal
+        };
+      }
+      
+      // Otherwise, try the next model
+      console.log(`🔄 Trying next model...`);
+    }
+  }
+  
+  // Generate final dynamic fallback if all models fail
+  const avgIndustryScore = benchmarks.reduce((sum, b) => sum + b.avgScore, 0) / benchmarks.length;
+  const avgGrowth = benchmarks.reduce((sum, b) => {
+    return sum + parseFloat(b.growth.replace('%', '').replace('+', ''));
+  }, 0) / benchmarks.length;
+  
+  // Base investment scales with industry performance
+  const baseInvestment = 50000000 + (avgIndustryScore - 50) * 1000000 + (avgGrowth * 2000000);
+  
+  // Conservative multipliers (0.5 to 1.5 range)
+  const scoreMultiplier = 0.5 + (avgScore / 100);
+  const marketMultiplier = 0.5 + (metrics.marketPenetration.value / 200);
+  const teamMultiplier = 0.5 + (metrics.teamExperience.value / 200);
+  
+  const dynamicInvestment = Math.round(baseInvestment * scoreMultiplier * marketMultiplier * teamMultiplier);
+  const clampedInvestment = Math.max(50000000, Math.min(500000000, dynamicInvestment));
+  
+  // Calculate realistic expected return (2x to 6x range)
+  const baseReturn = 2.0 + (avgScore / 100) * 2; // 2x to 4x based on score
+  
+  // Growth and efficiency adjustments (small increments)
+  const growthAdjustment = (metrics.revenueGrowth.value - 100) / 200; // -0.5 to +0.5
+  const efficiencyAdjustment = (metrics.burnRateEfficiency.value - 50) / 100; // -0.5 to +0.5
+  
+  const dynamicReturn = baseReturn + growthAdjustment + efficiencyAdjustment;
+  const clampedReturn = Math.max(2.0, Math.min(6.0, dynamicReturn));
+  
+  return {
+    targetInvestment: clampedInvestment,
+    expectedReturn: Math.round(clampedReturn * 10) / 10
+  };
 }
 
 // Company size configurations
