@@ -345,15 +345,6 @@ export function Dashboard() {
             )}
           </div>
 
-          {/* Chart Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Performance Trends</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <StartupChart />
-            </CardContent>
-          </Card>
         </div>
 
         {/* Sidebar */}
