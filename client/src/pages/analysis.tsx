@@ -15,6 +15,7 @@ import { Link } from "react-router-dom"
 import AnalysisComparison from "@/components/analysis-comparison"
 import { useState } from "react"
 import {getApiUrl} from "@/lib/config.ts";
+import { formatCurrency } from "@/lib/utils"
 
 interface AnalysisData {
   startup: {
@@ -713,7 +714,7 @@ export default function Analysis({ params }: AnalysisProps) {
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Target Investment</p>
                 <p className="text-2xl font-bold">
-                  ${(analysis.recommendation.targetInvestment / 1000000).toFixed(1)}M
+                  {formatCurrency(analysis.recommendation.targetInvestment)}
                 </p>
               </div>
               <TrendingUp className="h-8 w-8 text-green-500" />
@@ -733,10 +734,6 @@ export default function Analysis({ params }: AnalysisProps) {
           </CardContent>
         </Card>
       </div>
-
-      {/* Market Comparison */}
-      <AnalysisComparison analysisData={data} />
-
 
       {/* Detailed Metrics */}
       <Card>
@@ -770,7 +767,7 @@ export default function Analysis({ params }: AnalysisProps) {
                 {analysis.recommendation.decision.replace('_', ' ').toUpperCase()}
               </Badge>
               <span className="text-lg font-semibold">
-                Target: ${(analysis.recommendation.targetInvestment / 1000000).toFixed(1)}M
+                Target: {formatCurrency(analysis.recommendation.targetInvestment)}
               </span>
               <span className="text-lg">
                 Expected: {analysis.recommendation.expectedReturn}x return

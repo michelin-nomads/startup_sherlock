@@ -4,7 +4,7 @@ import multer from "multer";
 import { z } from "zod";
 import { storage } from "./storage";
 import { DocumentProcessor } from "./documentProcessor";
-import { analyzeStartupDocuments, generateIndustryBenchmarks, generateBenchmarkMetrics, generateCustomIndustryBenchmarks, generateIndustryRisks } from "./gemini";
+import { analyzeStartupDocuments, extractTextFromDocument, generateIndustryBenchmarks, generateBenchmarkMetrics, generateCustomIndustryBenchmarks, generateMarketRecommendation } from "./gemini";
 import { enhancedAnalysisService } from "./enhancedAnalysis";
 import { insertStartupSchema, insertDocumentSchema } from "@shared/schema";
 
@@ -357,6 +357,9 @@ app.get("/api/market-trends", async (req: Request, res: Response) => {
       generateBenchmarkMetrics()
     ]);
 
+    // Generate dynamic recommendation using Gemini
+    const recommendation = await generateMarketRecommendation(benchmarks, metrics);
+
     // Calculate average market trends from benchmarks
     const avgScore = benchmarks.reduce((sum, b) => sum + b.avgScore, 0) / benchmarks.length;
     
@@ -372,8 +375,8 @@ app.get("/api/market-trends", async (req: Request, res: Response) => {
         competition: Math.round(100 - metrics.marketPenetration.value * 0.8) // Inverse of market penetration
       },
       recommendation: {
-        targetInvestment: 2500000, // $2.5M average
-        expectedReturn: 3.2 // 3.2x average return
+        targetInvestment: recommendation.targetInvestment,
+        expectedReturn: recommendation.expectedReturn
       }
     };
 
@@ -389,8 +392,23 @@ app.get("/api/industry-risks/:industry", async (req: Request, res: Response) => 
   try {
     const { industry } = req.params;
     
-    // Generate industry-specific risks using Gemini
-    const industryRisks = await generateIndustryRisks(industry);
+    // Return mock industry risks for now
+    const industryRisks = {
+      risks: [
+        {
+          type: 'medium',
+          category: 'Market Risk',
+          description: `${industry} market volatility and competition`,
+          impact: 'Moderate impact on growth potential'
+        },
+        {
+          type: 'low',
+          category: 'Technology Risk',
+          description: 'Standard technology adoption challenges',
+          impact: 'Minor impact on implementation timeline'
+        }
+      ]
+    };
     res.json(industryRisks);
   } catch (error) {
     console.error('Industry risks generation error:', error);
