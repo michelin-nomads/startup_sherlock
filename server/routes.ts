@@ -6,6 +6,8 @@ import { storage } from "./storage";
 import { DocumentProcessor } from "./documentProcessor";
 import { analyzeStartupDocuments, extractTextFromDocument, generateIndustryBenchmarks, generateBenchmarkMetrics, generateCustomIndustryBenchmarks, generateMarketRecommendation } from "./gemini";
 import { enhancedAnalysisService } from "./enhancedAnalysis";
+import { enhancedReasoningService } from "./deepResearch"; // NEW: Deep research capabilities
+import { registerHybridResearchRoutes } from "./hybridResearchRoutes"; // NEW: Hybrid research routes
 import { insertStartupSchema, insertDocumentSchema } from "@shared/schema";
 
 // Configure multer for file uploads
@@ -192,7 +194,7 @@ app.get("/api/health", (req: Request, res: Response) => {
   app.post("/api/analyze/:startupId", async (req: Request, res: Response) => {
     try {
       const { startupId } = req.params;
-      const { startupName, description, industry } = req.body;
+      const { startupName, description, industry, useDeepAnalysis = false } = req.body;
       
       // Get startup and its documents
       const startup = await storage.getStartup(startupId);
@@ -221,8 +223,45 @@ app.get("/api/health", (req: Request, res: Response) => {
         name: doc.fileName
       }));
 
-      // Perform AI analysis
-      const analysisResult = await analyzeStartupDocuments(documentData);
+      let analysisResult: any;
+
+      // NEW: Use deep analysis if requested
+      if (useDeepAnalysis) {
+        console.log('🧠 Using enhanced deep reasoning analysis...');
+        analysisResult = await enhancedReasoningService.analyzeWithDeepThinking(
+          documentData,
+          'comprehensive'
+        );
+        
+        // Transform deep analysis to match existing format
+        analysisResult = {
+          overallScore: analysisResult.overallScore || 0,
+          riskLevel: analysisResult.confidenceLevel === 'high' ? 'Low' : 
+                     analysisResult.confidenceLevel === 'low' ? 'High' : 'Medium',
+          recommendation: {
+            decision: analysisResult.investmentThesis?.recommendation?.decision || 'hold',
+            reasoning: analysisResult.investmentThesis?.recommendation?.reasoning || '',
+            targetInvestment: 0,
+            expectedReturn: 0
+          },
+          metrics: analysisResult.riskAdjustedScores ? {
+            marketSize: analysisResult.riskAdjustedScores.market?.baseScore || 0,
+            traction: analysisResult.riskAdjustedScores.traction?.baseScore || 0,
+            team: analysisResult.riskAdjustedScores.team?.baseScore || 0,
+            product: analysisResult.riskAdjustedScores.product?.baseScore || 0,
+            financials: analysisResult.riskAdjustedScores.financials?.baseScore || 0,
+            competition: 0
+          } : { marketSize: 0, traction: 0, team: 0, product: 0, financials: 0, competition: 0 },
+          keyInsights: analysisResult.deepInsights?.map((i: any) => i.insight) || [],
+          riskFlags: [],
+          deepAnalysis: analysisResult, // Store full deep analysis
+          analysisType: 'deep_reasoning'
+        };
+      } else {
+        // Standard analysis
+        analysisResult = await analyzeStartupDocuments(documentData);
+        analysisResult.analysisType = 'standard';
+      }
 
       // Update startup with analysis results
       const updatedStartup = await storage.updateStartup(startupId, {
@@ -234,11 +273,80 @@ app.get("/api/health", (req: Request, res: Response) => {
 
       res.json({
         startup: updatedStartup,
-        analysis: analysisResult
+        analysis: analysisResult,
+        analysisType: analysisResult.analysisType
       });
     } catch (error) {
       console.error('Analysis error:', error);
       res.status(500).json({ error: "Failed to analyze startup" });
+    }
+  });
+
+  // NEW: Deep Analysis Endpoint (automatic deep reasoning)
+  app.post("/api/deep-analyze/:startupId", async (req: Request, res: Response) => {
+    try {
+      const { startupId } = req.params;
+      const { analysisType = 'comprehensive' } = req.body;
+
+      console.log(`🧠 Starting deep analysis for startup: ${startupId}`);
+
+      const startup = await storage.getStartup(startupId);
+      if (!startup) {
+        return res.status(404).json({ error: "Startup not found" });
+      }
+
+      const documents = await storage.getDocumentsByStartup(startupId);
+      if (documents.length === 0) {
+        return res.status(400).json({ error: "No documents found for analysis" });
+      }
+
+      const documentData = documents.map(doc => ({
+        content: doc.extractedText || '',
+        type: doc.fileType,
+        name: doc.fileName
+      }));
+
+      // Perform deep analysis
+      const deepAnalysis = await enhancedReasoningService.analyzeWithDeepThinking(
+        documentData,
+        analysisType as 'comprehensive' | 'financial' | 'market' | 'team'
+      );
+
+      // Extract scores for storage
+      const overallScore = deepAnalysis.overallScore || 0;
+      const riskLevel = deepAnalysis.confidenceLevel === 'high' ? 'Low' : 
+                       deepAnalysis.confidenceLevel === 'low' ? 'High' : 'Medium';
+      const recommendation = deepAnalysis.investmentThesis?.recommendation?.decision || 'hold';
+
+      // Update startup
+      await storage.updateStartup(startupId, {
+        overallScore,
+        riskLevel,
+        recommendation,
+        analysisData: {
+          ...deepAnalysis,
+          analysisType: 'deep_reasoning',
+          analyzedAt: new Date().toISOString()
+        }
+      });
+
+      res.json({
+        success: true,
+        startupId,
+        analysisType,
+        overallScore,
+        riskLevel,
+        recommendation,
+        analysis: deepAnalysis,
+        message: 'Deep analysis completed successfully'
+      });
+
+    } catch (error) {
+      console.error('Deep analysis error:', error);
+      res.status(500).json({ 
+        error: "Failed to perform deep analysis",
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   });
 
@@ -485,6 +593,9 @@ app.post("/api/enhanced-analysis", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to perform enhanced analysis" });
   }
 });
+
+  // NEW: Register Hybrid Research Routes (Gemini Grounding + Custom Search)
+  registerHybridResearchRoutes(app);
 
   const httpServer = createServer(app);
   return httpServer;

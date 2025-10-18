@@ -1,4 +1,4 @@
-import { BarChart3, FileUp, Home, TrendingUp, AlertTriangle, Target, Zap } from "lucide-react"
+import { BarChart3, FileUp, Home, TrendingUp, AlertTriangle, Target, Zap, Search } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -31,6 +31,11 @@ const menuItems = [
     title: "Benchmarks",
     url: "/benchmarks",
     icon: Target,
+  },
+  {
+    title: "Research Test",
+    url: "/research-test",
+    icon: Search,
   },
 ]
 
