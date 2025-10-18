@@ -1,0 +1,175 @@
+# Startup Analyst Demo Video Script (3 Minutes)
+
+## Video Overview
+**Duration**: 3 minutes  
+**Purpose**: Showcase the AI-powered startup analysis platform for investment analysts  
+**Target Audience**: VCs, Investment Analysts, Startup Accelerators
+
+---
+
+## Pre-Demo Setup
+1. Start the application (`npm run dev`)
+2. Have sample startup documents ready (pitch deck, financials)
+3. Clear browser cache for smooth demo
+4. Set screen resolution to 1920x1080 for best recording quality
+
+---
+
+## Demo Script with Timestamps
+
+### **[0:00 - 0:15] Introduction & Problem Statement**
+**Visual**: Show the landing dashboard
+**Narration**:
+"Welcome to Startup Analyst - an AI-powered platform that transforms how investment analysts evaluate startups. In just minutes, our platform analyzes pitch decks and financial documents using Google's Gemini AI to provide comprehensive investment insights."
+
+### **[0:15 - 0:45] Document Upload & Processing**
+**Visual**: Navigate to Upload page
+**Actions**: 
+- Click on "Upload Documents"
+- Show file selection dialog
+- Upload 2 files (pitch deck PDF + financial statements)
+
+**Narration**:
+"Let's analyze a startup called TechFlow AI. Simply upload your documents - we support PDFs, Word docs, and even images. You can upload multiple files at once - pitch decks, financial statements, due diligence reports. Our intelligent document processor extracts and analyzes all relevant information automatically."
+
+**Key Points to Show**:
+- Drag and drop functionality
+- File type support
+- Progress indicator
+- Multiple file upload capability
+
+### **[0:45 - 1:15] AI Analysis in Action**
+**Visual**: Show analysis process and results page
+**Actions**:
+- Click "Start Analysis"
+- Show loading state briefly
+- Navigate through analysis results
+
+**Narration**:
+"Once uploaded, our Gemini AI engine analyzes your documents across six critical dimensions: Market Size, Team Quality, Product Innovation, Traction, Financial Health, and Competitive Position. The AI evaluates each metric, providing scores and detailed insights based on industry best practices."
+
+**Key Points to Show**:
+- Real-time analysis progress
+- Metric cards with scores
+- Key insights section
+- Investment recommendation (Strong Buy/Buy/Hold/Pass)
+
+### **[1:15 - 1:45] Risk Assessment & Red Flags**
+**Visual**: Scroll to Risk Assessment section
+**Actions**:
+- Show risk flags dashboard
+- Click on a high-risk item for details
+- Show mitigation recommendations
+
+**Narration**:
+"Our platform automatically identifies potential risks and red flags. Each risk is categorized by severity - high, medium, or low - with detailed impact analysis and actionable mitigation strategies. This helps analysts make informed decisions quickly while ensuring due diligence."
+
+**Key Points to Show**:
+- Color-coded risk indicators
+- Detailed risk descriptions
+- Impact assessment
+- Mitigation recommendations
+
+### **[1:45 - 2:15] Industry Benchmarks & Comparison**
+**Visual**: Navigate to Benchmarks page
+**Actions**:
+- Select industry (e.g., "SaaS")
+- Show benchmark generation
+- Display comparison charts
+
+**Narration**:
+"Compare your startup against industry benchmarks instantly. Select the industry and company stage, and our AI generates relevant benchmarks using real market data. See how your startup stacks up against successful companies in the same space."
+
+**Key Points to Show**:
+- Industry selection dropdown
+- Dynamic benchmark generation
+- Visual comparison charts
+- Performance percentiles
+
+### **[2:15 - 2:45] Portfolio Dashboard & Historical Analysis**
+**Visual**: Return to main dashboard
+**Actions**:
+- Show portfolio overview
+- Click on a previous analysis
+- Show trend charts
+
+**Narration**:
+"Track your entire portfolio in one place. The dashboard provides an overview of all analyzed startups, with quick access to historical analyses. Monitor trends, compare multiple startups, and make data-driven investment decisions with confidence."
+
+**Key Points to Show**:
+- Portfolio metrics overview
+- Analysis history
+- Quick comparison feature
+- Export capabilities
+
+### **[2:45 - 3:00] Call to Action & Closing**
+**Visual**: Show the main dashboard with multiple analyzed startups
+**Narration**:
+"Startup Analyst transforms hours of manual analysis into minutes of AI-powered insights. From document upload to comprehensive investment recommendations, we help you make faster, more informed investment decisions. Start analyzing your startup portfolio today and experience the power of AI-driven investment analysis."
+
+**End Screen Elements**:
+- Platform logo
+- Key features summary
+- Contact information
+
+---
+
+## Recording Tips
+
+### Technical Setup
+1. **Screen Resolution**: 1920x1080 (16:9 ratio)
+2. **Frame Rate**: 30fps minimum
+3. **Audio**: Use a good microphone, record in quiet environment
+4. **Browser**: Use Chrome in incognito mode for clean UI
+
+### Recording Software Options
+- **OBS Studio** (Free, professional quality)
+- **Loom** (Easy to use, includes editing)
+- **QuickTime** (Mac built-in)
+- **Camtasia** (Paid, includes editing tools)
+
+### Best Practices
+1. **Practice the flow** 2-3 times before recording
+2. **Use sample data** that looks realistic but isn't confidential
+3. **Keep mouse movements smooth** and deliberate
+4. **Pause briefly** after each major action for clarity
+5. **Hide unnecessary browser extensions** and notifications
+6. **Use keyboard shortcuts** where possible for smooth transitions
+
+### Post-Production Suggestions
+1. **Add captions** for accessibility
+2. **Include background music** (subtle, professional)
+3. **Add logo watermark** in corner
+4. **Create intro/outro animations** (5 seconds each)
+5. **Export in MP4 format** for best compatibility
+
+### Sample Data Preparation
+Create or use demo documents for:
+- **Startup Name**: TechFlow AI
+- **Industry**: SaaS/AI
+- **Stage**: Series A
+- **Documents**: 
+  - Pitch deck (10-15 slides)
+  - Financial statements (P&L, Balance Sheet)
+  - Optional: Due diligence report
+
+---
+
+## Alternative Shorter Version (90 seconds)
+
+If you need a shorter version, focus on:
+1. **[0:00-0:10]** Quick intro
+2. **[0:10-0:30]** Document upload
+3. **[0:30-0:50]** AI analysis results
+4. **[0:50-1:10]** Risk assessment
+5. **[1:10-1:20]** Benchmarks
+6. **[1:20-1:30]** Call to action
+
+---
+
+## Key Messages to Emphasize
+1. ✅ **Speed**: "Analyze startups in minutes, not hours"
+2. ✅ **AI-Powered**: "Leveraging Google's advanced Gemini AI"
+3. ✅ **Comprehensive**: "Six-dimensional analysis framework"
+4. ✅ **Risk Management**: "Identify red flags instantly"
+5. ✅ **Data-Driven**: "Industry benchmarks and comparisons"
