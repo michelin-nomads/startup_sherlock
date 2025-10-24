@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { GoogleGenAI } from "@google/genai";
 import axios from "axios";
+import { retryWithBackoff, tryModelsInOrder } from "./gemini";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
@@ -276,21 +277,28 @@ Provide a structured analysis in JSON format with:
 
 Return ONLY valid JSON, no markdown or additional text.`;
 
-      const result = await ai.models.generateContent({
-        model: "gemini-2.5-pro",
-        config: {
-          responseMimeType: "application/json"
-        },
-        contents: prompt
+      // Use retry logic with model fallback for 503 errors
+      const insights = await retryWithBackoff(async () => {
+        return await tryModelsInOrder(async (model) => {
+          console.log(`🤖 Synthesizing with ${model}...`);
+          const result = await ai.models.generateContent({
+            model,
+            config: {
+              responseMimeType: "application/json"
+            },
+            contents: prompt
+          });
+          
+          return JSON.parse(result.text || '{}');
+        });
       });
       
-      const insights = JSON.parse(result.text || '{}');
       console.log('✅ Synthesis completed');
       
       return insights;
       
     } catch (error) {
-      console.error('❌ Synthesis failed:', error);
+      console.error('❌ Synthesis failed after all retries:', error);
       // Return default structure
       return {
         summary: groundedAnalysis.analysis.substring(0, 300) + '...',

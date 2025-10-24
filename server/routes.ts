@@ -8,6 +8,7 @@ import { analyzeStartupDocuments, extractTextFromDocument, generateIndustryBench
 import { enhancedAnalysisService } from "./enhancedAnalysis";
 import { enhancedReasoningService } from "./deepResearch"; // NEW: Deep research capabilities
 import { registerHybridResearchRoutes } from "./hybridResearchRoutes"; // NEW: Hybrid research routes
+import { startupDueDiligenceService } from "./startupDueDiligence"; // NEW: Public source due diligence
 import { insertStartupSchema, insertDocumentSchema } from "@shared/schema";
 
 // Configure multer for file uploads
@@ -190,11 +191,13 @@ app.get("/api/health", (req: Request, res: Response) => {
     }
   });
 
-  // Analyze startup documents
+  // Analyze startup documents (ONLY document analysis)
   app.post("/api/analyze/:startupId", async (req: Request, res: Response) => {
     try {
       const { startupId } = req.params;
       const { startupName, description, industry, useDeepAnalysis = false } = req.body;
+      
+      console.log('📊 Starting document analysis for startup:', startupId);
       
       // Get startup and its documents
       const startup = await storage.getStartup(startupId);
@@ -263,6 +266,8 @@ app.get("/api/health", (req: Request, res: Response) => {
         analysisResult.analysisType = 'standard';
       }
 
+      console.log('✅ Document analysis completed');
+
       // Update startup with analysis results
       const updatedStartup = await storage.updateStartup(startupId, {
         overallScore: analysisResult.overallScore,
@@ -279,6 +284,63 @@ app.get("/api/health", (req: Request, res: Response) => {
     } catch (error) {
       console.error('Analysis error:', error);
       res.status(500).json({ error: "Failed to analyze startup" });
+    }
+  });
+
+  // NEW: Separate endpoint for public data analysis
+  app.post("/api/public-data-analysis/:startupId", async (req: Request, res: Response) => {
+    try {
+      const { startupId } = req.params;
+      
+      console.log('🌐 Starting public source research for startup:', startupId);
+      
+      // Get startup
+      let startup = await storage.getStartup(startupId);
+      if (!startup) {
+        return res.status(404).json({ error: "Startup not found" });
+      }
+
+      if (!startup.name) {
+        return res.status(400).json({ error: "Startup name is required for public data analysis" });
+      }
+
+      // Conduct due diligence
+      const dueDiligenceResult = await startupDueDiligenceService.conductDueDiligence(startup.name);
+      
+      console.log('✅ Public source research completed');
+
+      // Re-fetch startup to get the latest data (in case document analysis completed in parallel)
+      startup = await storage.getStartup(startupId);
+      if (!startup) {
+        return res.status(404).json({ error: "Startup not found after re-fetch" });
+      }
+
+      // Update startup with public data - merge with existing analysis data
+      const existingAnalysisData = startup.analysisData as any || {};
+      const updatedAnalysisData = {
+        ...existingAnalysisData,
+        publicSourceDueDiligence: dueDiligenceResult,
+        lastDueDiligenceAt: new Date().toISOString()
+      };
+
+      await storage.updateStartup(startupId, {
+        analysisData: updatedAnalysisData
+      });
+
+      res.json({
+        startupId,
+        startupName: startup.name,
+        publicData: dueDiligenceResult,
+        lastUpdated: new Date().toISOString(),
+        success: true
+      });
+    } catch (error: any) {
+      console.error('⚠️ Public source research failed:', error.message);
+      res.status(500).json({ 
+        error: "Failed to conduct public data analysis",
+        message: error.message,
+        success: false
+      });
     }
   });
 
@@ -360,10 +422,22 @@ app.get("/api/health", (req: Request, res: Response) => {
 
       const documents = await storage.getDocumentsByStartup(req.params.startupId);
 
+      // Extract analysis data - handle both old and new structure
+      let analysisData = startup.analysisData;
+      
+      // If analysisData has publicSourceDueDiligence, it means we have the merged structure
+      // We need to extract just the document analysis fields (not the publicSourceDueDiligence)
+      if (analysisData && typeof analysisData === "object") {
+        const { publicSourceDueDiligence, lastDueDiligenceAt, ...documentAnalysis } = analysisData as any;
+        
+        // Use the document analysis fields for the main analysis
+        analysisData = documentAnalysis;
+      }
+
       const response: any = {
         startup,
         documents,
-        analysis: (startup.analysisData as any)?.documentAnalysis || startup.analysisData
+        analysis: analysisData || {}
       };
 
       // Include enhanced analysis data if available
@@ -593,6 +667,84 @@ app.post("/api/enhanced-analysis", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to perform enhanced analysis" });
   }
 });
+
+  // NEW: Public Source Due Diligence - Extract data from public sources
+  app.post("/api/due-diligence/:startupId", async (req: Request, res: Response) => {
+    try {
+      const { startupId } = req.params;
+      
+      console.log(`🔍 Starting public source due diligence for: ${startupId}`);
+      
+      const startup = await storage.getStartup(startupId);
+      if (!startup) {
+        return res.status(404).json({ error: "Startup not found" });
+      }
+      
+      // Conduct comprehensive due diligence
+      const dueDiligence = await startupDueDiligenceService.conductDueDiligence(startup.name);
+      
+      // Save due diligence results
+      await storage.updateStartup(startupId, {
+        analysisData: {
+          ...(startup.analysisData as any || {}),
+          publicSourceDueDiligence: dueDiligence,
+          lastDueDiligenceAt: new Date().toISOString()
+        }
+      });
+      
+      res.json({
+        success: true,
+        startupId,
+        startupName: startup.name,
+        dueDiligence,
+        message: 'Public source due diligence completed successfully'
+      });
+      
+    } catch (error) {
+      console.error('Due diligence error:', error);
+      res.status(500).json({ 
+        error: "Failed to conduct due diligence",
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Get due diligence results
+  app.get("/api/due-diligence/:startupId", async (req: Request, res: Response) => {
+    try {
+      const { startupId } = req.params;
+      
+      const startup = await storage.getStartup(startupId);
+      if (!startup) {
+        return res.status(404).json({ error: "Startup not found" });
+      }
+      
+      const analysisData = startup.analysisData as any;
+      const dueDiligence = analysisData?.publicSourceDueDiligence;
+      
+      if (!dueDiligence) {
+        return res.status(404).json({ 
+          error: "No due diligence data found",
+          message: "Use POST /api/due-diligence/:startupId to generate"
+        });
+      }
+      
+      res.json({
+        startupId,
+        startupName: startup.name,
+        dueDiligence,
+        lastDueDiligence: analysisData.lastDueDiligenceAt,
+        documentAnalysis: analysisData // Include for comparison
+      });
+      
+    } catch (error) {
+      console.error('Get due diligence error:', error);
+      res.status(500).json({ 
+        error: "Failed to retrieve due diligence",
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
 
   // NEW: Register Hybrid Research Routes (Gemini Grounding + Custom Search)
   registerHybridResearchRoutes(app);

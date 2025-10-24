@@ -10,10 +10,12 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { TrendingUp, TrendingDown, AlertTriangle, CheckCircle, ArrowLeft, Star, ChevronDown, Shield, AlertCircle, Info, Globe, Search, Loader2, Plus, X } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { TrendingUp, TrendingDown, AlertTriangle, CheckCircle, ArrowLeft, Star, ChevronDown, Shield, AlertCircle, Info, Globe, Search, Loader2, Plus, X, FileText, Database, GitCompare, BarChart, Target, RefreshCcw } from "lucide-react"
 import { Link } from "react-router-dom"
 import AnalysisComparison from "@/components/analysis-comparison"
-import { useState } from "react"
+import { PublicDataSection } from "@/components/public-data-section"
+import { useState, useEffect } from "react"
 import {getApiUrl} from "@/lib/config.ts";
 import { formatCurrency } from "@/lib/utils"
 
@@ -26,6 +28,7 @@ interface AnalysisData {
     overallScore: number
     riskLevel: string
     recommendation: string
+    analysisData?: any // Contains publicSourceDueDiligence after background job completes
   }
   analysis: {
     overallScore: number
@@ -178,8 +181,12 @@ interface AnalysisProps {
 export default function Analysis({ params }: AnalysisProps) {
   const id = params.id;
   const navigate = useNavigate()
+  const [publicData, setPublicData] = useState<any>(null);
+  const [publicDataStatus, setPublicDataStatus] = useState<'loading' | 'failed' | 'success'>('loading');
+  const [isRefreshingPublicData, setIsRefreshingPublicData] = useState(false);
+  const [hasSuccessfulRetry, setHasSuccessfulRetry] = useState(false);
 
-  const { data, isLoading, error } = useQuery<AnalysisData>({
+  const { data, isLoading, error, refetch } = useQuery<AnalysisData>({
     queryKey: ['/api/analysis', id],
     queryFn: async () => {
       const response = await fetch(getApiUrl(`/api/analysis/${id}`))
@@ -212,6 +219,88 @@ export default function Analysis({ params }: AnalysisProps) {
       return undefined
     }
   })
+
+  // Extract public data from analysis data (stored in startup.analysisData)
+  useEffect(() => {
+    // Don't override if we have successfully retried and fetched public data
+    if (hasSuccessfulRetry && publicData && publicDataStatus === 'success') {
+      return;
+    }
+
+    if (data?.startup?.analysisData) {
+      const analysisData = data.startup.analysisData as any;
+      if (analysisData.publicSourceDueDiligence) {
+        // Public data available
+        setPublicData(analysisData.publicSourceDueDiligence);
+        setPublicDataStatus('success');
+      } else if (analysisData.analysisType) {
+        // Analysis is complete but public data is missing - it failed during parallel execution
+        setPublicData(null);
+        setPublicDataStatus('failed');
+      } else {
+        // Still loading (old background mode, shouldn't happen with new parallel execution)
+        setPublicDataStatus('loading');
+      }
+    }
+  }, [data, hasSuccessfulRetry, publicData, publicDataStatus]);
+
+  // Function to retry public data analysis
+  const handleRefreshPublicData = async () => {
+    if (!id) return;
+    
+    setIsRefreshingPublicData(true);
+    setPublicDataStatus('loading');
+    setHasSuccessfulRetry(false); // Reset the flag
+    
+    try {
+      const response = await fetch(getApiUrl(`/api/public-data-analysis/${id}`), {
+        method: 'POST',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to refresh public data analysis');
+      }
+      
+      const result = await response.json();
+      
+      // Update the public data with the new result
+      if (result.publicSourceDueDiligence) {
+        // Create a new object reference to ensure React detects the change
+        const newPublicData = { ...result.publicSourceDueDiligence, _refreshTimestamp: Date.now() };
+        setPublicData(newPublicData);
+        setPublicDataStatus('success');
+        setHasSuccessfulRetry(true); // Mark as successful retry
+        
+        // Update localStorage with the new data
+        if (id) {
+          const existingData = localStorage.getItem(`analysis_${id}`);
+          if (existingData) {
+            try {
+              const parsed = JSON.parse(existingData);
+              parsed.startup = parsed.startup || {};
+              parsed.startup.analysisData = parsed.startup.analysisData || {};
+              parsed.startup.analysisData.publicSourceDueDiligence = result.publicSourceDueDiligence;
+              localStorage.setItem(`analysis_${id}`, JSON.stringify(parsed));
+            } catch (e) {
+              console.error('Failed to update localStorage:', e);
+            }
+          }
+        }
+        
+        // Invalidate and refetch the query to ensure consistency
+        queryClient.invalidateQueries({ queryKey: ['/api/analysis', id] });
+      } else {
+        setPublicDataStatus('failed');
+        setHasSuccessfulRetry(false);
+      }
+    } catch (error) {
+      console.error('Error refreshing public data:', error);
+      setPublicDataStatus('failed');
+      setHasSuccessfulRetry(false);
+    } finally {
+      setIsRefreshingPublicData(false);
+    }
+  };
 
   // Fetch all analyzed startups for dropdown
   const { data: startups = [], isLoading: startupsLoading } = useQuery<Startup[]>({
@@ -564,7 +653,7 @@ export default function Analysis({ params }: AnalysisProps) {
   }
 
   const getRiskColor = (risk: string) => {
-    switch (risk.toLowerCase()) {
+    switch (risk?.toLowerCase()) {
       case 'low': return 'text-green-600'
       case 'medium': return 'text-yellow-600'
       case 'high': return 'text-red-600'
@@ -594,16 +683,17 @@ export default function Analysis({ params }: AnalysisProps) {
               </Link>
             </Button>
             <h1 className="text-3xl font-bold tracking-tight">{startup.name}</h1>
-            <Badge className={`${getDecisionColor(analysis.recommendation.decision)} text-white`}>
-              {analysis.recommendation.decision.replace('_', ' ').toUpperCase()}
-            </Badge>
+            {analysis.recommendation?.decision && (
+              <Badge className={`${getDecisionColor(analysis.recommendation.decision)} text-white`}>
+                {analysis.recommendation.decision.replace('_', ' ').toUpperCase()}
+              </Badge>
+            )}
           </div>
-          <p className="text-muted-foreground">
-            AI-powered investment analysis completed
+          <p className="text-sm text-muted-foreground">
+            AI-powered investment analysis • Public source data included
           </p>
         </div>
       </div>
-
 
       {/* Key Metrics Overview */}
       <div className="grid gap-4 md:grid-cols-4">
@@ -639,7 +729,9 @@ export default function Analysis({ params }: AnalysisProps) {
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Target Investment</p>
                 <p className="text-2xl font-bold">
-                  {formatCurrency(analysis.recommendation.targetInvestment)}
+                  {analysis.recommendation?.targetInvestment 
+                    ? formatCurrency(analysis.recommendation.targetInvestment) 
+                    : 'N/A'}
                 </p>
               </div>
               <TrendingUp className="h-8 w-8 text-green-500" />
@@ -652,7 +744,11 @@ export default function Analysis({ params }: AnalysisProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Expected Return</p>
-                <p className="text-2xl font-bold">{analysis.recommendation.expectedReturn}x</p>
+                <p className="text-2xl font-bold">
+                  {analysis.recommendation?.expectedReturn 
+                    ? `${analysis.recommendation.expectedReturn}x` 
+                    : 'N/A'}
+                </p>
               </div>
               <TrendingUp className="h-8 w-8 text-blue-500" />
             </div>
@@ -660,128 +756,236 @@ export default function Analysis({ params }: AnalysisProps) {
         </Card>
       </div>
 
-      {/* Detailed Metrics */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Detailed Metrics Analysis</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {Object.entries(analysis.metrics).map(([metric, score]) => (
-            <div key={metric} className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="font-medium capitalize">
-                  {metric.replace(/([A-Z])/g, ' $1').trim()}
-                </span>
-                <span>{score}/100</span>
-              </div>
-              <Progress value={score} className="h-2" />
-            </div>
-          ))}
-        </CardContent>
-      </Card>
+      {/* Tabs for Different Views */}
+      <Tabs defaultValue="documents" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="documents" className="flex items-center gap-2">
+            <FileText className="h-4 w-4" />
+            Document Analysis
+          </TabsTrigger>
+          <TabsTrigger value="public" className="flex items-center gap-2">
+            <Database className="h-4 w-4" />
+            Public Data Analysis
+          </TabsTrigger>
+          <TabsTrigger value="comparison" className="flex items-center gap-2">
+            <GitCompare className="h-4 w-4" />
+            Comparison & Questions
+          </TabsTrigger>
+        </TabsList>
 
-      {/* Investment Recommendation */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Investment Recommendation</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <Badge className={`${getDecisionColor(analysis.recommendation.decision)} text-white px-3 py-1`}>
-                {analysis.recommendation.decision.replace('_', ' ').toUpperCase()}
-              </Badge>
-              <span className="text-lg font-semibold">
-                Target: {formatCurrency(analysis.recommendation.targetInvestment)}
-              </span>
-              <span className="text-lg">
-                Expected: {analysis.recommendation.expectedReturn}x return
-              </span>
-            </div>
-            <Separator />
-            <p className="text-muted-foreground leading-relaxed">
-              {analysis.recommendation.reasoning}
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Risk Assessment */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Risk Assessment</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {analysis.riskFlags.map((flag, index) => (
-              <div 
-                key={index}
-                className={`p-4 rounded-lg border-l-4 ${getRiskFlagColor(flag.type)}`}
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <h4 className="font-semibold">{flag.category}</h4>
-                  <Badge variant="outline" className="capitalize">
-                    {flag.type} Risk
-                  </Badge>
+        {/* Tab 1: Document Analysis */}
+        <TabsContent value="documents" className="space-y-6 mt-6">
+          {/* Detailed Metrics */}
+          <Card>
+            <details className="group">
+              <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+                <div className="flex items-center gap-2">
+                  <BarChart className="h-5 w-5" />
+                  <span className="font-semibold">Detailed Metrics Analysis</span>
                 </div>
-                <p className="text-sm text-muted-foreground mb-2">
-                  {flag.description}
-                </p>
-                <p className="text-sm font-medium">
-                  Impact: {flag.impact}
-                </p>
+                <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+              </summary>
+              <CardContent className="space-y-6 pt-4">
+              {analysis.metrics && Object.keys(analysis.metrics).length > 0 ? (
+                Object.entries(analysis?.metrics || {}).map(([metric, score]) => (
+                  <div key={metric} className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="font-medium capitalize">
+                        {metric.replace(/([A-Z])/g, ' $1').trim()}
+                      </span>
+                      <span>{score}/100</span>
+                    </div>
+                    <Progress value={score as number} className="h-2" />
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground">No metrics data available</p>
+              )}
+              </CardContent>
+            </details>
+          </Card>
+
+          {/* Investment Recommendation */}
+          <Card>
+            <details className="group">
+              <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+                <div className="flex items-center gap-2">
+                  <Target className="h-5 w-5" />
+                  <span className="font-semibold">Investment Recommendation</span>
+                </div>
+                <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+              </summary>
+              <CardContent className="pt-4">
+              {analysis.recommendation ? (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    {analysis.recommendation.decision && (
+                      <Badge className={`${getDecisionColor(analysis.recommendation.decision)} text-white px-3 py-1`}>
+                        {analysis.recommendation.decision.replace('_', ' ').toUpperCase()}
+                      </Badge>
+                    )}
+                    {analysis.recommendation.targetInvestment && (
+                      <span className="text-lg font-semibold">
+                        Target: {formatCurrency(analysis.recommendation.targetInvestment)}
+                      </span>
+                    )}
+                    {analysis.recommendation.expectedReturn && (
+                      <span className="text-lg">
+                        Expected: {analysis.recommendation.expectedReturn}x return
+                      </span>
+                    )}
+                  </div>
+                  <Separator />
+                  {analysis.recommendation.reasoning && (
+                    <p className="text-muted-foreground leading-relaxed">
+                      {analysis.recommendation.reasoning}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">No recommendation data available</p>
+              )}
+              </CardContent>
+            </details>
+          </Card>
+
+          {/* Risk Assessment */}
+          <Card>
+            <details className="group">
+              <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+                <div className="flex items-center gap-2">
+                  <Shield className="h-5 w-5" />
+                  <span className="font-semibold">Risk Assessment</span>
+                </div>
+                <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+              </summary>
+              <CardContent className="pt-4">
+              <div className="space-y-4">
+                {analysis.riskFlags && analysis.riskFlags.length > 0 ? (
+                  analysis.riskFlags.map((flag, index) => (
+                    <div 
+                      key={index}
+                      className={`p-4 rounded-lg border-l-4 ${getRiskFlagColor(flag.type)}`}
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <h4 className="font-semibold">{flag.category}</h4>
+                        <Badge variant="outline" className="capitalize">
+                          {flag.type} Risk
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {flag.description}
+                      </p>
+                      <p className="text-sm font-medium">
+                        Impact: {flag.impact}
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground">No risk flags identified</p>
+                )}
               </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              </CardContent>
+            </details>
+          </Card>
 
-      {/* Market Comparison */}
-      <AnalysisComparison analysisData={data} />
+          {/* Market Comparison */}
+          <AnalysisComparison analysisData={data} />
 
-      {/* Key Insights */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Key Insights</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul className="space-y-3">
-            {analysis.keyInsights.map((insight, index) => (
-              <li key={index} className="flex items-start gap-3">
-                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                <span className="text-muted-foreground">{insight}</span>
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
+          {/* Key Insights */}
+          <Card>
+            <details className="group">
+              <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5" />
+                  <span className="font-semibold">Key Insights</span>
+                </div>
+                <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+              </summary>
+              <CardContent className="pt-4">
+              <ul className="space-y-3">
+                {analysis.keyInsights && analysis.keyInsights.length > 0 ? (
+                  analysis.keyInsights.map((insight, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-muted-foreground">{insight}</span>
+                    </li>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground">No key insights available</p>
+                )}
+              </ul>
+              </CardContent>
+            </details>
+          </Card>
 
-      {/* Documents Analyzed */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Documents Analyzed ({documents.length})</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-3">
-            {documents.map((doc) => (
-              <div 
-                key={doc.id}
-                className="flex items-center justify-between p-3 border rounded-lg"
-              >
+          {/* Documents Analyzed */}
+          <Card>
+            <details className="group">
+              <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  <span className="font-semibold">Documents Analyzed ({documents.length})</span>
+                </div>
+                <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+              </summary>
+              <CardContent className="pt-4">
+              <div className="grid gap-3">
+                {documents.map((doc) => (
+                  <div 
+                    key={doc.id}
+                    className="flex items-center justify-between p-3 border rounded-lg"
+                  >
+                    <div>
+                      <p className="font-medium">{doc.fileName}</p>
+                      <p className="text-sm text-muted-foreground">{doc.fileType}</p>
+                    </div>
+                    <Badge variant="outline">Processed</Badge>
+                  </div>
+                ))}
+              </div>
+              </CardContent>
+            </details>
+          </Card>
+        </TabsContent>
+
+        {/* Tab 2: Public Data Analysis */}
+        <TabsContent value="public" className="space-y-6 mt-6">
+          {/* Refresh Button - Always visible when public data exists */}
+          {publicDataStatus === 'success' && publicData && (
+            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border-2 border-dashed">
+              <div className="flex items-center gap-3">
+                <Database className="h-5 w-5 text-blue-600" />
                 <div>
-                  <p className="font-medium">{doc.fileName}</p>
-                  <p className="text-sm text-muted-foreground">{doc.fileType}</p>
+                  <p className="text-sm font-semibold">Public Data Analysis Ready</p>
+                  <p className="text-xs text-muted-foreground">Click refresh to update with latest public data</p>
                 </div>
-                <Badge variant="outline">Processed</Badge>
               </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              <Button
+                onClick={handleRefreshPublicData}
+                disabled={isRefreshingPublicData}
+                variant="outline"
+                size="sm"
+                className="gap-2"
+              >
+                {isRefreshingPublicData ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Refreshing...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCcw className="h-4 w-4" />
+                    Refresh Data
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
 
-      {/* Public Sources Verified */}
-      {data?.publicDataAnalysis && (
-        <Card>
+          {/* Public Sources Verified */}
+          {data?.publicDataAnalysis && (
+            <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Globe className="h-5 w-5 text-green-500" />
@@ -980,158 +1184,259 @@ export default function Analysis({ params }: AnalysisProps) {
               </div>
             </div>
           </CardContent>
-        </Card>
-      )}
+            </Card>
+          )}
 
-      {/* Discrepancies & Red Flags */}
-      {data?.discrepancyAnalysis && (data.discrepancyAnalysis.discrepancies.length > 0 || data.discrepancyAnalysis.redFlags.length > 0) && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-orange-500" />
-              Discrepancies & Red Flags ({data.discrepancyAnalysis.discrepancies.length} discrepancies, {data.discrepancyAnalysis.redFlags.length} red flags)
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Issues found when comparing document claims with public data
-            </p>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {/* Overall Discrepancy Score */}
-              <div className="p-3 bg-muted/50 rounded-lg">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Overall Discrepancy Score</span>
-                  <Badge 
-                    variant={data.discrepancyAnalysis.overallDiscrepancyScore < 25 ? 'default' : 
-                             data.discrepancyAnalysis.overallDiscrepancyScore < 50 ? 'secondary' : 'destructive'}
-                    className="text-xs"
-                  >
-                    {data.discrepancyAnalysis.overallDiscrepancyScore}%
-                  </Badge>
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {data.discrepancyAnalysis.summary}
-                </p>
-              </div>
+          {/* PUBLIC SOURCE DATA SECTION in Public Tab */}
+          <PublicDataSection 
+            publicData={publicData} 
+            documentData={analysis}
+            status={publicDataStatus}
+            onRefresh={handleRefreshPublicData}
+            isRefreshing={isRefreshingPublicData}
+          />
+        </TabsContent>
 
-              {/* Red Flags */}
-              {data.discrepancyAnalysis.redFlags.length > 0 && (
-                <div className="space-y-3">
-                  <h4 className="font-medium text-sm flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4 text-red-500" />
-                    Critical Red Flags
-                  </h4>
-                  {data.discrepancyAnalysis.redFlags.map((flag, index) => (
-                    <div key={index} className="border border-red-200 dark:border-red-800 rounded-lg p-3 bg-red-50 dark:bg-red-900/20">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-sm text-red-800 dark:text-red-200">
-                          {flag.title}
-                        </span>
-                        <Badge variant="destructive" className="text-xs">
-                          {flag.severity.toUpperCase()}
-                        </Badge>
+        {/* Tab 3: Comparison & Questions */}
+        <TabsContent value="comparison" className="space-y-6 mt-6">
+          {/* Discrepancies & Red Flags */}
+          {data?.discrepancyAnalysis && (data.discrepancyAnalysis.discrepancies.length > 0 || data.discrepancyAnalysis.redFlags.length > 0) && (
+            <Card>
+              <details className="group">
+                <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5 text-orange-500" />
+                    <span className="font-semibold">Discrepancies & Red Flags</span>
+                    <Badge variant="outline" className="text-xs ml-2">
+                      {data.discrepancyAnalysis.discrepancies.length + data.discrepancyAnalysis.redFlags.length} total
+                    </Badge>
+                  </div>
+                  <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+                </summary>
+                <CardContent className="pt-4">
+                <div className="space-y-4">
+                  {/* Overall Discrepancy Score */}
+                  <div className="p-3 bg-muted/50 rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">Overall Discrepancy Score</span>
+                      <Badge 
+                        variant={data.discrepancyAnalysis.overallDiscrepancyScore < 25 ? 'default' : 
+                                 data.discrepancyAnalysis.overallDiscrepancyScore < 50 ? 'secondary' : 'destructive'}
+                        className="text-xs"
+                      >
+                        {data.discrepancyAnalysis.overallDiscrepancyScore}%
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {data.discrepancyAnalysis.summary}
+                    </p>
+                  </div>
+
+                  {/* Red Flags */}
+                  {data.discrepancyAnalysis.redFlags.length > 0 && (
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-sm flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-red-500" />
+                        Critical Red Flags
+                      </h4>
+                      {data.discrepancyAnalysis.redFlags.map((flag, index) => (
+                        <div key={index} className="border border-red-200 dark:border-red-800 rounded-lg p-3 bg-red-50 dark:bg-red-900/20">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-medium text-sm text-red-800 dark:text-red-200">
+                              {flag.title}
+                            </span>
+                            <Badge variant="destructive" className="text-xs">
+                              {flag.severity.toUpperCase()}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-red-700 dark:text-red-300 mb-2">
+                            {flag.description}
+                          </p>
+                          <div className="text-xs text-red-600 dark:text-red-400">
+                            <span className="font-medium">Recommendation: </span>
+                            {flag.recommendation}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Discrepancies */}
+                  {data.discrepancyAnalysis.discrepancies.length > 0 && (
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-sm flex items-center gap-2">
+                        <Info className="h-4 w-4 text-yellow-500" />
+                        Data Discrepancies
+                      </h4>
+                      {data.discrepancyAnalysis.discrepancies.map((discrepancy, index) => (
+                        <div key={index} className="border rounded-lg p-3">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-medium text-sm">
+                              {discrepancy.category.toUpperCase()}: {discrepancy.field}
+                            </span>
+                            <Badge 
+                              variant={discrepancy.severity === 'critical' ? 'destructive' : 
+                                       discrepancy.severity === 'high' ? 'secondary' : 'outline'}
+                              className="text-xs"
+                            >
+                              {discrepancy.severity.toUpperCase()}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            {discrepancy.description}
+                          </p>
+                          <div className="grid grid-cols-2 gap-2 text-xs">
+                            <div>
+                              <span className="font-medium">Document: </span>
+                              <span className="text-muted-foreground">{discrepancy.documentValue}</span>
+                            </div>
+                            <div>
+                              <span className="font-medium">Public Data: </span>
+                              <span className="text-muted-foreground">{discrepancy.publicValue}</span>
+                            </div>
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-2">
+                            <span className="font-medium">Recommendation: </span>
+                            {discrepancy.recommendation}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Confidence Assessment */}
+                  <div className="p-3 bg-muted/50 rounded-lg">
+                    <h4 className="font-medium text-sm mb-2">Confidence Assessment</h4>
+                    <div className="grid grid-cols-3 gap-4 text-xs">
+                      <div>
+                        <span className="font-medium">Document Reliability</span>
+                        <div className="mt-1">
+                          <Badge 
+                            variant={data.discrepancyAnalysis.confidenceAssessment.documentReliability >= 80 ? 'default' : 
+                                     data.discrepancyAnalysis.confidenceAssessment.documentReliability >= 60 ? 'secondary' : 'destructive'}
+                            className="text-xs"
+                          >
+                            {data.discrepancyAnalysis.confidenceAssessment.documentReliability}%
+                          </Badge>
+                        </div>
                       </div>
-                      <p className="text-sm text-red-700 dark:text-red-300 mb-2">
-                        {flag.description}
-                      </p>
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        <span className="font-medium">Recommendation: </span>
-                        {flag.recommendation}
+                      <div>
+                        <span className="font-medium">Public Data Reliability</span>
+                        <div className="mt-1">
+                          <Badge 
+                            variant={data.discrepancyAnalysis.confidenceAssessment.publicDataReliability >= 80 ? 'default' : 
+                                     data.discrepancyAnalysis.confidenceAssessment.publicDataReliability >= 60 ? 'secondary' : 'destructive'}
+                            className="text-xs"
+                          >
+                            {data.discrepancyAnalysis.confidenceAssessment.publicDataReliability}%
+                          </Badge>
+                        </div>
+                      </div>
+                      <div>
+                        <span className="font-medium">Overall Confidence</span>
+                        <div className="mt-1">
+                          <Badge 
+                            variant={data.discrepancyAnalysis.confidenceAssessment.overallConfidence >= 80 ? 'default' : 
+                                     data.discrepancyAnalysis.confidenceAssessment.overallConfidence >= 60 ? 'secondary' : 'destructive'}
+                            className="text-xs"
+                          >
+                            {data.discrepancyAnalysis.confidenceAssessment.overallConfidence}%
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </CardContent>
+              </details>
+            </Card>
+          )}
+
+          {/* Recommended Questions to Ask Startup */}
+          {publicData?.needToAsk && publicData.needToAsk.length > 0 && (
+            <Card>
+              <details className="group">
+                <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+                  <div className="flex items-center gap-2">
+                    <Search className="h-5 w-5" />
+                    <span className="font-semibold">Questions to Ask the Startup</span>
+                    <Badge variant="outline" className="text-xs ml-2">
+                      {publicData.needToAsk.length} questions
+                    </Badge>
+                  </div>
+                  <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+                </summary>
+                <CardContent className="pt-4">
+                <div className="space-y-3">
+                  {publicData.needToAsk.map((question: any, index: number) => (
+                    <div key={index} className="p-4 border rounded-lg hover:bg-muted/30 transition-colors">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
+                          <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm">
+                            {index + 1}
+                          </span>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium mb-1">
+                            {typeof question === 'string' ? question : question.question || question.text}
+                          </p>
+                          {typeof question === 'object' && question.category && (
+                            <Badge variant="outline" className="text-xs mt-2">
+                              {question.category}
+                            </Badge>
+                          )}
+                          {typeof question === 'object' && question.reason && (
+                            <p className="text-xs text-muted-foreground mt-2">
+                              <span className="font-medium">Why ask: </span>
+                              {question.reason}
+                            </p>
+                          )}
+                          {typeof question === 'object' && question.importance && (
+                            <div className="mt-2">
+                              <Badge 
+                                variant={
+                                  question.importance === 'high' || question.importance === 'critical' ? 'destructive' : 
+                                  question.importance === 'medium' ? 'secondary' : 
+                                  'outline'
+                                }
+                                className="text-xs"
+                              >
+                                {question.importance} priority
+                              </Badge>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))}
                 </div>
-              )}
+                </CardContent>
+              </details>
+            </Card>
+          )}
 
-              {/* Discrepancies */}
-              {data.discrepancyAnalysis.discrepancies.length > 0 && (
-                <div className="space-y-3">
-                  <h4 className="font-medium text-sm flex items-center gap-2">
-                    <Info className="h-4 w-4 text-yellow-500" />
-                    Data Discrepancies
-                  </h4>
-                  {data.discrepancyAnalysis.discrepancies.map((discrepancy, index) => (
-                    <div key={index} className="border rounded-lg p-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-sm">
-                          {discrepancy.category.toUpperCase()}: {discrepancy.field}
-                        </span>
-                        <Badge 
-                          variant={discrepancy.severity === 'critical' ? 'destructive' : 
-                                   discrepancy.severity === 'high' ? 'secondary' : 'outline'}
-                          className="text-xs"
-                        >
-                          {discrepancy.severity.toUpperCase()}
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {discrepancy.description}
-                      </p>
-                      <div className="grid grid-cols-2 gap-2 text-xs">
-                        <div>
-                          <span className="font-medium">Document: </span>
-                          <span className="text-muted-foreground">{discrepancy.documentValue}</span>
-                        </div>
-                        <div>
-                          <span className="font-medium">Public Data: </span>
-                          <span className="text-muted-foreground">{discrepancy.publicValue}</span>
-                        </div>
-                      </div>
-                      <div className="text-xs text-muted-foreground mt-2">
-                        <span className="font-medium">Recommendation: </span>
-                        {discrepancy.recommendation}
-                      </div>
-                    </div>
-                  ))}
+          {/* Ask Questions Section - Placeholder for future Q&A feature */}
+          <Card>
+            <details className="group">
+              <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+                <div className="flex items-center gap-2">
+                  <Search className="h-5 w-5" />
+                  <span className="font-semibold">Ask AI About This Analysis</span>
+                  <Badge variant="secondary" className="text-xs ml-2">Coming Soon</Badge>
                 </div>
-              )}
-
-              {/* Confidence Assessment */}
-              <div className="p-3 bg-muted/50 rounded-lg">
-                <h4 className="font-medium text-sm mb-2">Confidence Assessment</h4>
-                <div className="grid grid-cols-3 gap-4 text-xs">
-                  <div>
-                    <span className="font-medium">Document Reliability</span>
-                    <div className="mt-1">
-                      <Badge 
-                        variant={data.discrepancyAnalysis.confidenceAssessment.documentReliability >= 80 ? 'default' : 
-                                 data.discrepancyAnalysis.confidenceAssessment.documentReliability >= 60 ? 'secondary' : 'destructive'}
-                        className="text-xs"
-                      >
-                        {data.discrepancyAnalysis.confidenceAssessment.documentReliability}%
-                      </Badge>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="font-medium">Public Data Reliability</span>
-                    <div className="mt-1">
-                      <Badge 
-                        variant={data.discrepancyAnalysis.confidenceAssessment.publicDataReliability >= 80 ? 'default' : 
-                                 data.discrepancyAnalysis.confidenceAssessment.publicDataReliability >= 60 ? 'secondary' : 'destructive'}
-                        className="text-xs"
-                      >
-                        {data.discrepancyAnalysis.confidenceAssessment.publicDataReliability}%
-                      </Badge>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="font-medium">Overall Confidence</span>
-                    <div className="mt-1">
-                      <Badge 
-                        variant={data.discrepancyAnalysis.confidenceAssessment.overallConfidence >= 80 ? 'default' : 
-                                 data.discrepancyAnalysis.confidenceAssessment.overallConfidence >= 60 ? 'secondary' : 'destructive'}
-                        className="text-xs"
-                      >
-                        {data.discrepancyAnalysis.confidenceAssessment.overallConfidence}%
-                      </Badge>
-                    </div>
-                  </div>
-                </div>
+                <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+              </summary>
+              <CardContent className="pt-4">
+              <div className="p-4 border-2 border-dashed rounded-lg text-center text-muted-foreground">
+                <Info className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                <p className="text-sm">AI Q&A feature coming soon</p>
+                <p className="text-xs mt-1">You'll be able to ask detailed questions about the analysis and get AI-powered answers</p>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+              </CardContent>
+            </details>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
