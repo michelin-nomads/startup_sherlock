@@ -47,8 +47,8 @@ const RETRY_CONFIG = {
 // Sleep utility for delays
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Retry logic with exponential backoff
-async function retryWithBackoff<T>(
+// Retry logic with exponential backoff - EXPORTED for use in other modules
+export async function retryWithBackoff<T>(
   operation: () => Promise<T>,
   maxRetries: number = RETRY_CONFIG.maxRetries,
   baseDelay: number = RETRY_CONFIG.baseDelay
@@ -91,8 +91,8 @@ async function retryWithBackoff<T>(
   throw lastError!;
 }
 
-// Try multiple Gemini models in order of preference (Pro, then Flash)
-async function tryModelsInOrder(operation: (model: string) => Promise<any>): Promise<any> {
+// Try multiple Gemini models in order of preference (Pro, then Flash) - EXPORTED
+export async function tryModelsInOrder(operation: (model: string) => Promise<any>): Promise<any> {
   const geminiModels = ['gemini-2.5-pro', 'gemini-2.5-flash'];
   let lastError: Error;
   
