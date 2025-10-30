@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { 
   TrendingUp, DollarSign, Users, AlertTriangle, Globe, 
   CheckCircle2, XCircle, Building2, Target, Briefcase, Search, Database, ExternalLink, FileText, Clock, RefreshCcw, ChevronDown, ChevronUp,
-  BarChart3, Activity, Zap, Calendar, Newspaper, LineChart as LineChartIcon, PieChart as PieChartIcon, Star, Info 
+  BarChart3, Activity, Zap, Calendar, Newspaper, LineChart as LineChartIcon, PieChart as PieChartIcon, Star, Info, AlertCircle 
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
@@ -261,17 +261,18 @@ export function PublicDataSection({
           </Card>
 
       {/* Corporate Structure */}
-      {corporateStructure && (corporateStructure.mergers?.length > 0 || corporateStructure.acquisitions?.length > 0 || corporateStructure.parent_company || (recentDevelopments && !Array.isArray(recentDevelopments) && recentDevelopments.partnerships?.length > 0)) && (
-        <Card>
-          <details className="group">
-            <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-              <div className="flex items-center gap-2">
-                <Briefcase className="h-5 w-5" />
-                <span className="font-semibold">Corporate Structure</span>
-              </div>
-              <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-            </summary>
-            <CardContent className="space-y-4 pt-4">
+      <Card>
+        <details className="group">
+          <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+            <div className="flex items-center gap-2">
+              <Briefcase className="h-5 w-5" />
+              <span className="font-semibold">Corporate Structure</span>
+            </div>
+            <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+          </summary>
+          <CardContent className="space-y-4 pt-4">
+            {corporateStructure && (corporateStructure.mergers?.length > 0 || corporateStructure.acquisitions?.length > 0 || corporateStructure.parent_company || (recentDevelopments && !Array.isArray(recentDevelopments) && recentDevelopments.partnerships?.length > 0)) ? (
+              <>
               {corporateStructure.parent_company && (
                 <div className="p-3 border rounded-lg bg-muted/30">
                   <p className="text-xs text-muted-foreground font-medium mb-1">Parent Company</p>
@@ -366,10 +367,17 @@ export function PublicDataSection({
                   </div>
                 </>
               )}
-            </CardContent>
-          </details>
-        </Card>
-      )}
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <Briefcase className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                <p className="text-sm text-muted-foreground">No corporate structure data available</p>
+                <p className="text-xs text-muted-foreground mt-1">Information about mergers, acquisitions, and corporate relationships not available</p>
+              </div>
+            )}
+          </CardContent>
+        </details>
+      </Card>
 
       {/* Team & Leadership */}
       <Card>
@@ -520,17 +528,18 @@ export function PublicDataSection({
       </Card>
 
       {/* Funding History */}
-      {fundingHistory && fundingHistory.rounds && fundingHistory.rounds.length > 0 && (
-          <Card>
-          <details className="group">
-            <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-              <div className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5" />
-                <span className="font-semibold">Funding History</span>
-              </div>
-              <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-            </summary>
-            <CardContent className="space-y-4 pt-4">
+      <Card>
+        <details className="group">
+          <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5" />
+              <span className="font-semibold">Funding History</span>
+            </div>
+            <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+          </summary>
+          <CardContent className="space-y-4 pt-4">
+            {fundingHistory && fundingHistory.rounds && fundingHistory.rounds.length > 0 ? (
+              <>
               {fundingHistory.total_funding_usd && (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   <div className="p-3 border rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
@@ -661,23 +670,31 @@ export function PublicDataSection({
                   </div>
                 </>
               )}
-            </CardContent>
-          </details>
-        </Card>
-      )}
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <DollarSign className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                <p className="text-sm text-muted-foreground">No funding data available</p>
+                <p className="text-xs text-muted-foreground mt-1">This startup has not reported any funding rounds yet</p>
+              </div>
+            )}
+          </CardContent>
+        </details>
+      </Card>
 
       {/* Financial Health & Revenue */}
-      {financialHealth && (financialHealth.annual_revenue || financialHealth.revenue_history) && (
-        <Card>
-          <details className="group">
-            <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-              <div className="flex items-center gap-2">
-                <DollarSign className="h-5 w-5" />
-                <span className="font-semibold">Financial Health & Revenue</span>
-              </div>
-              <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-            </summary>
-            <CardContent className="space-y-4 pt-4">
+      <Card>
+        <details className="group">
+          <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+            <div className="flex items-center gap-2">
+              <DollarSign className="h-5 w-5" />
+              <span className="font-semibold">Financial Health & Revenue</span>
+            </div>
+            <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+          </summary>
+          <CardContent className="space-y-4 pt-4">
+            {financialHealth && (financialHealth.annual_revenue || financialHealth.revenue_history) ? (
+              <>
               {financialHealth.annual_revenue && financialHealth.annual_revenue.value_usd && (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <div className="p-3 border rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
@@ -806,13 +823,20 @@ export function PublicDataSection({
                   </div>
                 </>
               )}
-            </CardContent>
-          </details>
-        </Card>
-      )}
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <BarChart3 className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                <p className="text-sm text-muted-foreground">No financial data available</p>
+                <p className="text-xs text-muted-foreground mt-1">Financial information has not been reported for this startup</p>
+              </div>
+            )}
+          </CardContent>
+        </details>
+      </Card>
 
       {/* Growth Trajectory */}
-      {growthTrajectory && (growthTrajectory.chart_series || growthTrajectory.historical_growth || growthTrajectory.projected_growth || growthTrajectory.key_milestones) && (
+      {growthTrajectory && (growthTrajectory.historical_growth || growthTrajectory.projected_growth || growthTrajectory.key_milestones) && (
         <Card>
           <details className="group">
             <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
@@ -1035,26 +1059,27 @@ export function PublicDataSection({
                         ))}
                       </div>
                     </div>
-                  </div>
-                </>
-              )}
+                </div>
+              </>
+            )}
             </CardContent>
           </details>
         </Card>
       )}
-
+      
       {/* Market Position */}
-      {marketPosition && (marketPosition.TAM_usd || marketPosition.market_share_pct || marketPosition.market_ranking) && (
-        <Card>
-          <details className="group">
-            <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-              <div className="flex items-center gap-2">
-                <Globe className="h-5 w-5" />
-                <span className="font-semibold">Market Position</span>
-              </div>
-              <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-            </summary>
-            <CardContent className="space-y-4 pt-4">
+      <Card>
+        <details className="group">
+          <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+            <div className="flex items-center gap-2">
+              <Globe className="h-5 w-5" />
+              <span className="font-semibold">Market Position</span>
+            </div>
+            <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+          </summary>
+          <CardContent className="space-y-4 pt-4">
+            {marketPosition && (marketPosition.TAM_usd || marketPosition.market_share_pct || marketPosition.market_ranking) ? (
+              <>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {marketPosition.TAM_usd?.value !== null && (
                   <div className="p-3 border rounded-lg bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20">
@@ -1121,23 +1146,31 @@ export function PublicDataSection({
                   </div>
                 </>
               )}
-            </CardContent>
-          </details>
-        </Card>
-      )}
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <Globe className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                <p className="text-sm text-muted-foreground">No market position data available</p>
+                <p className="text-xs text-muted-foreground mt-1">Market analysis information has not been collected yet</p>
+              </div>
+            )}
+          </CardContent>
+        </details>
+      </Card>
 
       {/* Competitor Analysis */}
-      {competitorAnalysis && competitorAnalysis.top_competitors && competitorAnalysis.top_competitors.length > 0 && (
-        <Card>
-          <details className="group">
-            <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-              <div className="flex items-center gap-2">
-                <PieChartIcon className="h-5 w-5" />
-                <span className="font-semibold">Competitive Analysis</span>
-              </div>
-              <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-            </summary>
-            <CardContent className="space-y-4 pt-4">
+      <Card>
+        <details className="group">
+          <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+            <div className="flex items-center gap-2">
+              <PieChartIcon className="h-5 w-5" />
+              <span className="font-semibold">Competitive Analysis</span>
+            </div>
+            <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+          </summary>
+          <CardContent className="space-y-4 pt-4">
+            {competitorAnalysis && competitorAnalysis.top_competitors && competitorAnalysis.top_competitors.length > 0 ? (
+              <>
               <div>
                 <p className="text-sm font-semibold mb-3">Top Competitors</p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -1195,10 +1228,17 @@ export function PublicDataSection({
                   </div>
                 </>
               )}
-            </CardContent>
-          </details>
-        </Card>
-      )}
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <PieChartIcon className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                <p className="text-sm text-muted-foreground">No competitor analysis available</p>
+                <p className="text-xs text-muted-foreground mt-1">Competitive landscape data has not been analyzed yet</p>
+              </div>
+            )}
+          </CardContent>
+        </details>
+      </Card>
 
       {/* Product Launches - Separate Section */}
       {recentDevelopments && !Array.isArray(recentDevelopments) && recentDevelopments.product_launches && recentDevelopments.product_launches.length > 0 && (

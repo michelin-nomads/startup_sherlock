@@ -4,12 +4,11 @@ import multer from "multer";
 import { z } from "zod";
 import { storage } from "./storage";
 import { DocumentProcessor } from "./documentProcessor";
-import { analyzeStartupDocuments, extractTextFromDocument, generateIndustryBenchmarks, generateBenchmarkMetrics, generateCustomIndustryBenchmarks, generateMarketRecommendation } from "./gemini";
+import { analyzeStartupDocuments, generateIndustryBenchmarks, generateBenchmarkMetrics, generateCustomIndustryBenchmarks, generateMarketRecommendation } from "./gemini";
 import { enhancedAnalysisService } from "./enhancedAnalysis";
-import { enhancedReasoningService } from "./deepResearch"; // NEW: Deep research capabilities
 import { registerHybridResearchRoutes } from "./hybridResearchRoutes"; // NEW: Hybrid research routes
 import { startupDueDiligenceService } from "./startupDueDiligence"; // NEW: Public source due diligence
-import { insertStartupSchema, insertDocumentSchema } from "@shared/schema";
+import { insertStartupSchema } from "@shared/schema";
 
 // Configure multer for file uploads
 const upload = multer({
@@ -228,44 +227,10 @@ app.get("/api/health", (req: Request, res: Response) => {
 
       let analysisResult: any;
 
-      // NEW: Use deep analysis if requested
-      if (useDeepAnalysis) {
-        console.log('🧠 Using enhanced deep reasoning analysis...');
-        analysisResult = await enhancedReasoningService.analyzeWithDeepThinking(
-          documentData,
-          'comprehensive'
-        );
-        
-        // Transform deep analysis to match existing format
-        analysisResult = {
-          overallScore: analysisResult.overallScore || 0,
-          riskLevel: analysisResult.confidenceLevel === 'high' ? 'Low' : 
-                     analysisResult.confidenceLevel === 'low' ? 'High' : 'Medium',
-          recommendation: {
-            decision: analysisResult.investmentThesis?.recommendation?.decision || 'hold',
-            reasoning: analysisResult.investmentThesis?.recommendation?.reasoning || '',
-            targetInvestment: 0,
-            expectedReturn: 0
-          },
-          metrics: analysisResult.riskAdjustedScores ? {
-            marketSize: analysisResult.riskAdjustedScores.market?.baseScore || 0,
-            traction: analysisResult.riskAdjustedScores.traction?.baseScore || 0,
-            team: analysisResult.riskAdjustedScores.team?.baseScore || 0,
-            product: analysisResult.riskAdjustedScores.product?.baseScore || 0,
-            financials: analysisResult.riskAdjustedScores.financials?.baseScore || 0,
-            competition: 0
-          } : { marketSize: 0, traction: 0, team: 0, product: 0, financials: 0, competition: 0 },
-          keyInsights: analysisResult.deepInsights?.map((i: any) => i.insight) || [],
-          riskFlags: [],
-          deepAnalysis: analysisResult, // Store full deep analysis
-          analysisType: 'deep_reasoning'
-        };
-      } else {
-        // Standard analysis
-        analysisResult = await analyzeStartupDocuments(documentData);
-        analysisResult.analysisType = 'standard';
-      }
-
+      // Standard analysis
+      analysisResult = await analyzeStartupDocuments(documentData);
+      analysisResult.analysisType = 'standard';
+      
       console.log('✅ Document analysis completed');
 
       // Update startup with analysis results
@@ -344,73 +309,6 @@ app.get("/api/health", (req: Request, res: Response) => {
     }
   });
 
-  // NEW: Deep Analysis Endpoint (automatic deep reasoning)
-  app.post("/api/deep-analyze/:startupId", async (req: Request, res: Response) => {
-    try {
-      const { startupId } = req.params;
-      const { analysisType = 'comprehensive' } = req.body;
-
-      console.log(`🧠 Starting deep analysis for startup: ${startupId}`);
-
-      const startup = await storage.getStartup(startupId);
-      if (!startup) {
-        return res.status(404).json({ error: "Startup not found" });
-      }
-
-      const documents = await storage.getDocumentsByStartup(startupId);
-      if (documents.length === 0) {
-        return res.status(400).json({ error: "No documents found for analysis" });
-      }
-
-      const documentData = documents.map(doc => ({
-        content: doc.extractedText || '',
-        type: doc.fileType,
-        name: doc.fileName
-      }));
-
-      // Perform deep analysis
-      const deepAnalysis = await enhancedReasoningService.analyzeWithDeepThinking(
-        documentData,
-        analysisType as 'comprehensive' | 'financial' | 'market' | 'team'
-      );
-
-      // Extract scores for storage
-      const overallScore = deepAnalysis.overallScore || 0;
-      const riskLevel = deepAnalysis.confidenceLevel === 'high' ? 'Low' : 
-                       deepAnalysis.confidenceLevel === 'low' ? 'High' : 'Medium';
-      const recommendation = deepAnalysis.investmentThesis?.recommendation?.decision || 'hold';
-
-      // Update startup
-      await storage.updateStartup(startupId, {
-        overallScore,
-        riskLevel,
-        recommendation,
-        analysisData: {
-          ...deepAnalysis,
-          analysisType: 'deep_reasoning',
-          analyzedAt: new Date().toISOString()
-        }
-      });
-
-      res.json({
-        success: true,
-        startupId,
-        analysisType,
-        overallScore,
-        riskLevel,
-        recommendation,
-        analysis: deepAnalysis,
-        message: 'Deep analysis completed successfully'
-      });
-
-    } catch (error) {
-      console.error('Deep analysis error:', error);
-      res.status(500).json({ 
-        error: "Failed to perform deep analysis",
-        details: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
 
   // Get startup analysis
   app.get("/api/analysis/:startupId", async (req: Request, res: Response) => {
