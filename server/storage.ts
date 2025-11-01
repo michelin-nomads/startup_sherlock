@@ -1,4 +1,18 @@
-import { type User, type InsertUser, type Startup, type InsertStartup, type Document, type InsertDocument } from "@shared/schema";
+import { 
+  type User, type InsertUser, 
+  type Startup, type InsertStartup, 
+  type Document, type InsertDocument,
+  type Analysis, type InsertAnalysis,
+  type AnalysisMetrics, type InsertAnalysisMetrics,
+  type AnalysisInsights, type InsertAnalysisInsights,
+  type RiskFlag, type InsertRiskFlag,
+  type Benchmark, type InsertBenchmark,
+  type DocumentExtraction, type InsertDocumentExtraction,
+  type PublicDataSource, type InsertPublicDataSource,
+  type NewsArticle, type InsertNewsArticle,
+  type ResearchSession, type InsertResearchSession,
+  type Discrepancy, type InsertDiscrepancy
+} from "@shared/schema";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
@@ -20,6 +34,61 @@ export interface IStorage {
   createDocument(document: InsertDocument): Promise<Document>;
   updateDocument(id: string, updates: Partial<InsertDocument>): Promise<Document | undefined>;
   deleteDocument(id: string): Promise<boolean>;
+
+  // Analysis methods
+  getAnalysis(id: string): Promise<Analysis | undefined>;
+  getAnalysesByStartup(startupId: string): Promise<Analysis[]>;
+  getLatestAnalysis(startupId: string): Promise<Analysis | undefined>;
+  createAnalysis(analysis: InsertAnalysis): Promise<Analysis>;
+  updateAnalysis(id: string, updates: Partial<InsertAnalysis>): Promise<Analysis | undefined>;
+  deleteAnalysis(id: string): Promise<boolean>;
+
+  // Analysis Metrics methods
+  createAnalysisMetrics(metrics: InsertAnalysisMetrics): Promise<AnalysisMetrics>;
+  getAnalysisMetrics(analysisId: string): Promise<AnalysisMetrics | undefined>;
+  
+  // Analysis Insights methods
+  createAnalysisInsight(insight: InsertAnalysisInsights): Promise<AnalysisInsights>;
+  getAnalysisInsights(analysisId: string): Promise<AnalysisInsights[]>;
+  
+  // Risk Flags methods
+  createRiskFlag(riskFlag: InsertRiskFlag): Promise<RiskFlag>;
+  getRiskFlags(analysisId: string): Promise<RiskFlag[]>;
+  getRiskFlagsByStartup(startupId: string): Promise<RiskFlag[]>;
+  updateRiskFlagStatus(id: string, status: string): Promise<RiskFlag | undefined>;
+  
+  // Benchmark methods
+  getBenchmark(id: string): Promise<Benchmark | undefined>;
+  getBenchmarksByIndustry(industry: string, companyStage?: string): Promise<Benchmark[]>;
+  createBenchmark(benchmark: InsertBenchmark): Promise<Benchmark>;
+  updateBenchmark(id: string, updates: Partial<InsertBenchmark>): Promise<Benchmark | undefined>;
+  deleteBenchmark(id: string): Promise<boolean>;
+  getAllBenchmarks(): Promise<Benchmark[]>;
+
+  // Document Extraction methods
+  createDocumentExtraction(extraction: InsertDocumentExtraction): Promise<DocumentExtraction>;
+  getDocumentExtraction(documentId: string): Promise<DocumentExtraction | undefined>;
+  
+  // Public Data Source methods
+  createPublicDataSource(source: InsertPublicDataSource): Promise<PublicDataSource>;
+  getPublicDataSources(startupId: string): Promise<PublicDataSource[]>;
+  updatePublicDataSource(id: string, updates: Partial<InsertPublicDataSource>): Promise<PublicDataSource | undefined>;
+  
+  // News Article methods
+  createNewsArticle(article: InsertNewsArticle): Promise<NewsArticle>;
+  getNewsArticles(startupId: string): Promise<NewsArticle[]>;
+  deleteNewsArticle(id: string): Promise<boolean>;
+  
+  // Research Session methods
+  createResearchSession(session: InsertResearchSession): Promise<ResearchSession>;
+  getResearchSessions(startupId: string): Promise<ResearchSession[]>;
+  getLatestResearchSession(startupId: string): Promise<ResearchSession | undefined>;
+  
+  // Discrepancy methods
+  createDiscrepancy(discrepancy: InsertDiscrepancy): Promise<Discrepancy>;
+  getDiscrepancies(analysisId: string): Promise<Discrepancy[]>;
+  getDiscrepanciesByStartup(startupId: string): Promise<Discrepancy[]>;
+  updateDiscrepancyStatus(id: string, status: string): Promise<Discrepancy | undefined>;
 }
 
 export class MemStorage implements IStorage {

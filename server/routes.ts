@@ -2,11 +2,16 @@ import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import multer from "multer";
 import { z } from "zod";
-import { storage } from "./storage";
+import { initDatabaseStorage } from "./storage.database";
 import { DocumentProcessor } from "./documentProcessor";
+
+// Initialize database connection
+const storage = initDatabaseStorage(
+  process.env.DATABASE_URL || "postgresql://postgres:StartupSherlock2025@localhost:5432/startup_sherlock"
+);
 import { analyzeStartupDocuments, extractTextFromDocument, generateIndustryBenchmarks, generateBenchmarkMetrics, generateCustomIndustryBenchmarks, generateMarketRecommendation } from "./gemini";
 import { enhancedAnalysisService } from "./enhancedAnalysis";
-import { enhancedReasoningService } from "./deepResearch"; // NEW: Deep research capabilities
+// import { enhancedReasoningService } from "./deepResearch"; // NEW: Deep research capabilities - TODO: Implement this module
 import { registerHybridResearchRoutes } from "./hybridResearchRoutes"; // NEW: Hybrid research routes
 import { startupDueDiligenceService } from "./startupDueDiligence"; // NEW: Public source due diligence
 import { insertStartupSchema, insertDocumentSchema } from "@shared/schema";
@@ -164,9 +169,24 @@ app.get("/api/health", (req: Request, res: Response) => {
             fileName: processed.originalName,
             fileType: processed.mimeType,
             fileSize: processed.size,
+            gcsUrl: processed.gcsUrl || null, // Save GCS URL
             extractedText: processed.extractedText,
             analysisResult: null
           });
+
+          // Save document extraction (large text) to separate table
+          if (processed.extractedText) {
+            await storage.createDocumentExtraction({
+              documentId: document.id,
+              extractedText: processed.extractedText,
+              wordCount: processed.extractedText.split(/\s+/).length,
+              pageCount: null, // Could be extracted from PDF metadata
+              extractedData: null,
+              extractionMethod: 'pdf-parse',
+              language: 'en',
+            });
+            console.log(`📝 Saved extraction for document: ${document.id}`);
+          }
 
           processedDocs.push({
             id: document.id,
@@ -230,36 +250,10 @@ app.get("/api/health", (req: Request, res: Response) => {
 
       // NEW: Use deep analysis if requested
       if (useDeepAnalysis) {
-        console.log('🧠 Using enhanced deep reasoning analysis...');
-        analysisResult = await enhancedReasoningService.analyzeWithDeepThinking(
-          documentData,
-          'comprehensive'
-        );
-        
-        // Transform deep analysis to match existing format
-        analysisResult = {
-          overallScore: analysisResult.overallScore || 0,
-          riskLevel: analysisResult.confidenceLevel === 'high' ? 'Low' : 
-                     analysisResult.confidenceLevel === 'low' ? 'High' : 'Medium',
-          recommendation: {
-            decision: analysisResult.investmentThesis?.recommendation?.decision || 'hold',
-            reasoning: analysisResult.investmentThesis?.recommendation?.reasoning || '',
-            targetInvestment: 0,
-            expectedReturn: 0
-          },
-          metrics: analysisResult.riskAdjustedScores ? {
-            marketSize: analysisResult.riskAdjustedScores.market?.baseScore || 0,
-            traction: analysisResult.riskAdjustedScores.traction?.baseScore || 0,
-            team: analysisResult.riskAdjustedScores.team?.baseScore || 0,
-            product: analysisResult.riskAdjustedScores.product?.baseScore || 0,
-            financials: analysisResult.riskAdjustedScores.financials?.baseScore || 0,
-            competition: 0
-          } : { marketSize: 0, traction: 0, team: 0, product: 0, financials: 0, competition: 0 },
-          keyInsights: analysisResult.deepInsights?.map((i: any) => i.insight) || [],
-          riskFlags: [],
-          deepAnalysis: analysisResult, // Store full deep analysis
-          analysisType: 'deep_reasoning'
-        };
+        console.log('⚠️ Deep reasoning analysis not yet implemented - using standard analysis');
+        // TODO: Implement enhancedReasoningService.analyzeWithDeepThinking
+        analysisResult = await analyzeStartupDocuments(documentData);
+        analysisResult.analysisType = 'standard';
       } else {
         // Standard analysis
         analysisResult = await analyzeStartupDocuments(documentData);
@@ -268,7 +262,65 @@ app.get("/api/health", (req: Request, res: Response) => {
 
       console.log('✅ Document analysis completed');
 
-      // Update startup with analysis results
+      // Create analysis record in database
+      const analysis = await storage.createAnalysis({
+        startupId,
+        analysisType: analysisResult.analysisType || 'standard',
+        overallScore: analysisResult.overallScore.toString(),
+        riskLevel: analysisResult.riskLevel,
+        recommendation: analysisResult.recommendation.decision,
+        recommendationReasoning: analysisResult.recommendation.reasoning,
+        targetInvestmentAmount: analysisResult.recommendation.targetInvestment?.toString(),
+        expectedReturnMultiple: analysisResult.recommendation.expectedReturn?.toString(),
+        completedAt: new Date(),
+      });
+
+      console.log('📊 Created analysis record:', analysis.id);
+
+      // Save analysis metrics to database
+      if (analysisResult.metrics) {
+        await storage.createAnalysisMetrics({
+          analysisId: analysis.id,
+          marketSizeScore: analysisResult.metrics.marketSize?.toString(),
+          tractionScore: analysisResult.metrics.traction?.toString(),
+          teamScore: analysisResult.metrics.team?.toString(),
+          productScore: analysisResult.metrics.product?.toString(),
+          financialsScore: analysisResult.metrics.financials?.toString(),
+          competitionScore: analysisResult.metrics.competition?.toString(),
+        });
+        console.log('📈 Saved analysis metrics');
+      }
+
+      // Save key insights to database
+      if (analysisResult.keyInsights && Array.isArray(analysisResult.keyInsights)) {
+        for (const insight of analysisResult.keyInsights) {
+          await storage.createAnalysisInsight({
+            analysisId: analysis.id,
+            description: insight,
+            importance: 'high',
+          });
+        }
+        console.log(`💡 Saved ${analysisResult.keyInsights.length} insights`);
+      }
+
+      // Save risk flags to database
+      if (analysisResult.riskFlags && Array.isArray(analysisResult.riskFlags)) {
+        for (const flag of analysisResult.riskFlags) {
+          await storage.createRiskFlag({
+            analysisId: analysis.id,
+            startupId,
+            severity: flag.type,
+            category: flag.category,
+            title: flag.category,
+            description: flag.description,
+            impact: flag.impact,
+            status: 'open',
+          });
+        }
+        console.log(`🚩 Saved ${analysisResult.riskFlags.length} risk flags`);
+      }
+
+      // Update startup with latest analysis summary
       const updatedStartup = await storage.updateStartup(startupId, {
         overallScore: analysisResult.overallScore,
         riskLevel: analysisResult.riskLevel,
@@ -276,9 +328,12 @@ app.get("/api/health", (req: Request, res: Response) => {
         analysisData: analysisResult
       });
 
+      console.log('✅ All analysis data saved to database');
+
       res.json({
         startup: updatedStartup,
         analysis: analysisResult,
+        analysisId: analysis.id,
         analysisType: analysisResult.analysisType
       });
     } catch (error) {
@@ -308,6 +363,52 @@ app.get("/api/health", (req: Request, res: Response) => {
       const dueDiligenceResult = await startupDueDiligenceService.conductDueDiligence(startup.name);
       
       console.log('✅ Public source research completed');
+
+      // Save public data sources to database (if available in result)
+      const resultWithSources = dueDiligenceResult as any;
+      if (resultWithSources.sources && Array.isArray(resultWithSources.sources)) {
+        for (const source of resultWithSources.sources) {
+          try {
+            await storage.createPublicDataSource({
+              startupId,
+              sourceType: source.type || 'web',
+              sourceName: source.name || source.url,
+              sourceUrl: source.url,
+              dataExtracted: source.data || null,
+              extractionDate: new Date(),
+              isVerified: source.verified ? 1 : 0,
+              confidenceScore: source.confidence?.toString(),
+              status: 'active',
+            });
+          } catch (err) {
+            console.error('Failed to save public data source:', err);
+          }
+        }
+        console.log(`🌐 Saved ${resultWithSources.sources.length} public data sources`);
+      }
+
+      // Save news articles from recent developments (if available)
+      const recentDevAsAny = dueDiligenceResult.recentDevelopments as any;
+      if (recentDevAsAny?.newsArticles && Array.isArray(recentDevAsAny.newsArticles)) {
+        for (const article of recentDevAsAny.newsArticles) {
+          try {
+            await storage.createNewsArticle({
+              startupId,
+              title: article.title || article.headline || 'News Article',
+              url: article.url || article.link || '',
+              source: article.source || 'Unknown',
+              publishedAt: article.date ? new Date(article.date) : null,
+              summary: article.summary || article.description || null,
+              sentiment: article.sentiment || 'neutral',
+              sentimentScore: null,
+              relevanceScore: null,
+            });
+          } catch (err) {
+            console.error('Failed to save news article:', err);
+          }
+        }
+        console.log(`📰 Saved ${recentDevAsAny.newsArticles.length} news articles`);
+      }
 
       // Re-fetch startup to get the latest data (in case document analysis completed in parallel)
       startup = await storage.getStartup(startupId);
@@ -350,7 +451,7 @@ app.get("/api/health", (req: Request, res: Response) => {
       const { startupId } = req.params;
       const { analysisType = 'comprehensive' } = req.body;
 
-      console.log(`🧠 Starting deep analysis for startup: ${startupId}`);
+      console.log(`⚠️ Deep analysis not yet implemented - using standard analysis for startup: ${startupId}`);
 
       const startup = await storage.getStartup(startupId);
       if (!startup) {
@@ -368,17 +469,14 @@ app.get("/api/health", (req: Request, res: Response) => {
         name: doc.fileName
       }));
 
-      // Perform deep analysis
-      const deepAnalysis = await enhancedReasoningService.analyzeWithDeepThinking(
-        documentData,
-        analysisType as 'comprehensive' | 'financial' | 'market' | 'team'
-      );
+      // TODO: Implement deep analysis with enhancedReasoningService
+      // For now, use standard analysis
+      const analysisResult = await analyzeStartupDocuments(documentData);
 
       // Extract scores for storage
-      const overallScore = deepAnalysis.overallScore || 0;
-      const riskLevel = deepAnalysis.confidenceLevel === 'high' ? 'Low' : 
-                       deepAnalysis.confidenceLevel === 'low' ? 'High' : 'Medium';
-      const recommendation = deepAnalysis.investmentThesis?.recommendation?.decision || 'hold';
+      const overallScore = analysisResult.overallScore || 0;
+      const riskLevel = analysisResult.riskLevel || 'Medium';
+      const recommendation = analysisResult.recommendation?.decision || 'hold';
 
       // Update startup
       await storage.updateStartup(startupId, {
@@ -386,8 +484,8 @@ app.get("/api/health", (req: Request, res: Response) => {
         riskLevel,
         recommendation,
         analysisData: {
-          ...deepAnalysis,
-          analysisType: 'deep_reasoning',
+          ...analysisResult,
+          analysisType: 'standard',
           analyzedAt: new Date().toISOString()
         }
       });
@@ -395,18 +493,18 @@ app.get("/api/health", (req: Request, res: Response) => {
       res.json({
         success: true,
         startupId,
-        analysisType,
+        analysisType: 'standard',
         overallScore,
         riskLevel,
         recommendation,
-        analysis: deepAnalysis,
-        message: 'Deep analysis completed successfully'
+        analysis: analysisResult,
+        message: 'Analysis completed successfully (deep analysis not yet implemented)'
       });
 
     } catch (error) {
-      console.error('Deep analysis error:', error);
+      console.error('Analysis error:', error);
       res.status(500).json({ 
-        error: "Failed to perform deep analysis",
+        error: "Failed to perform analysis",
         details: error instanceof Error ? error.message : 'Unknown error'
       });
     }
@@ -488,7 +586,52 @@ app.get("/api/health", (req: Request, res: Response) => {
   // Generate industry benchmarks using Gemini AI with fallback models
   app.get("/api/benchmarks", async (req: Request, res: Response) => {
     try {
+      // Check if benchmarks exist in database
+      const existingBenchmarks = await storage.getAllBenchmarks();
+      
+      // If we have recent benchmarks (less than 7 days old), return them
+      if (existingBenchmarks.length > 0) {
+        const latestBenchmark = existingBenchmarks[0];
+        const isRecent = latestBenchmark.createdAt && 
+          (new Date().getTime() - new Date(latestBenchmark.createdAt).getTime()) < 7 * 24 * 60 * 60 * 1000;
+        
+        if (isRecent) {
+          console.log('📊 Returning cached benchmarks from database');
+          // Format the benchmarks to match the expected structure
+          const formattedBenchmarks = existingBenchmarks.map(b => {
+            const metrics = (b.metrics as any) || {};
+            return {
+              industry: b.industry,
+              avgScore: metrics.avgScore || 0,
+              ...(typeof metrics === 'object' ? metrics : {})
+            };
+          });
+          return res.json(formattedBenchmarks);
+        }
+      }
+
+      // Generate new benchmarks
+      console.log('🔄 Generating fresh benchmarks...');
       const benchmarks = await generateIndustryBenchmarks();
+      
+      // Save each benchmark to database
+      for (const benchmark of benchmarks) {
+        try {
+          await storage.createBenchmark({
+            industry: benchmark.industry,
+            companyStage: null,
+            companySize: null,
+            metrics: benchmark,
+            dataSource: 'Gemini AI',
+            validFrom: new Date(),
+            validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+          });
+        } catch (err) {
+          console.error(`Failed to save benchmark for ${benchmark.industry}:`, err);
+        }
+      }
+      
+      console.log(`✅ Saved ${benchmarks.length} benchmarks to database`);
       res.json(benchmarks);
     } catch (error) {
       console.error('Benchmarks generation error:', error);
@@ -513,6 +656,25 @@ app.get("/api/health", (req: Request, res: Response) => {
       console.log(`🎯 Generating custom benchmarks for industries: ${industriesArray.join(', ')}, size: ${size}`);
       
       const benchmarks = await generateCustomIndustryBenchmarks(industriesArray as string[], size);
+      
+      // Save custom benchmarks to database
+      for (const benchmark of benchmarks) {
+        try {
+          await storage.createBenchmark({
+            industry: benchmark.industry,
+            companyStage: null,
+            companySize: size,
+            metrics: benchmark,
+            dataSource: 'Gemini AI - Custom',
+            validFrom: new Date(),
+            validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+          });
+        } catch (err) {
+          console.error(`Failed to save custom benchmark for ${benchmark.industry}:`, err);
+        }
+      }
+      
+      console.log(`✅ Saved ${benchmarks.length} custom benchmarks to database`);
       res.json(benchmarks);
     } catch (error) {
       console.error('Custom benchmarks generation error:', error);
@@ -650,6 +812,52 @@ app.post("/api/enhanced-analysis", async (req: Request, res: Response) => {
           lastUpdated: new Date().toISOString()
         }
       };
+    }
+
+    // Save discrepancies to database if they exist
+    if (enhancedAnalysis.discrepancyAnalysis && enhancedAnalysis.discrepancyAnalysis.discrepancies) {
+      const discrepancies = enhancedAnalysis.discrepancyAnalysis.discrepancies;
+      const analysisId = enhancedAnalysis.analysisId;
+      
+      // Get or create analysis record
+      let dbAnalysisId = analysisId;
+      try {
+        const dbAnalysis = await storage.createAnalysis({
+          startupId,
+          analysisType: 'enhanced',
+          overallScore: enhancedAnalysis.overallAssessment.overallScore.toString(),
+          riskLevel: enhancedAnalysis.overallAssessment.riskLevel,
+          recommendation: enhancedAnalysis.overallAssessment.recommendation,
+          completedAt: new Date(),
+        });
+        dbAnalysisId = dbAnalysis.id;
+        console.log(`📊 Created enhanced analysis record: ${dbAnalysisId}`);
+      } catch (err) {
+        console.error('Failed to create analysis record:', err);
+      }
+
+      // Save each discrepancy
+      for (const disc of discrepancies) {
+        try {
+          const discAsAny = disc as any;
+          await storage.createDiscrepancy({
+            analysisId: dbAnalysisId,
+            startupId,
+            discrepancyType: discAsAny.category || 'general',
+            severity: discAsAny.severity || 'medium',
+            field: discAsAny.field || null,
+            documentValue: typeof discAsAny.documentValue === 'string' ? discAsAny.documentValue : String(discAsAny.documentValue || ''),
+            publicValue: typeof discAsAny.publicValue === 'string' ? discAsAny.publicValue : String(discAsAny.publicValue || ''),
+            description: discAsAny.description || 'Discrepancy found',
+            impact: discAsAny.potentialImpact || discAsAny.impact || null,
+            sources: discAsAny.sources || null,
+            status: 'open',
+          });
+        } catch (err) {
+          console.error('Failed to save discrepancy:', err);
+        }
+      }
+      console.log(`🚨 Saved ${discrepancies.length} discrepancies to database`);
     }
 
     // Store enhanced analysis result

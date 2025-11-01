@@ -1,6 +1,11 @@
 import type { Express, Request, Response } from "express";
 import { hybridResearchService } from "./hybridResearch";
-import { storage } from "./storage";
+import { initDatabaseStorage } from "./storage.database";
+
+// Initialize database storage
+const storage = initDatabaseStorage(
+  process.env.DATABASE_URL || "postgresql://postgres:StartupSherlock2025@localhost:5432/startup_sherlock"
+);
 
 /**
  * Hybrid Research Routes
@@ -27,7 +32,29 @@ export function registerHybridResearchRoutes(app: Express): void {
       
       console.log(`🔍 Hybrid research request: "${query}"`);
       
+      const startTime = Date.now();
       const result = await hybridResearchService.conductResearch(query);
+      const processingTime = Math.floor((Date.now() - startTime) / 1000);
+
+      // Save research session to database
+      try {
+        await storage.createResearchSession({
+          startupId: null,
+          query,
+          researchType: 'hybrid',
+          groundedAnalysis: result.groundedAnalysis,
+          customSearchResults: result.customSearchResults,
+          synthesizedInsights: result.synthesizedInsights,
+          sources: result.sources,
+          confidenceScore: result.confidence?.toString(),
+          status: 'completed',
+          processingTimeSeconds: processingTime,
+          completedAt: new Date(),
+        });
+        console.log(`💾 Saved research session for query: "${query}"`);
+      } catch (err) {
+        console.error('Failed to save research session:', err);
+      }
       
       res.json({
         success: true,
@@ -103,9 +130,35 @@ export function registerHybridResearchRoutes(app: Express): void {
       
       console.log(`🚀 Researching startup: "${name}"`);
       
+      const startTime = Date.now();
       const result = await hybridResearchService.researchStartup(name, additionalContext);
+      const processingTime = Math.floor((Date.now() - startTime) / 1000);
+
+      // Save research session to database
+      try {
+        const query = additionalContext 
+          ? `${name}: ${additionalContext}`
+          : `Research startup: ${name}`;
+        
+        await storage.createResearchSession({
+          startupId: startupId || null,
+          query,
+          researchType: 'startup-analysis',
+          groundedAnalysis: result.analysis,
+          customSearchResults: null,
+          synthesizedInsights: result.insights,
+          sources: result.sources,
+          confidenceScore: result.confidence?.toString(),
+          status: 'completed',
+          processingTimeSeconds: processingTime,
+          completedAt: new Date(),
+        });
+        console.log(`💾 Saved research session for startup: "${name}"`);
+      } catch (err) {
+        console.error('Failed to save research session:', err);
+      }
       
-      // If startupId provided, save research to database
+      // If startupId provided, also update startup record
       if (startupId) {
         await storage.updateStartup(startupId, {
           analysisData: {
