@@ -27,14 +27,43 @@ export function initializeFirebaseAdmin(): Auth {
       return adminAuth;
     }
 
-    // Try to load service account key
-    const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT_KEY || 
-                                 join(process.cwd(), 'firebase-service-account-key.json');
+    // Try to load service account key from env var (JSON string or base64) or file
+    let serviceAccount = null;
     
-    // Check if service account file exists
-    if (existsSync(serviceAccountPath)) {
-      const serviceAccount = JSON.parse(readFileSync(serviceAccountPath, 'utf8'));
+    // Option 1: Check for JSON string in environment variable
+    if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
+      try {
+        serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+        console.log('✅ Loaded Firebase service account from FIREBASE_SERVICE_ACCOUNT_JSON env var');
+      } catch (error) {
+        console.error('❌ Failed to parse FIREBASE_SERVICE_ACCOUNT_JSON:', error);
+      }
+    }
+    
+    // Option 2: Check for base64 encoded JSON in environment variable
+    if (!serviceAccount && process.env.FIREBASE_SERVICE_ACCOUNT_BASE64) {
+      try {
+        const decoded = Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_BASE64, 'base64').toString('utf8');
+        serviceAccount = JSON.parse(decoded);
+        console.log('✅ Loaded Firebase service account from FIREBASE_SERVICE_ACCOUNT_BASE64 env var');
+      } catch (error) {
+        console.error('❌ Failed to parse FIREBASE_SERVICE_ACCOUNT_BASE64:', error);
+      }
+    }
+    
+    // Option 3: Check if service account file exists (local development)
+    if (!serviceAccount) {
+      const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT_KEY || 
+                                   join(process.cwd(), 'firebase-service-account-key.json');
       
+      if (existsSync(serviceAccountPath)) {
+        serviceAccount = JSON.parse(readFileSync(serviceAccountPath, 'utf8'));
+        console.log('✅ Loaded Firebase service account from file:', serviceAccountPath);
+      }
+    }
+    
+    // If service account was loaded, initialize with it
+    if (serviceAccount) {
       adminApp = initializeApp({
         credential: cert(serviceAccount),
         projectId: process.env.GCS_PROJECT_ID || 'startup-sherlock',
