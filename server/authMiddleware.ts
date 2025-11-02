@@ -160,6 +160,30 @@ async function getOrCreateUser(decodedToken: any) {
   } else {
     // Update last login time
     await storage.updateUserLastLogin(user.id);
+    
+    // Update displayName and photoURL if they're missing or different
+    const needsUpdate = 
+      (!user.displayName && displayName) ||
+      (!user.photoURL && photoURL) ||
+      (user.displayName !== displayName) ||
+      (user.photoURL !== photoURL);
+    
+    if (needsUpdate) {
+      try {
+        await storage.updateUserProfile(user.id, {
+          displayName: displayName || user.displayName,
+          photoURL: photoURL || user.photoURL,
+        });
+        
+        // Update local user object
+        user.displayName = displayName || user.displayName;
+        user.photoURL = photoURL || user.photoURL;
+        
+        console.log(`✅ Updated user profile: ${email}`);
+      } catch (error) {
+        console.error('Failed to update user profile:', error);
+      }
+    }
   }
 
   return user;
