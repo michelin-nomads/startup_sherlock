@@ -293,13 +293,6 @@ export interface StartupMetrics {
   competition: number;
 }
 
-export interface RiskFlag {
-  type: 'high' | 'medium' | 'low';
-  category: string;
-  description: string;
-  impact: string;
-}
-
 export interface StartupAnalysis {
   startup: Startup;
   metrics: StartupMetrics;

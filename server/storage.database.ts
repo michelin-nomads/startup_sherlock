@@ -47,9 +47,8 @@ import {
   type Discrepancy,
   type InsertDiscrepancy,
 } from '@shared/schema';
-import type { IStorage } from './storage';
 
-export class DatabaseStorage implements IStorage {
+export class DatabaseStorage {
   private db;
   private sql;
   private currentUserId: string | null = null;
