@@ -4,7 +4,7 @@ import multer from "multer";
 import { z } from "zod";
 import { storage } from "./storage";
 import { DocumentProcessor } from "./documentProcessor";
-import { analyzeStartupDocuments, generateIndustryBenchmarks, generateBenchmarkMetrics, generateCustomIndustryBenchmarks, generateMarketRecommendation, generateChatResponse } from "./gemini";
+import { analyzeStartupDocuments, generateIndustryBenchmarks, generateBenchmarkMetrics, generateCustomIndustryBenchmarks, generateChatResponse } from "./gemini";
 import { enhancedAnalysisService } from "./enhancedAnalysis";
 import { registerHybridResearchRoutes } from "./hybridResearchRoutes"; // NEW: Hybrid research routes
 import { startupDueDiligenceService } from "./startupDueDiligence"; // NEW: Public source due diligence
@@ -52,7 +52,7 @@ let marketTrendsCache: {
   timestamp: number;
 } | null = null;
 
-const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+const CACHE_DURATION = 3 * 60 * 60 * 1000; // 3 hours in milliseconds (market trends change slowly)
 
 export async function registerRoutes(app: Express): Promise<Server> {
 app.get("/api/health", (req: Request, res: Response) => {
@@ -492,11 +492,31 @@ app.get("/api/market-trends", async (req: Request, res: Response) => {
       generateBenchmarkMetrics()
     ]);
 
-    // Generate dynamic recommendation using Gemini
-    const recommendation = await generateMarketRecommendation(benchmarks, metrics);
-
     // Calculate average market trends from benchmarks
     const avgScore = benchmarks.reduce((sum, b) => sum + b.avgScore, 0) / benchmarks.length;
+    
+    // Calculate recommendation directly from data (no AI call needed - saves 3-5 seconds)
+    const avgGrowth = benchmarks.reduce((sum, b) => {
+      const growthStr = b.growth.replace('%', '').replace('+', '').trim();
+      return sum + (parseFloat(growthStr) || 0);
+    }, 0) / benchmarks.length;
+    
+    // Base investment scales with industry performance (₹5Cr to ₹50Cr range)
+    const baseInvestment = Math.max(50000000, Math.min(500000000, 
+      50000000 + (avgScore - 50) * 1000000 + (avgGrowth * 2000000)
+    ));
+    
+    // Calculate expected return based on score and growth (2x to 6x range)
+    const scoreMultiplier = 0.5 + (avgScore / 100);
+    const growthMultiplier = Math.min(1.5, avgGrowth / 20);
+    const expectedReturn = Math.max(2, Math.min(6, 
+      2 + (scoreMultiplier * 2) + (growthMultiplier * 1)
+    ));
+    
+    const recommendation = {
+      targetInvestment: Math.round(baseInvestment),
+      expectedReturn: Math.round(expectedReturn * 10) / 10 // Round to 1 decimal
+    };
     
     // Create market trend data structure
     const marketTrends = {
