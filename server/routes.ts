@@ -97,6 +97,7 @@ app.get("/api/health", (req: Request, res: Response) => {
       const validatedData = insertStartupSchema.parse(req.body);
       // SECURITY: Always link to authenticated user, ignore any userId in request
       validatedData.userId = req.user!.id;
+      validatedData.userEmail = req.user!.email; // For easy DB identification
       const startup = await storage.createStartup(validatedData);
       res.status(201).json(startup);
     } catch (error) {
@@ -211,6 +212,7 @@ app.get("/api/health", (req: Request, res: Response) => {
           recommendation: null,
           analysisData: null,
           userId: req.user!.id, // Always link to authenticated user
+          userEmail: req.user!.email, // For easy DB identification
         });
         startupId = newStartup.id;
       }
