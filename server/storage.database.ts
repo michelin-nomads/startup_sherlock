@@ -67,7 +67,45 @@ export class DatabaseStorage {
       throw new Error('Database connection string is required');
     }
     
-    // Initialize database connection with the provided connection string
+    // Parse connection string for Cloud SQL Unix socket format
+    // Format: postgresql://user:pass@/dbname?host=/cloudsql/project:region:instance
+    if (connectionString.includes('?host=/cloudsql/')) {
+      const [baseUrl, queryString] = connectionString.split('?');
+      const hostMatch = queryString.match(/host=([^&]+)/);
+      
+      if (hostMatch) {
+        const socketPath = hostMatch[1];
+        const urlMatch = baseUrl.match(/postgresql:\/\/([^:]+):([^@]+)@\/(.+)/);
+        
+        if (urlMatch) {
+          const [, username, password, database] = urlMatch;
+          
+          console.log('🔌 Connecting to Cloud SQL via Unix socket:', socketPath);
+          
+          this.sql = postgres({
+            host: socketPath,
+            database,
+            username,
+            password,
+            max: 20,
+            idle_timeout: 30,
+            connect_timeout: 10,
+          });
+          
+          this.db = drizzle(this.sql);
+          
+          // Set timezone to IST (Indian Standard Time)
+          this.sql`SET timezone = 'Asia/Kolkata'`.catch((err) => {
+            console.warn('⚠️  Could not set timezone to IST:', err);
+          });
+          
+          console.log('✅ Database storage initialized with IST timezone');
+          return;
+        }
+      }
+    }
+    
+    // Fallback to standard connection string parsing
     this.sql = postgres(connectionString, {
       max: 20,
       idle_timeout: 30,
