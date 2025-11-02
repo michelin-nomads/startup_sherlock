@@ -28,9 +28,15 @@ declare global {
  */
 export async function authenticate(req: Request, res: Response, next: NextFunction) {
   try {
+    console.log('🔒 Auth Middleware - URL:', req.method, req.path);
+    console.log('📋 Headers:', req.headers);
+    
     // Extract token from Authorization header
     const authHeader = req.headers.authorization;
+    console.log('🔑 Authorization header:', authHeader ? 'Present' : 'MISSING');
+    
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.error('❌ No valid authorization header');
       return res.status(401).json({ 
         error: 'Unauthorized',
         message: 'No authentication token provided' 
