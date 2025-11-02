@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Icons } from '@/components/ui/icons';
 import { CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
-import { authenticatedFetch } from '@/lib/api';
+import { authenticatedFetchJSON } from '@/lib/api';
 import { getApiUrl } from '@/lib/config';
 
 export default function SignUpPage() {
@@ -159,19 +159,14 @@ export default function SignUpPage() {
       
       // Update profile in database via API (more reliable than token)
       try {
-        const response = await authenticatedFetch(getApiUrl('/api/user/profile'), {
+        await authenticatedFetchJSON(getApiUrl('/api/user/profile'), {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ displayName }),
         });
-        
-        if (!response.ok) {
-          console.error('Failed to update profile in DB');
-        } else {
-          console.log('✅ Profile updated in database via API');
-        }
+        console.log('✅ Profile updated in database via API');
       } catch (apiError) {
         console.error('Error updating profile via API:', apiError);
         // Don't block navigation even if API fails

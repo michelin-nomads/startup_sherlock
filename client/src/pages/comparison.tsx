@@ -9,7 +9,7 @@ import { ArrowLeft, TrendingUp, TrendingDown, BarChart3, Target, Users, DollarSi
 import AnalysisComparison from "@/components/analysis-comparison"
 import { useParams } from "react-router-dom"
 import { getApiUrl } from "@/lib/config"
-import { authenticatedFetch } from "@/lib/api"
+import { authenticatedFetchJSON } from "@/lib/api"
 
 interface AnalysisData {
     startup: {
