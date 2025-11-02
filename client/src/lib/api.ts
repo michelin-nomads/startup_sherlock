@@ -1,6 +1,22 @@
 import { getCurrentUserToken } from './firebase';
 
 /**
+ * Extract user-friendly error message from API response
+ * @param response - The fetch response
+ * @returns Promise<string> - User-friendly error message
+ */
+async function extractErrorMessage(response: Response): Promise<string> {
+  try {
+    const errorData = await response.json();
+    // Try to extract message from various common error formats
+    return errorData.message || errorData.error || errorData.details || 'An error occurred';
+  } catch (parseError) {
+    // If JSON parsing fails, use status text
+    return response.statusText || `Error ${response.status}`;
+  }
+}
+
+/**
  * Authenticated fetch wrapper that automatically adds JWT token
  */
 export async function authenticatedFetch(
@@ -37,5 +53,26 @@ export async function authenticatedFetch(
     ...options,
     headers,
   });
+}
+
+/**
+ * Authenticated fetch with automatic JSON error parsing
+ * Throws user-friendly error messages instead of raw responses
+ * @param url - The URL to fetch
+ * @param options - Fetch options
+ * @returns Promise<any> - Parsed JSON response
+ */
+export async function authenticatedFetchJSON(
+  url: string,
+  options: RequestInit = {}
+): Promise<any> {
+  const response = await authenticatedFetch(url, options);
+  
+  if (!response.ok) {
+    const errorMessage = await extractErrorMessage(response);
+    throw new Error(errorMessage);
+  }
+  
+  return response.json();
 }
 
