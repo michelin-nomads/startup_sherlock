@@ -117,6 +117,27 @@ app.get("/api/health", (req: Request, res: Response) => {
   app.post("/api/startups", authenticate, async (req: Request, res: Response) => {
     try {
       const validatedData = insertStartupSchema.parse(req.body);
+      
+      // Trim startup name to avoid duplicates with whitespace
+      if (validatedData.name) {
+        validatedData.name = validatedData.name.trim();
+      }
+      
+      // UNIQUENESS CHECK: Ensure startup name is unique for this user (case-insensitive)
+      if (validatedData.name) {
+        const userStartups = await storage.getStartupsByUser(req.user!.id);
+        const nameExists = userStartups.some(
+          s => s.name?.toLowerCase().trim() === validatedData.name!.toLowerCase().trim()
+        );
+        
+        if (nameExists) {
+          return res.status(400).json({ 
+            error: "Duplicate startup name", 
+            message: `You already have a startup named "${validatedData.name}". Please use a different name.` 
+          });
+        }
+      }
+      
       // SECURITY: Always link to authenticated user, ignore any userId in request
       validatedData.userId = req.user!.id;
       const startup = await storage.createStartup(validatedData);
@@ -143,6 +164,27 @@ app.get("/api/health", (req: Request, res: Response) => {
       }
       
       const updates = insertStartupSchema.partial().parse(req.body);
+      
+      // Trim startup name if being updated
+      if (updates.name) {
+        updates.name = updates.name.trim();
+        
+        // UNIQUENESS CHECK: If name is changing, ensure it's unique for this user (case-insensitive)
+        if (updates.name.toLowerCase().trim() !== existing.name?.toLowerCase().trim()) {
+          const userStartups = await storage.getStartupsByUser(req.user!.id);
+          const nameExists = userStartups.some(
+            s => s.id !== req.params.id && s.name?.toLowerCase().trim() === updates.name!.toLowerCase().trim()
+          );
+          
+          if (nameExists) {
+            return res.status(400).json({ 
+              error: "Duplicate startup name", 
+              message: `You already have a startup named "${updates.name}". Please use a different name.` 
+            });
+          }
+        }
+      }
+      
       // SECURITY: Prevent userId modification
       delete (updates as any).userId;
       
@@ -205,12 +247,13 @@ app.get("/api/health", (req: Request, res: Response) => {
       } else {
         // Create startup if not provided
         // SECURITY: Always link to authenticated user
-        const tempName = startupName || `Startup_${Date.now()}`;
+        // Trim whitespace to avoid duplicates
+        const tempName = (startupName || `Startup_${Date.now()}`).trim();
         
-        // UNIQUENESS CHECK: Ensure startup name is unique for this user
+        // UNIQUENESS CHECK: Ensure startup name is unique for this user (case-insensitive, trimmed)
         const userStartups = await storage.getStartupsByUser(req.user!.id);
         const nameExists = userStartups.some(
-          s => s.name.toLowerCase() === tempName.toLowerCase()
+          s => s.name?.toLowerCase().trim() === tempName.toLowerCase().trim()
         );
         
         if (nameExists) {
