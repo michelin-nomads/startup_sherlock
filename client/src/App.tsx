@@ -9,6 +9,8 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { LoadingPage } from "@/components/loading-page";
 import { motion, AnimatePresence } from "framer-motion";
 import { exchangeRateManager } from "@/lib/exchangeRate";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 // Pages
 import DashboardPage from "@/pages/dashboard";
@@ -53,6 +55,9 @@ function AppHeader() {
             </div>
           </div>
         )}
+      </div>
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
       </div>
     </header>
   );
@@ -127,16 +132,18 @@ function App() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Router>
-          <SidebarProvider style={style as React.CSSProperties}>
-            <AppContent />
-          </SidebarProvider>
-        </Router>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ThemeProvider defaultTheme="dark" storageKey="startup-sherlock-theme">
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Router>
+            <SidebarProvider style={style as React.CSSProperties}>
+              <AppContent />
+            </SidebarProvider>
+          </Router>
+          <Toaster />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 
