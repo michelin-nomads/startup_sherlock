@@ -7,12 +7,12 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
 /**
  * Hybrid Research Service
- * 
+ *
  * Combines multiple FREE Google services for comprehensive research:
  * 1. Gemini with Web Grounding (FREE - cites sources)
  * 2. Google Custom Search API (100 queries/day FREE)
  * 3. Enhanced reasoning analysis
- * 
+ *
  * NO ALLOWLIST REQUIRED - All services are publicly available
  */
 
@@ -68,52 +68,67 @@ export interface SynthesizedInsights {
   opportunities: string[];
   threats: string[];
   recommendation: string;
-  confidenceLevel: 'high' | 'medium' | 'low';
+  confidenceLevel: "high" | "medium" | "low";
 }
 
 export interface Source {
   title: string;
   url: string;
-  type: 'grounding' | 'custom_search' | 'document';
-  relevance: 'high' | 'medium' | 'low';
+  type: "grounding" | "custom_search" | "document";
+  relevance: "high" | "medium" | "low";
 }
 
 export class HybridResearchService {
-  
   /**
    * Main research method - combines all FREE services
    * @param query - The research query
    * @param customSynthesisPrompt - Optional custom prompt for synthesis (for structured schemas)
    */
-  async conductResearch(query: string, customSynthesisPrompt?: string): Promise<HybridResearchResult> {
+  async conductResearch(
+    query: string,
+    customSynthesisPrompt?: string
+  ): Promise<HybridResearchResult> {
     try {
       console.log(`🔍 Starting hybrid research for: "${query}"`);
-      
+
       // Run searches in parallel for speed
       const [groundedAnalysis, customSearch] = await Promise.all([
         this.geminiWithGrounding(query),
-        this.customGoogleSearch(query)
+        this.customGoogleSearch(query),
       ]);
-      
+
       // Synthesize all findings with custom prompt if provided
-      console.log(`🧬 Starting synthesis${customSynthesisPrompt ? ' with custom prompt' : ''}...`);
+      console.log(
+        `🧬 Starting synthesis${
+          customSynthesisPrompt ? " with custom prompt" : ""
+        }...`
+      );
       const synthesizedInsights = await this.synthesizeFindings(
         query,
         groundedAnalysis,
         customSearch,
         customSynthesisPrompt
       );
-      
-      console.log('📊 Synthesized insights keys:', Object.keys(synthesizedInsights));
-      console.log('📊 Insights preview:', JSON.stringify(synthesizedInsights).substring(0, 150) + '...');
-      
+
+      console.log(
+        "📊 Synthesized insights keys:",
+        Object.keys(synthesizedInsights)
+      );
+      console.log(
+        "📊 Insights preview:",
+        JSON.stringify(synthesizedInsights).substring(0, 150) + "..."
+      );
+
       // Extract and deduplicate sources
-      console.log('🔗 Extracting and deduplicating sources...');
+      console.log("🔗 Extracting and deduplicating sources...");
       const sources = this.extractSources(groundedAnalysis, customSearch);
-      
+
       // Calculate confidence based on source quality and agreement
-      const confidence = this.calculateConfidence(groundedAnalysis, customSearch);
-      
+      const confidence = this.calculateConfidence(
+        groundedAnalysis,
+        customSearch
+      );
+
       const result: HybridResearchResult = {
         query,
         groundedAnalysis,
@@ -121,42 +136,47 @@ export class HybridResearchService {
         synthesizedInsights,
         sources,
         confidence,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
-      
-      console.log(`✅ Hybrid research completed with ${sources.length} sources`);
+
+      console.log(
+        `✅ Hybrid research completed with ${sources.length} sources`
+      );
       console.log(`✅ Synthesized insights status:`, {
         hasSummary: !!synthesizedInsights.summary,
         keyFindingsCount: synthesizedInsights.keyFindings?.length || 0,
-        hasRecommendation: !!synthesizedInsights.recommendation
+        hasRecommendation: !!synthesizedInsights.recommendation,
       });
-      
+
       return result;
-      
     } catch (error) {
-      console.error('❌ Hybrid research failed:', error);
+      console.error("❌ Hybrid research failed:", error);
       throw error;
     }
   }
-  
+
   /**
    * Gemini with Web Grounding (FREE)
    * Allows Gemini to search the web and cite sources
    */
-  private async geminiWithGrounding(query: string): Promise<GroundedAnalysisResult> {
+  private async geminiWithGrounding(
+    query: string
+  ): Promise<GroundedAnalysisResult> {
     try {
-      console.log('🌐 Searching with Gemini Grounding...');
-      
+      console.log("🌐 Searching with Gemini Grounding...");
+
       const result = await ai.models.generateContent({
         model: "gemini-2.5-flash", // Flash is faster and still FREE
         config: {
-          tools: [{
-            googleSearch: {} // Enable web search grounding
-          }],
+          tools: [
+            {
+              googleSearch: {}, // Enable web search grounding
+            },
+          ],
           temperature: 0.7,
           topP: 0.95,
           topK: 40,
-          maxOutputTokens: 8192
+          maxOutputTokens: 8192,
         },
         contents: `Conduct comprehensive research on: ${query}
         
@@ -170,90 +190,104 @@ Please provide:
 7. Growth trajectory
 8. Risk factors
 
-Be thorough and cite your sources. Include specific facts, numbers, and dates where available.`
+Be thorough and cite your sources. Include specific facts, numbers, and dates where available.`,
       });
-      
+
       // Extract grounding metadata (citations)
-      const groundingMetadata = (result as any).candidates?.[0]?.groundingMetadata || {};
-      
-      console.log(`✅ Grounding completed with ${groundingMetadata.groundingChunks?.length || 0} sources`);
-      
+      const groundingMetadata =
+        (result as any).candidates?.[0]?.groundingMetadata || {};
+
+      console.log(
+        `✅ Grounding completed with ${
+          groundingMetadata.groundingChunks?.length || 0
+        } sources`
+      );
+
       return {
-        analysis: result.text || '',
+        analysis: result.text || "",
         groundingMetadata,
-        model: 'gemini-2.5-flash'
+        model: "gemini-2.5-flash",
       };
-      
     } catch (error) {
-      console.error('❌ Gemini grounding failed:', error);
+      console.error("❌ Gemini grounding failed:", error);
       // Fallback to non-grounded search
       return this.fallbackGeminiSearch(query);
     }
   }
-  
+
   /**
    * Fallback if grounding fails - use standard Gemini
    */
-  private async fallbackGeminiSearch(query: string): Promise<GroundedAnalysisResult> {
-    console.log('⚠️ Using fallback (no grounding)...');
-    
+  private async fallbackGeminiSearch(
+    query: string
+  ): Promise<GroundedAnalysisResult> {
+    console.log("⚠️ Using fallback (no grounding)...");
+
     const result = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: `Provide a comprehensive analysis of: ${query}
       
-Based on your training data, provide insights about this company/topic including background, market position, and key considerations.`
+Based on your training data, provide insights about this company/topic including background, market position, and key considerations.`,
     });
-    
+
     return {
-      analysis: result.text || '',
-      model: 'gemini-2.5-flash (no grounding)'
+      analysis: result.text || "",
+      model: "gemini-2.5-flash (no grounding)",
     };
   }
-  
+
   /**
    * Google Custom Search API (100 queries/day FREE)
    */
-  private async customGoogleSearch(query: string): Promise<CustomSearchResult[]> {
+  private async customGoogleSearch(
+    query: string
+  ): Promise<CustomSearchResult[]> {
     try {
       // Check if API keys are configured
-      if (!process.env.GOOGLE_SEARCH_API_KEY || !process.env.GOOGLE_SEARCH_ENGINE_ID) {
-        console.log('⚠️ Custom Search API not configured, skipping...');
+      if (
+        !process.env.GOOGLE_SEARCH_API_KEY ||
+        !process.env.GOOGLE_SEARCH_ENGINE_ID
+      ) {
+        console.log("⚠️ Custom Search API not configured, skipping...");
         return [];
       }
-      
-      console.log('🔎 Searching with Custom Search API...');
-      
-      const response = await axios.get('https://www.googleapis.com/customsearch/v1', {
-        params: {
-          key: process.env.GOOGLE_SEARCH_API_KEY,
-          cx: process.env.GOOGLE_SEARCH_ENGINE_ID,
-          q: query,
-          num: 10 // Get top 10 results
-        },
-        timeout: 10000 // 10 second timeout
-      });
-      
-      const results = response.data.items?.map((item: any) => ({
-        title: item.title,
-        link: item.link,
-        snippet: item.snippet,
-        displayLink: item.displayLink,
-        formattedUrl: item.formattedUrl
-      })) || [];
-      
+
+      console.log("🔎 Searching with Custom Search API...");
+
+      const response = await axios.get(
+        "https://www.googleapis.com/customsearch/v1",
+        {
+          params: {
+            key: process.env.GOOGLE_SEARCH_API_KEY,
+            cx: process.env.GOOGLE_SEARCH_ENGINE_ID,
+            q: query,
+            num: 10, // Get top 10 results
+          },
+          timeout: 10000, // 10 second timeout
+        }
+      );
+
+      const results =
+        response.data.items?.map((item: any) => ({
+          title: item.title,
+          link: item.link,
+          snippet: item.snippet,
+          displayLink: item.displayLink,
+          formattedUrl: item.formattedUrl,
+        })) || [];
+
       console.log(`✅ Custom search found ${results.length} results`);
       return results;
-      
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 429) {
-        console.log('⚠️ Custom Search API quota exceeded (100/day limit)');
+        console.log("⚠️ Custom Search API quota exceeded (100/day limit)");
       } else {
-        console.error('❌ Custom search failed:', error);
+        console.error("❌ Custom search failed:", error);
       }
       return [];
     }
   }
-  
+
   /**
    * Synthesize findings from all sources using Gemini
    * Accepts custom prompt if provided (for due diligence schema)
@@ -265,12 +299,12 @@ Based on your training data, provide insights about this company/topic including
     customPrompt?: string
   ): Promise<SynthesizedInsights> {
     try {
-      console.log('🧠 Synthesizing insights...');
-      
-      const searchContext = customSearch.map(r => 
-        `Title: ${r.title}\nURL: ${r.link}\nSnippet: ${r.snippet}`
-      ).join('\n\n');
-      
+      console.log("🧠 Synthesizing insights...");
+
+      const searchContext = customSearch
+        .map((r) => `Title: ${r.title}\nURL: ${r.link}\nSnippet: ${r.snippet}`)
+        .join("\n\n");
+
       // Build data context
       const dataContext = `
 GROUNDED ANALYSIS:
@@ -281,7 +315,7 @@ ${searchContext}`;
 
       // Use custom prompt if provided, otherwise use default
       let finalPrompt: string;
-      
+
       if (customPrompt) {
         // Custom prompt case: append data context to custom instructions
         finalPrompt = `${customPrompt}
@@ -319,58 +353,76 @@ Return ONLY valid JSON, no markdown or additional text.`;
               responseMimeType: "application/json",
               temperature: 0.1, // Lower temperature for structured data
             },
-            contents: finalPrompt
+            contents: finalPrompt,
           });
-          
-          console.log('📄 Raw synthesis result length:', result.text?.length || 0);
-          
-          if (!result.text || result.text.trim() === '') {
-            console.warn('⚠️ Empty response from AI model, retrying...');
-            throw new Error('Empty synthesis result');
+
+          console.log(
+            "📄 Raw synthesis result length:",
+            result.text?.length || 0
+          );
+
+          if (!result.text || result.text.trim() === "") {
+            console.warn("⚠️ Empty response from AI model, retrying...");
+            throw new Error("Empty synthesis result");
           }
-          
+
           const parsed = JSON.parse(result.text);
-          console.log('✅ Parsed synthesis result keys:', Object.keys(parsed));
+          console.log("✅ Parsed synthesis result keys:", Object.keys(parsed));
           return parsed;
         });
       });
-      
-      console.log('✅ Synthesis completed successfully');
-      console.log('📊 Synthesis data preview:', JSON.stringify(insights).substring(0, 200));
-      
+
+      console.log("✅ Synthesis completed successfully");
+      console.log(
+        "📊 Synthesis data preview:",
+        JSON.stringify(insights).substring(0, 200)
+      );
+
       return insights;
-      
     } catch (error) {
-      console.error('❌ Synthesis failed after all retries:', error);
-      console.error('❌ Error details:', error instanceof Error ? error.message : String(error));
-      console.log('⚠️ Using fallback synthesis structure with grounded analysis data');
-      
+      console.error("❌ Synthesis failed after all retries:", error);
+      console.error(
+        "❌ Error details:",
+        error instanceof Error ? error.message : String(error)
+      );
+      console.log(
+        "⚠️ Using fallback synthesis structure with grounded analysis data"
+      );
+
       // Try to extract some insights from the grounded analysis as fallback
-      const analysisText = groundedAnalysis.analysis || '';
-      const sentences = analysisText.split(/[.!?]+/).filter(s => s.trim().length > 20);
-      
+      const analysisText = groundedAnalysis.analysis || "";
+      const sentences = analysisText
+        .split(/[.!?]+/)
+        .filter((s) => s.trim().length > 20);
+
       // Return default structure with whatever data we have
       const fallback = {
-        summary: analysisText.substring(0, 300) + (analysisText.length > 300 ? '...' : ''),
-        keyFindings: sentences.slice(0, 5).map(s => s.trim()).filter(Boolean),
+        summary:
+          analysisText.substring(0, 300) +
+          (analysisText.length > 300 ? "..." : ""),
+        keyFindings: sentences
+          .slice(0, 5)
+          .map((s) => s.trim())
+          .filter(Boolean),
         strengths: [],
         weaknesses: [],
         opportunities: [],
         threats: [],
-        recommendation: 'Analysis completed but synthesis failed. Review grounded analysis for details.',
-        confidenceLevel: 'low' as const,
-        error: 'Synthesis process failed - using fallback structure'
+        recommendation:
+          "Analysis completed but synthesis failed. Review grounded analysis for details.",
+        confidenceLevel: "low" as const,
+        error: "Synthesis process failed - using fallback structure",
       };
-      
-      console.log('📊 Fallback synthesis contains:', {
+
+      console.log("📊 Fallback synthesis contains:", {
         summaryLength: fallback.summary.length,
-        keyFindingsCount: fallback.keyFindings.length
+        keyFindingsCount: fallback.keyFindings.length,
       });
-      
+
       return fallback;
     }
   }
-  
+
   /**
    * Extract and deduplicate sources from all research
    */
@@ -380,37 +432,38 @@ Return ONLY valid JSON, no markdown or additional text.`;
   ): Source[] {
     const sources: Source[] = [];
     const seenUrls = new Set<string>();
-    
+
     // Extract from grounding metadata
-    const groundingChunks = groundedAnalysis.groundingMetadata?.groundingChunks || [];
+    const groundingChunks =
+      groundedAnalysis.groundingMetadata?.groundingChunks || [];
     groundingChunks.forEach((chunk: any) => {
       if (chunk.web?.uri && !seenUrls.has(chunk.web.uri)) {
         sources.push({
-          title: chunk.web.title || 'Untitled',
+          title: chunk.web.title || "Untitled",
           url: chunk.web.uri,
-          type: 'grounding',
-          relevance: 'high'
+          type: "grounding",
+          relevance: "high",
         });
         seenUrls.add(chunk.web.uri);
       }
     });
-    
+
     // Extract from custom search
     customSearch.forEach((result, index) => {
       if (!seenUrls.has(result.link)) {
         sources.push({
           title: result.title,
           url: result.link,
-          type: 'custom_search',
-          relevance: index < 3 ? 'high' : index < 6 ? 'medium' : 'low'
+          type: "custom_search",
+          relevance: index < 3 ? "high" : index < 6 ? "medium" : "low",
         });
         seenUrls.add(result.link);
       }
     });
-    
+
     return sources;
   }
-  
+
   /**
    * Calculate confidence based on source quality and data availability
    */
@@ -419,46 +472,62 @@ Return ONLY valid JSON, no markdown or additional text.`;
     customSearch: CustomSearchResult[]
   ): number {
     let confidence = 0;
-    
+
     // Grounding sources add confidence
-    const groundingSources = groundedAnalysis.groundingMetadata?.groundingChunks?.length || 0;
+    const groundingSources =
+      groundedAnalysis.groundingMetadata?.groundingChunks?.length || 0;
     confidence += Math.min(groundingSources * 10, 50); // Max 50 points
-    
+
     // Custom search results add confidence
     confidence += Math.min(customSearch.length * 3, 30); // Max 30 points
-    
+
     // Analysis quality adds confidence
     const analysisLength = groundedAnalysis.analysis.length;
     if (analysisLength > 2000) confidence += 20;
     else if (analysisLength > 1000) confidence += 10;
-    
+
     return Math.min(confidence, 100);
   }
-  
+
   /**
    * Research specific to startup analysis
    */
-  async researchStartup(startupName: string, additionalContext?: string): Promise<HybridResearchResult> {
-    const query = `${startupName} startup ${additionalContext || ''} funding investors team market competitors financial performance`;
+  async researchStartup(
+    startupName: string,
+    additionalContext?: string
+  ): Promise<HybridResearchResult> {
+    const query = `${startupName} startup ${
+      additionalContext || ""
+    } funding investors team market competitors financial performance`;
     return this.conductResearch(query);
   }
-  
+
   /**
    * Research specific to market analysis
    */
-  async researchMarket(industry: string, marketSegment?: string): Promise<HybridResearchResult> {
-    const query = `${industry} ${marketSegment || ''} market size growth trends competitors TAM SAM SOM analysis`;
+  async researchMarket(
+    industry: string,
+    marketSegment?: string
+  ): Promise<HybridResearchResult> {
+    const query = `${industry} ${
+      marketSegment || ""
+    } market size growth trends competitors TAM SAM SOM analysis`;
     return this.conductResearch(query);
   }
-  
+
   /**
    * Research specific to competitor analysis
    */
-  async researchCompetitor(companyName: string, industry?: string): Promise<HybridResearchResult> {
-    const query = `${companyName} ${industry || ''} company competitive analysis market position strengths weaknesses strategy`;
+  async researchCompetitor(
+    companyName: string,
+    industry?: string
+  ): Promise<HybridResearchResult> {
+    const query = `${companyName} ${
+      industry || ""
+    } company competitive analysis market position strengths weaknesses strategy`;
     return this.conductResearch(query);
   }
-  
+
   /**
    * Quick search - Gemini grounding only (fastest)
    */
@@ -470,4 +539,3 @@ Return ONLY valid JSON, no markdown or additional text.`;
 
 // Export singleton instance
 export const hybridResearchService = new HybridResearchService();
-

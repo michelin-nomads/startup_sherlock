@@ -17,8 +17,6 @@ import RiskPage from "@/pages/risk";
 import BenchmarksPage from "@/pages/benchmarks";
 import NotFound from "@/pages/not-found";
 import ComparisonPage from "@/pages/comparison";
-import ResearchTestPage from "@/pages/research-test"; // NEW: Hybrid Research Test
-import PublicDataAnalysisPage from "@/pages/public-data-analysis"; // NEW: Public Source Due Diligence
 
 // Wrapper components to handle params
 function AnalysisWrapper() {
@@ -99,8 +97,6 @@ function AppContent() {
                 <Route path="/benchmarks" element={<BenchmarksPage />} />
                 <Route path="/benchmarks/comparison/:startupId" element={<ComparisonWrapper />} />
                 <Route path="/risk" element={<RiskPage />} />
-                {/* <Route path="/research-test" element={<ResearchTestPage />} /> */}
-                {/* <Route path="/public-data-analysis/:startupId" element={<PublicDataAnalysisPage />} /> */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
