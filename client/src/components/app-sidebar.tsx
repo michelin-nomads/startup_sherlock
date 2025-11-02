@@ -70,6 +70,8 @@ export function AppSidebar() {
 
   const handleSignOut = async () => {
     try {
+      // Save current page before signing out (so user lands here when they log back in)
+      localStorage.setItem('lastVisitedPage', currentPath)
       await signOut()
       navigate("/signin")
     } catch (error) {

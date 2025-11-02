@@ -184,6 +184,20 @@ app.get("/api/health", (req: Request, res: Response) => {
         // Create startup if not provided
         // SECURITY: Always link to authenticated user
         const tempName = startupName || `Startup_${Date.now()}`;
+        
+        // UNIQUENESS CHECK: Ensure startup name is unique for this user
+        const userStartups = await storage.getStartupsByUser(req.user!.id);
+        const nameExists = userStartups.some(
+          s => s.name.toLowerCase() === tempName.toLowerCase()
+        );
+        
+        if (nameExists) {
+          return res.status(400).json({ 
+            error: "Duplicate startup name", 
+            message: `You already have a startup named "${tempName}". Please use a different name.` 
+          });
+        }
+        
         const newStartup = await storage.createStartup({
           name: tempName,
           description: description || null,
@@ -201,13 +215,21 @@ app.get("/api/health", (req: Request, res: Response) => {
         startupId = newStartup.id;
       }
 
+      // Get startup details for GCS path
+      const startup = await storage.getStartup(startupId);
+      if (!startup) {
+        return res.status(404).json({ error: "Startup not found" });
+      }
+
       // Process uploaded files
       const processedDocs = [];
       for (const file of files) {
         try {
-          // Pass userId and startupId for organized GCS storage
+          // Pass userEmail, startupName, userId, startupId for organized GCS storage
           const processed = await documentProcessor.processUploadedFile(
             file,
+            req.user!.email,
+            startup.name,
             req.user!.id,
             startupId
           );

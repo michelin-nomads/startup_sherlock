@@ -84,6 +84,8 @@ export default function SignUpPage() {
       setLoading(true);
       setError('');
       await signInWithGoogle();
+      // Clear any saved page (new users start fresh on dashboard)
+      localStorage.removeItem('lastVisitedPage');
       navigate('/', { replace: true });
     } catch (err: any) {
       setError(getUserFriendlyError(err));
@@ -149,6 +151,8 @@ export default function SignUpPage() {
       setLoading(true);
       setError('');
       await signUpWithEmail(email, password, displayName);
+      // Clear any saved page (new users start fresh on dashboard)
+      localStorage.removeItem('lastVisitedPage');
       navigate('/', { replace: true });
     } catch (err: any) {
       setError(getUserFriendlyError(err));
