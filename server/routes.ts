@@ -7,9 +7,10 @@ import { DocumentProcessor } from "./documentProcessor";
 import { authenticate, optionalAuthenticate } from "./authMiddleware"; // Authentication middleware
 
 // Initialize database connection
-const storage = initDatabaseStorage(
-  process.env.DATABASE_URL || "postgresql://postgres:StartupSherlock2025@localhost:5432/startup_sherlock"
-);
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL environment variable is required');
+}
+const storage = initDatabaseStorage(process.env.DATABASE_URL);
 import { analyzeStartupDocuments, extractTextFromDocument, generateIndustryBenchmarks, generateBenchmarkMetrics, generateCustomIndustryBenchmarks, generateMarketRecommendation } from "./gemini";
 import { enhancedAnalysisService } from "./enhancedAnalysis";
 // import { enhancedReasoningService } from "./deepResearch"; // NEW: Deep research capabilities - TODO: Implement this module

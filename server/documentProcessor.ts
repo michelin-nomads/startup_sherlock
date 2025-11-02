@@ -24,7 +24,13 @@ export class DocumentProcessor {
 
   constructor() {
     this.uploadDir = path.join(process.cwd(), 'uploads');
-    this.bucketName = process.env.GCS_BUCKET || 'startup-sherlock-documents';
+    
+    // Require GCS_BUCKET env var (no hardcoded fallback)
+    if (!process.env.GCS_BUCKET) {
+      throw new Error('GCS_BUCKET environment variable is required');
+    }
+    this.bucketName = process.env.GCS_BUCKET;
+    
     this.ensureUploadDir();
     this.initializeGCS();
   }
@@ -39,11 +45,16 @@ export class DocumentProcessor {
 
   private initializeGCS() {
     try {
+      // Require GCS_PROJECT_ID env var (no hardcoded fallback)
+      if (!process.env.GCS_PROJECT_ID) {
+        throw new Error('GCS_PROJECT_ID environment variable is required');
+      }
+      
       // Check if credentials exist
       const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
       if (credentialsPath && fs.existsSync(credentialsPath)) {
         this.storage = new Storage({
-          projectId: process.env.GCS_PROJECT_ID || 'startup-sherlock',
+          projectId: process.env.GCS_PROJECT_ID,
           keyFilename: credentialsPath,
         });
         console.log('✅ Google Cloud Storage initialized');

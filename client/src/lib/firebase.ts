@@ -13,16 +13,23 @@ import {
 } from 'firebase/auth';
 
 // Firebase configuration
-// These values should be obtained from Firebase Console:
-// https://console.firebase.google.com/ > Project Settings > General > Your apps
+// These values MUST be set in environment variables
+// Get them from Firebase Console: https://console.firebase.google.com/ > Project Settings > General > Your apps
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyAc8mtEVtika0wYmdRFLin5OCmBosvEl9U",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "startup-sherlock.firebaseapp.com",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "startup-sherlock",
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "startup-sherlock.firebasestorage.app",
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "85308161557",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:85308161557:web:776d7b07924e2fdcc6981c"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
+
+// Validate that all required config values are present
+if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId) {
+  throw new Error(
+    'Firebase configuration is incomplete. Please set all VITE_FIREBASE_* environment variables.'
+  );
+}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

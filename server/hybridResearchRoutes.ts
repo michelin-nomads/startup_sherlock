@@ -3,9 +3,10 @@ import { hybridResearchService } from "./hybridResearch";
 import { initDatabaseStorage } from "./storage.database";
 
 // Initialize database storage
-const storage = initDatabaseStorage(
-  process.env.DATABASE_URL || "postgresql://postgres:StartupSherlock2025@localhost:5432/startup_sherlock"
-);
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL environment variable is required');
+}
+const storage = initDatabaseStorage(process.env.DATABASE_URL);
 
 /**
  * Hybrid Research Routes
