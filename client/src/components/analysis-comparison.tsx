@@ -11,7 +11,8 @@ import {
   ChevronDown,
   BarChart2,
 } from "lucide-react";
-import { formatCurrency } from "@/lib/utils";
+import { authenticatedFetchJSON } from "@/lib/api"
+import { formatCurrency } from "@/lib/utils"
 
 interface AnalysisData {
   startup: {
@@ -65,18 +66,9 @@ export default function AnalysisComparison({ analysisData }: ComparisonProps) {
   } = useQuery<MarketTrends>({
     queryKey: ["market-trends"],
     queryFn: async () => {
-      const response = await fetch(getApiUrl("/api/market-trends"), {
-        method: "GET",
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          `Failed to fetch market trends: ${response.statusText}`
-        );
-      }
-
-      return response.json();
+      return await authenticatedFetchJSON(getApiUrl('/api/market-trends'), {
+        method: 'GET',
+      })
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
   });

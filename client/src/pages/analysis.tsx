@@ -58,6 +58,7 @@ import CompanyDetailsSection from "@/components/company-details-section";
 import { useState, useEffect } from "react";
 import { getApiUrl } from "@/lib/config.ts";
 import { formatCurrency } from "@/lib/utils";
+import { authenticatedFetchJSON } from "@/lib/api";
 
 interface AnalysisData {
   startup: {
@@ -237,14 +238,10 @@ export default function Analysis({ params }: AnalysisProps) {
   const [hasSuccessfulRetry, setHasSuccessfulRetry] = useState(false);
 
   const { data, isLoading, error, refetch } = useQuery<AnalysisData>({
-    queryKey: ["/api/document-analysis", id],
+    queryKey: ['/api/document-analysis', id],
     queryFn: async () => {
-      const response = await fetch(getApiUrl(`/api/document-analysis/${id}`));
-      if (!response.ok) {
-        throw new Error("Failed to fetch analysis data");
-      }
-      const analysisData = await response.json();
-
+      const analysisData = await authenticatedFetchJSON(getApiUrl(`/api/document-analysis/${id}`))
+      
       // Save to local storage for persistence
       if (analysisData && id) {
         localStorage.setItem(`analysis_${id}`, JSON.stringify(analysisData));
@@ -294,39 +291,51 @@ export default function Analysis({ params }: AnalysisProps) {
     }
   }, [data, hasSuccessfulRetry, publicData, publicDataStatus]);
 
+  // Extract public data from analysis data (stored in startup.analysisData)
+  useEffect(() => {
+    // Don't override if we have successfully retried and fetched public data
+    if (hasSuccessfulRetry && publicData && publicDataStatus === 'success') {
+      return;
+    }
+
+    if (data?.startup?.analysisData) {
+      const analysisData = data.startup.analysisData as any;
+      if (analysisData.publicSourceDueDiligence) {
+        // Public data available
+        setPublicData(analysisData.publicSourceDueDiligence);
+        setPublicDataStatus('success');
+      } else if (analysisData.analysisType) {
+        // Analysis is complete but public data is missing - it failed during parallel execution
+        setPublicData(null);
+        setPublicDataStatus('failed');
+      } else {
+        // Still loading (old background mode, shouldn't happen with new parallel execution)
+        setPublicDataStatus('loading');
+      }
+    }
+  }, [data, hasSuccessfulRetry, publicData, publicDataStatus]);
+
   // Function to retry public data analysis
   const handleRefreshPublicData = async () => {
     if (!id) return;
-
+    
     setIsRefreshingPublicData(true);
-    setPublicDataStatus("loading");
+    setPublicDataStatus('loading');
     setHasSuccessfulRetry(false); // Reset the flag
-
+    
     try {
-      const response = await fetch(
-        getApiUrl(`/api/public-data-analysis/${id}`),
-        {
-          method: "POST",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to refresh public data analysis");
-      }
-
-      const result = await response.json();
-
+      const result = await authenticatedFetchJSON(getApiUrl(`/api/public-data-analysis/${id}`), {
+        method: 'POST',
+      });
+      
       // Update the public data with the new result
-      if (result.publicData) {
+      if (result.publicSourceDueDiligence) {
         // Create a new object reference to ensure React detects the change
-        const newPublicData = {
-          ...result.publicData,
-          _refreshTimestamp: Date.now(),
-        };
+        const newPublicData = { ...result.publicSourceDueDiligence, _refreshTimestamp: Date.now() };
         setPublicData(newPublicData);
-        setPublicDataStatus("success");
+        setPublicDataStatus('success');
         setHasSuccessfulRetry(true); // Mark as successful retry
-
+        
         // Update localStorage with the new data
         if (id) {
           const existingData = localStorage.getItem(`analysis_${id}`);
@@ -335,26 +344,23 @@ export default function Analysis({ params }: AnalysisProps) {
               const parsed = JSON.parse(existingData);
               parsed.startup = parsed.startup || {};
               parsed.startup.analysisData = parsed.startup.analysisData || {};
-              parsed.startup.analysisData.publicSourceDueDiligence =
-                result.publicData;
+              parsed.startup.analysisData.publicSourceDueDiligence = result.publicSourceDueDiligence;
               localStorage.setItem(`analysis_${id}`, JSON.stringify(parsed));
             } catch (e) {
-              console.error("Failed to update localStorage:", e);
+              console.error('Failed to update localStorage:', e);
             }
           }
         }
-
+        
         // Invalidate and refetch the query to ensure consistency
-        queryClient.invalidateQueries({
-          queryKey: ["/api/document-analysis", id],
-        });
+        queryClient.invalidateQueries({ queryKey: ['/api/document-analysis', id] });
       } else {
-        setPublicDataStatus("failed");
+        setPublicDataStatus('failed');
         setHasSuccessfulRetry(false);
       }
     } catch (error) {
-      console.error("Error refreshing public data:", error);
-      setPublicDataStatus("failed");
+      console.error('Error refreshing public data:', error);
+      setPublicDataStatus('failed');
       setHasSuccessfulRetry(false);
     } finally {
       setIsRefreshingPublicData(false);
@@ -367,12 +373,8 @@ export default function Analysis({ params }: AnalysisProps) {
   >({
     queryKey: ["/api/startups"],
     queryFn: async () => {
-      const response = await fetch(getApiUrl("/api/startups"));
-      if (!response.ok) {
-        throw new Error("Failed to fetch startups");
-      }
-      const data = await response.json();
-
+      const data = await authenticatedFetchJSON(getApiUrl('/api/startups'))
+      
       // Save to local storage for persistence
       localStorage.setItem("startups", JSON.stringify(data));
 
@@ -404,15 +406,9 @@ export default function Analysis({ params }: AnalysisProps) {
 
   // Enhanced Analysis Mutation
   const enhancedAnalysisMutation = useMutation({
-    mutationFn: async ({
-      startupId,
-      websites,
-    }: {
-      startupId: string;
-      websites: string[];
-    }) => {
-      const response = await fetch(getApiUrl("/api/enhanced-analysis"), {
-        method: "POST",
+    mutationFn: async ({ startupId, websites }: { startupId: string, websites: string[] }) => {
+      return await authenticatedFetchJSON(getApiUrl('/api/enhanced-analysis'), {
+        method: 'POST',
         headers: {
           "Content-Type": "application/json",
         },
@@ -420,13 +416,7 @@ export default function Analysis({ params }: AnalysisProps) {
           startupId,
           websites: websites.filter((url) => url.trim() !== ""),
         }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to perform enhanced analysis");
-      }
-
-      return response.json();
+      })
     },
     onSuccess: (data) => {
       // Save enhanced analysis results to local storage
@@ -773,14 +763,10 @@ export default function Analysis({ params }: AnalysisProps) {
 
   const getRiskColor = (risk: string) => {
     switch (risk?.toLowerCase()) {
-      case "low":
-        return "text-green-600";
-      case "medium":
-        return "text-yellow-600";
-      case "high":
-        return "text-red-600";
-      default:
-        return "text-gray-600";
+      case 'low': return 'text-green-600'
+      case 'medium': return 'text-yellow-600'
+      case 'high': return 'text-red-600'
+      default: return 'text-gray-600'
     }
   };
 
@@ -808,18 +794,10 @@ export default function Analysis({ params }: AnalysisProps) {
                 <ArrowLeft className="h-4 w-4" />
               </Link>
             </Button>
-            <h1 className="text-3xl font-bold tracking-tight">
-              {startup.name}
-            </h1>
+            <h1 className="text-3xl font-bold tracking-tight">{startup.name}</h1>
             {analysis.recommendation?.decision && (
-              <Badge
-                className={`${getDecisionColor(
-                  analysis.recommendation.decision
-                )} text-white`}
-              >
-                {analysis.recommendation.decision
-                  .replace("_", " ")
-                  .toUpperCase()}
+              <Badge className={`${getDecisionColor(analysis.recommendation.decision)} text-white`}>
+                {analysis.recommendation.decision.replace('_', ' ').toUpperCase()}
               </Badge>
             )}
           </div>
@@ -877,9 +855,9 @@ export default function Analysis({ params }: AnalysisProps) {
                   Target Investment
                 </p>
                 <p className="text-2xl font-bold">
-                  {analysis.recommendation?.targetInvestment
-                    ? formatCurrency(analysis.recommendation.targetInvestment)
-                    : "N/A"}
+                  {analysis.recommendation?.targetInvestment 
+                    ? formatCurrency(analysis.recommendation.targetInvestment) 
+                    : 'N/A'}
                 </p>
               </div>
               <TrendingUp className="h-8 w-8 text-green-500" />
@@ -891,13 +869,11 @@ export default function Analysis({ params }: AnalysisProps) {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Expected Return
-                </p>
+                <p className="text-sm font-medium text-muted-foreground">Expected Return</p>
                 <p className="text-2xl font-bold">
-                  {analysis.recommendation?.expectedReturn
-                    ? `${analysis.recommendation.expectedReturn}x`
-                    : "N/A"}
+                  {analysis.recommendation?.expectedReturn 
+                    ? `${analysis.recommendation.expectedReturn}x` 
+                    : 'N/A'}
                 </p>
               </div>
               <TrendingUp className="h-8 w-8 text-blue-500" />

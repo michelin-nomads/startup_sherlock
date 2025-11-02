@@ -1,3 +1,4 @@
+import { authenticatedFetchJSON } from "@/lib/api"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { StartupChart } from "@/components/startup-chart"
 import { MetricsCard } from "@/components/metrics-card"
@@ -144,11 +145,7 @@ export default function BenchmarksPage() {
   const { data: industryBenchmarks = [], isLoading, error } = useQuery<IndustryBenchmark[]>({
     queryKey: ['/api/benchmarks'],
     queryFn: async () => {
-      const response = await fetch(getApiUrl('/api/benchmarks'))
-      if (!response.ok) {
-        throw new Error('Failed to fetch industry benchmarks')
-      }
-      return response.json()
+      return await authenticatedFetchJSON(getApiUrl('/api/benchmarks'))
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
   })
@@ -160,11 +157,7 @@ export default function BenchmarksPage() {
       selectedIndustries.forEach(industry => params.append('industries', industry))
       params.append('companySize', companySize)
       
-      const response = await fetch(getApiUrl(`/api/benchmarks/custom?${params.toString()}`))
-      if (!response.ok) {
-        throw new Error('Failed to fetch custom benchmarks')
-      }
-      return response.json()
+      return await authenticatedFetchJSON(getApiUrl(`/api/benchmarks/custom?${params.toString()}`))
     },
     enabled: isCustomMode && selectedIndustries.length > 0,
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -173,11 +166,7 @@ export default function BenchmarksPage() {
   const { data: benchmarkMetrics, isLoading: metricsLoading, error: metricsError } = useQuery<BenchmarkMetrics>({
     queryKey: ['/api/benchmark-metrics'],
     queryFn: async () => {
-      const response = await fetch(getApiUrl('/api/benchmark-metrics'))
-      if (!response.ok) {
-        throw new Error('Failed to fetch benchmark metrics')
-      }
-      return response.json()
+      return await authenticatedFetchJSON(getApiUrl('/api/benchmark-metrics'))
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
   })
@@ -186,11 +175,7 @@ export default function BenchmarksPage() {
   const { data: allStartups = [], isLoading: startupsLoading } = useQuery<Startup[]>({
     queryKey: ['/api/startups'],
     queryFn: async () => {
-      const response = await fetch(getApiUrl('/api/startups'))
-      if (!response.ok) {
-        throw new Error('Failed to fetch startups')
-      }
-      const data = await response.json()
+      const data = await authenticatedFetchJSON(getApiUrl('/api/startups'))
       
       // Save to local storage for persistence
       localStorage.setItem('startups', JSON.stringify(data))
@@ -238,11 +223,7 @@ export default function BenchmarksPage() {
   const { data: selectedAnalysisData, isLoading: analysisLoading, isFetching: analysisFetching } = useQuery<AnalysisData>({
     queryKey: ['/api/document-analysis', selectedStartupId],
     queryFn: async () => {
-      const response = await fetch(getApiUrl(`/api/document-analysis/${selectedStartupId}`))
-      if (!response.ok) {
-        throw new Error('Failed to fetch analysis data')
-      }
-      const analysisData = await response.json()
+      const analysisData = await authenticatedFetchJSON(getApiUrl(`/api/document-analysis/${selectedStartupId}`))
       
       // Save to local storage for persistence
       if (analysisData && selectedStartupId) {

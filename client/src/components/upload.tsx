@@ -11,6 +11,7 @@ import { useMutation } from "@tanstack/react-query"
 import { useToast } from "@/hooks/use-toast"
 import { getApiUrl } from "@/lib/config"
 import { useNavigate } from "react-router-dom"
+import { authenticatedFetch } from "@/lib/api"
 
 interface UploadedFile {
   id: string
@@ -90,14 +91,23 @@ export function Upload() {
       formData.append('description', description)
       formData.append('industry', industry)
 
-      const response = await fetch(getApiUrl('/api/upload'), {
+      // Use authenticated fetch (automatically adds JWT token)
+      const response = await authenticatedFetch(getApiUrl('/api/upload'), {
         method: 'POST',
         body: formData
       })
 
       if (!response.ok) {
-        const errorText = await response.text()
-        throw new Error(errorText || 'Upload failed')
+        let errorMessage = 'Upload failed';
+        try {
+          const errorData = await response.json()
+          // Extract friendly message from JSON error response
+          errorMessage = errorData.message || errorData.error || 'Upload failed'
+        } catch (parseError) {
+          // If JSON parsing fails, use status text
+          errorMessage = response.statusText || 'Upload failed'
+        }
+        throw new Error(errorMessage)
       }
 
       return response.json()
@@ -243,7 +253,7 @@ export function Upload() {
       console.log('📄 Starting document analysis...')
       console.log('🌐 Starting public data analysis in parallel...')
       
-      const documentAnalysisPromise = fetch(getApiUrl(`/api/document-analysis/${startupId}`), {
+      const documentAnalysisPromise = authenticatedFetch(getApiUrl(`/api/document-analysis/${startupId}`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -255,7 +265,7 @@ export function Upload() {
         })
       })
 
-      const publicDataPromise = fetch(getApiUrl(`/api/public-data-analysis/${startupId}`), {
+      const publicDataPromise = authenticatedFetch(getApiUrl(`/api/public-data-analysis/${startupId}`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

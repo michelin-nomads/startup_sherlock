@@ -1,6 +1,12 @@
 import type { Express, Request, Response } from "express";
 import { hybridResearchService } from "./hybridResearch";
-import { storage } from "./storage";
+import { initDatabaseStorage } from "./storage.database";
+
+// Initialize database storage
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL environment variable is required');
+}
+const storage = initDatabaseStorage(process.env.DATABASE_URL);
 
 /**
  * Hybrid Research Routes
@@ -27,7 +33,29 @@ export function registerHybridResearchRoutes(app: Express): void {
       
       console.log(`🔍 Hybrid research request: "${query}"`);
       
+      const startTime = Date.now();
       const result = await hybridResearchService.conductResearch(query);
+      const processingTime = Math.floor((Date.now() - startTime) / 1000);
+
+      // Save research session to database
+      try {
+        await storage.createResearchSession({
+          startupId: null,
+          query,
+          researchType: 'hybrid',
+          groundedAnalysis: result.groundedAnalysis,
+          customSearchResults: result.customSearchResults,
+          synthesizedInsights: result.synthesizedInsights,
+          sources: result.sources,
+          confidenceScore: result.confidence?.toString(),
+          status: 'completed',
+          processingTimeSeconds: processingTime,
+          completedAt: new Date(),
+        });
+        console.log(`💾 Saved research session for query: "${query}"`);
+      } catch (err) {
+        console.error('Failed to save research session:', err);
+      }
       
       res.json({
         success: true,

@@ -3,6 +3,7 @@ import { Globe, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { getApiUrl } from "@/lib/config";
+import { authenticatedFetchJSON } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
 interface PublicDataButtonProps {
@@ -31,28 +32,21 @@ export function PublicDataButton({
       setLoading(true);
 
       // First, try to get existing due diligence
-      const getResponse = await fetch(getApiUrl(`api/due-diligence/${startupId}`));
-      
-      if (getResponse.ok) {
+      try {
+        await authenticatedFetchJSON(getApiUrl(`api/due-diligence/${startupId}`));
         // Data exists, navigate directly
         navigate(`/public-data-analysis/${startupId}`);
         return;
-      }
-
-      // If no data exists (404), conduct new due diligence
-      if (getResponse.status === 404) {
+      } catch (getError) {
+        // If no data exists (404), conduct new due diligence
         toast({
           title: "Conducting Research",
           description: "Gathering data from public sources. This may take 30-60 seconds...",
         });
 
-        const postResponse = await fetch(getApiUrl(`api/due-diligence/${startupId}`), {
+        await authenticatedFetchJSON(getApiUrl(`api/due-diligence/${startupId}`), {
           method: 'POST',
         });
-
-        if (!postResponse.ok) {
-          throw new Error('Failed to conduct due diligence');
-        }
 
         toast({
           title: "Research Complete",
@@ -61,8 +55,6 @@ export function PublicDataButton({
 
         // Navigate to results
         navigate(`/public-data-analysis/${startupId}`);
-      } else {
-        throw new Error('Failed to fetch due diligence data');
       }
     } catch (error) {
       console.error('Error:', error);
