@@ -3,7 +3,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import {
   Command,
@@ -55,6 +54,7 @@ import { Link } from "react-router-dom";
 import AnalysisComparison from "@/components/analysis-comparison";
 import { PublicDataSection } from "@/components/public-data-section";
 import CompanyDetailsSection from "@/components/company-details-section";
+import { AIChatbot } from "@/components/ai-chatbot";
 import { useState, useEffect } from "react";
 import { getApiUrl } from "@/lib/config.ts";
 import { formatCurrency } from "@/lib/utils";
@@ -2079,33 +2079,8 @@ export default function Analysis({ params }: AnalysisProps) {
             </Card>
           )}
 
-          {/* Ask Questions Section - Placeholder for future Q&A feature */}
-          <Card>
-            <details className="group">
-              <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-                <div className="flex items-center gap-2">
-                  <Search className="h-5 w-5" />
-                  <span className="font-semibold">
-                    Ask AI About This Analysis
-                  </span>
-                  <Badge variant="secondary" className="text-xs ml-2">
-                    Coming Soon
-                  </Badge>
-                </div>
-                <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-              </summary>
-              <CardContent className="pt-4">
-                <div className="p-4 border-2 border-dashed rounded-lg text-center text-muted-foreground">
-                  <Info className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                  <p className="text-sm">AI Q&A feature coming soon</p>
-                  <p className="text-xs mt-1">
-                    You'll be able to ask detailed questions about the analysis
-                    and get AI-powered answers
-                  </p>
-                </div>
-              </CardContent>
-            </details>
-          </Card>
+          {/* AI Chatbot Section */}
+          <AIChatbot startupId={id!} startupData={{ startup, analysis }} />
         </TabsContent>
       </Tabs>
     </div>
