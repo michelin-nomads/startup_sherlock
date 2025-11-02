@@ -15,7 +15,7 @@ LEFT JOIN documents d ON d.startup_id = s.id
 GROUP BY u.id, u.email, u.display_name
 ORDER BY last_startup_created DESC NULLS LAST;
 
--- 2. Show startups with their owner
+-- 2. Show startups with their owner (using JOIN to get email)
 SELECT 
   s.id as startup_id,
   s.name as startup_name,
@@ -25,7 +25,7 @@ SELECT
   s.created_at,
   COUNT(d.id) as document_count
 FROM startups s
-INNER JOIN users u ON s.user_id = u.id
+INNER JOIN users u ON s.user_id = u.id  -- JOIN to get email from users table
 LEFT JOIN documents d ON d.startup_id = s.id
 GROUP BY s.id, s.name, s.user_id, u.email, u.display_name, s.created_at
 ORDER BY s.created_at DESC;
