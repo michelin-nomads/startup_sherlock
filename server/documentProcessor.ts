@@ -56,7 +56,13 @@ export class DocumentProcessor {
     }
   }
 
-  async processUploadedFile(file: any, userId?: string, startupId?: string): Promise<ProcessedDocument> {
+  async processUploadedFile(
+    file: any, 
+    userEmail?: string, 
+    startupName?: string,
+    userId?: string,
+    startupId?: string
+  ): Promise<ProcessedDocument> {
     // Sanitize filename to prevent path traversal attacks
     const sanitizedName = path.basename(file.originalname).replace(/[^a-zA-Z0-9.-]/g, '_');
     const safeFileName = `${Date.now()}-${sanitizedName}`;
@@ -72,11 +78,21 @@ export class DocumentProcessor {
       try {
         const bucket = this.storage.bucket(this.bucketName);
         
-        // ORGANIZATION: Store files by user and startup for clear segregation
-        // Format: documents/{userId}/{startupId}/{timestamp}-{filename}
-        const userFolder = userId || 'unknown';
-        const startupFolder = startupId || 'unassigned';
-        const gcsFileName = `documents/${userFolder}/${startupFolder}/${safeFileName}`;
+        // ORGANIZATION: Store files by user email and startup name for clear, human-readable segregation
+        // Format: documents/{userEmail}/{startupName}/{timestamp}-{filename}
+        // Sanitize email: remove @, ., and special chars
+        const sanitizedEmail = (userEmail || 'unknown')
+          .replace(/@/g, '_at_')
+          .replace(/\./g, '_')
+          .replace(/[^a-zA-Z0-9_-]/g, '_');
+        
+        // Sanitize startup name: remove spaces and special chars
+        const sanitizedStartupName = (startupName || 'unassigned')
+          .toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^a-zA-Z0-9_-]/g, '_');
+        
+        const gcsFileName = `documents/${sanitizedEmail}/${sanitizedStartupName}/${safeFileName}`;
         const gcsFile = bucket.file(gcsFileName);
 
         await gcsFile.save(file.buffer, {
@@ -84,15 +100,18 @@ export class DocumentProcessor {
             contentType: file.mimetype,
             metadata: {
               originalName: file.originalname,
-              userId: userFolder,
-              startupId: startupFolder,
+              userEmail: userEmail || 'unknown',
+              userId: userId || 'unknown',
+              startupName: startupName || 'unassigned',
+              startupId: startupId || 'unknown',
               uploadedAt: new Date().toISOString(),
             },
           },
         });
 
         gcsUrl = `gs://${this.bucketName}/${gcsFileName}`;
-        console.log(`☁️  Uploaded to GCS: ${gcsUrl} (User: ${userFolder}, Startup: ${startupFolder})`);
+        console.log(`☁️  Uploaded to GCS: ${gcsUrl}`);
+        console.log(`   📧 User: ${userEmail} | 🏢 Startup: ${startupName}`);
       } catch (error) {
         console.error('Failed to upload to GCS:', error);
       }
