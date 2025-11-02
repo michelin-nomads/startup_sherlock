@@ -22,11 +22,7 @@ export default function SignInPage() {
     password: false
   });
 
-  // Get the page user was trying to access
-  // Priority: 1) Protected route they tried to access, 2) Last visited page before logout, 3) Dashboard
-  const from = (location.state as any)?.from?.pathname 
-    || localStorage.getItem('lastVisitedPage') 
-    || '/';
+  // Always redirect to dashboard after login
 
   // Email validation
   const isValidEmail = (email: string) => {
@@ -67,9 +63,7 @@ export default function SignInPage() {
       setLoading(true);
       setError('');
       await signInWithGoogle();
-      // Clear saved page after successful login
-      localStorage.removeItem('lastVisitedPage');
-      navigate(from, { replace: true });
+      navigate('/', { replace: true });
     } catch (err: any) {
       setError(getUserFriendlyError(err));
     } finally {
@@ -103,9 +97,7 @@ export default function SignInPage() {
       setLoading(true);
       setError('');
       await signInWithEmail(email, password);
-      // Clear saved page after successful login
-      localStorage.removeItem('lastVisitedPage');
-      navigate(from, { replace: true });
+      navigate('/', { replace: true });
     } catch (err: any) {
       setError(getUserFriendlyError(err));
     } finally {

@@ -18,6 +18,7 @@ export const users = pgTable("users", {
 export const startups = pgTable("startups", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").references(() => users.id), // Link to user who created it
+  userEmail: text("user_email"), // Denormalized for easy identification in DB
   name: text("name").notNull(),
   industry: text("industry"),
   stage: text("stage"),
@@ -198,6 +199,7 @@ export const insertStartupSchema = createInsertSchema(startups).omit({
   updatedAt: true,
 }).extend({
   userId: z.string().optional(), // Make userId optional for backward compatibility
+  userEmail: z.string().optional(), // Make userEmail optional
 });
 
 export const insertDocumentSchema = createInsertSchema(documents).omit({
