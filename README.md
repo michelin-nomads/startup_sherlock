@@ -1,97 +1,246 @@
-# Startup Sherlock
+# Startup Sherlock 🔍
 
-A web application that helps investors analyze startups using artificial intelligence. Upload startup documents and get detailed analysis reports with scores, risk assessments, and investment recommendations.
+**AI-powered startup analysis for smarter investment decisions**
 
-## What This App Does
+Analyze startup documents, get comprehensive risk assessments, and make informed investment decisions with the power of artificial intelligence.
 
-This application analyzes startup companies by examining their business documents. It uses AI to evaluate different aspects of a startup and provides insights to help with investment decisions.
+🌐 **Live App**: [https://startup-sherlock.web.app](https://startup-sherlock.web.app)
 
-### Key Features
+---
 
-- **Document Upload**: Upload various types of documents (PDFs, Word docs, Excel files, presentations, etc.)
-- **AI Analysis**: Automatically analyze startup documents using Google's Gemini AI
-- **Scoring System**: Get overall scores and risk levels for each startup
-- **Investment Recommendations**: Receive AI-generated investment advice
-- **Industry Benchmarks**: Compare startups against industry standards
-- **Dashboard**: View all analyzed startups in one place
+## ✨ Features
 
-### How It Works
+### 📊 **Intelligent Document Analysis**
+- Upload business plans, financial statements, pitch decks, and more
+- AI-powered extraction and analysis using Google Gemini
+- Support for PDFs, Word docs, Excel, PowerPoint, images, and text files
 
-1. **Upload Documents**: Add business plans, financial statements, pitch decks, or other startup documents
-2. **AI Processing**: The system extracts text and analyzes the content using AI
-3. **Get Results**: View detailed analysis including:
-    - Overall startup score
-    - Risk assessment
-    - Investment recommendation
-    - Key strengths and weaknesses
-    - Industry comparisons
+### 🎯 **Comprehensive Risk Assessment**
+- Overall startup scores
+- Detailed risk flag identification
+- Investment recommendations
+- Key strengths and weaknesses analysis
 
-## Technology Stack
+### 📈 **Industry Benchmarks**
+- Compare startups against industry standards
+- Track performance metrics
+- Identify competitive advantages
 
-- **Frontend**: React with TypeScript, Tailwind CSS
-- **Backend**: Node.js with Express
-- **Database**: Firebase
-- **AI**: Google Gemini API
-- **File Processing**: Supports PDFs, Office documents, images, and more
+### 🔒 **Secure & Private**
+- User authentication (Google Sign-In + Email/Password)
+- Each user's data is completely isolated
+- Secure document storage
 
-## Getting Started
+### 🎨 **Modern Dashboard**
+- View all analyzed startups at a glance
+- Interactive charts and visualizations
+- Easy document management
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (version 18 or higher)
-- PostgreSQL database
-- Google Gemini API key
+- **Node.js** (v18 or higher)
+- **PostgreSQL** database
+- **Google Cloud Account** (for Gemini API and Cloud SQL)
+- **Firebase Account** (for authentication and hosting)
 
 ### Installation
 
-1. Clone the repository
-2. Install dependencies:
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd startup_sherlock
+   ```
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. Set up environment variables:
-    - Create a `.env` file in the root directory
-    - Add your database connection string
-    - Add your Google Gemini API key
-
-4. Set up the database:
+3. **Set up environment variables**
+   
+   Copy `.env.example` to `.env` and fill in your credentials:
+   
    ```bash
-   npm run db:push
+   cp .env.example .env
+   ```
+   
+   Required variables:
+   - `DATABASE_URL` - PostgreSQL connection string
+   - `GEMINI_API_KEY` - Google Gemini API key
+   - `GOOGLE_APPLICATION_CREDENTIALS` - Path to service account key
+   - Firebase configuration variables (see `.env.example`)
+
+4. **Set up the database**
+   ```bash
+   npm run db:migrate
    ```
 
-5. Start the development server:
+5. **Start the development server**
    ```bash
    npm run dev
    ```
 
-The application will be available at `https://startup-sherlock.web.app/`
+   The app will be available at `http://localhost:5000`
 
-## Usage
+---
 
-1. **Create a Startup**: Add basic information about the startup you want to analyze
-2. **Upload Documents**: Add relevant business documents (business plans, financials, etc.)
-3. **Run Analysis**: Click analyze to process the documents with AI
-4. **Review Results**: View the detailed analysis report with scores and recommendations
-5. **Compare**: Use the benchmarks feature to compare against industry standards
+## 📖 Usage Guide
 
-## File Support
+### 1. **Sign Up / Sign In**
+- Create an account using email/password or Google Sign-In
+- Your data is private and isolated from other users
 
-The application supports a wide range of file types:
-- Documents: PDF, Word, Excel, PowerPoint
-- Text files: TXT, CSV, HTML, Markdown
-- Images: JPEG, PNG, GIF, WebP
-- And many more formats
+### 2. **Upload Documents**
+- Click "Upload" to add startup documents
+- Supported formats: PDF, Word, Excel, PowerPoint, images, text files
+- Upload multiple documents for comprehensive analysis
 
-## Project Structure
+### 3. **Analyze**
+- Click "Analyze" to process documents with AI
+- Review detailed analysis including:
+  - Overall startup score
+  - Risk assessment with flags
+  - Investment recommendation
+  - Key insights and recommendations
 
-- `client/` - React frontend application
-- `server/` - Express backend API
-- `shared/` - Shared TypeScript schemas and types
+### 4. **Benchmarks**
+- Compare startups against industry standards
+- View performance metrics
+- Understand competitive positioning
 
-## Development
+### 5. **Dashboard**
+- View all your analyzed startups
+- Track progress over time
+- Easy access to past analyses
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run check` - Type checking
-- `npm run db:push` - Update database schema
+---
+
+## 🛠️ Technology Stack
+
+- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- **Backend**: Node.js, Express, TypeScript
+- **Database**: PostgreSQL (Cloud SQL)
+- **Authentication**: Firebase Auth
+- **AI**: Google Gemini API
+- **Storage**: Google Cloud Storage
+- **Hosting**: Firebase Hosting
+
+---
+
+## 📁 Project Structure
+
+```
+startup_sherlock/
+├── client/              # React frontend
+│   ├── src/
+│   │   ├── components/  # Reusable UI components
+│   │   ├── pages/       # Page components
+│   │   ├── contexts/    # React contexts (Auth)
+│   │   └── lib/         # Utilities and configs
+│   └── public/          # Static assets
+├── server/              # Express backend
+│   ├── routes.ts        # API routes
+│   ├── gemini.ts        # AI integration
+│   ├── storage.ts       # Database layer
+│   └── ...
+├── shared/              # Shared types and schemas
+└── migrations/          # Database migrations
+```
+
+---
+
+## 🔧 Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server (frontend + backend) |
+| `npm run build` | Build frontend for production |
+| `npm start` | Start production server |
+| `npm run check` | TypeScript type checking |
+| `npm run db:migrate` | Run database migrations |
+| `npm run db:test` | Test database connection |
+
+---
+
+## 🌍 Deployment
+
+### Prerequisites
+- Google Cloud project with billing enabled
+- Firebase project set up
+- Cloud SQL instance running
+- Service account with necessary permissions
+
+### Deploy to Firebase Hosting
+
+1. **Build the frontend**
+   ```bash
+   npm run build
+   ```
+
+2. **Deploy to Firebase**
+   ```bash
+   firebase deploy --only hosting
+   ```
+
+### Deploy Backend
+- Configure your hosting platform with environment variables
+- Set up Cloud SQL Proxy for database connection
+- Deploy the server code
+
+---
+
+## 🔒 Security
+
+- All user data is isolated and private
+- Authentication required for all operations
+- Secure document storage
+- API authentication with JWT tokens
+- Input validation on all forms
+
+---
+
+## 📄 File Format Support
+
+**Documents:**
+- PDF (.pdf)
+- Microsoft Word (.doc, .docx)
+- Microsoft Excel (.xls, .xlsx)
+- Microsoft PowerPoint (.ppt, .pptx)
+
+**Text Files:**
+- Plain Text (.txt)
+- Markdown (.md)
+- CSV (.csv)
+- HTML (.html)
+
+**Images:**
+- JPEG/JPG (.jpg, .jpeg)
+- PNG (.png)
+- GIF (.gif)
+- WebP (.webp)
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit issues and pull requests.
+
+---
+
+## 📝 License
+
+MIT
+
+---
+
+## 📞 Support
+
+For questions or support, please open an issue in the repository.
+
+---
+
+**Built with ❤️ for smarter startup analysis**

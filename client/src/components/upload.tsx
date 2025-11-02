@@ -11,6 +11,7 @@ import { useMutation } from "@tanstack/react-query"
 import { useToast } from "@/hooks/use-toast"
 import { getApiUrl } from "@/lib/config"
 import { useNavigate } from "react-router-dom"
+import { authenticatedFetch } from "@/lib/api"
 
 interface UploadedFile {
   id: string
@@ -90,14 +91,23 @@ export function Upload() {
       formData.append('description', description)
       formData.append('industry', industry)
 
-      const response = await fetch(getApiUrl('/api/upload'), {
+      // Use authenticated fetch (automatically adds JWT token)
+      const response = await authenticatedFetch(getApiUrl('/api/upload'), {
         method: 'POST',
         body: formData
       })
 
       if (!response.ok) {
-        const errorText = await response.text()
-        throw new Error(errorText || 'Upload failed')
+        let errorMessage = 'Upload failed';
+        try {
+          const errorData = await response.json()
+          // Extract friendly message from JSON error response
+          errorMessage = errorData.message || errorData.error || 'Upload failed'
+        } catch (parseError) {
+          // If JSON parsing fails, use status text
+          errorMessage = response.statusText || 'Upload failed'
+        }
+        throw new Error(errorMessage)
       }
 
       return response.json()
@@ -236,7 +246,14 @@ export function Upload() {
     setIsAnalyzing(true)
     
     try {
-      const response = await fetch(getApiUrl(`/api/analyze/${startupId}`), {
+      console.log('🚀 Starting Document Analysis first, then Public Data Analysis')
+      
+      // Step 1: Document Analysis (must complete first to avoid race condition)
+      // Start BOTH analyses in PARALLEL (not sequential!)
+      console.log('📄 Starting document analysis...')
+      console.log('🌐 Starting public data analysis in parallel...')
+      
+      const documentAnalysisPromise = authenticatedFetch(getApiUrl(`/api/analyze/${startupId}`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -248,15 +265,41 @@ export function Upload() {
         })
       })
 
-      if (!response.ok) {
-        throw new Error('Analysis failed')
+      const publicDataPromise = authenticatedFetch(getApiUrl(`/api/public-data-analysis/${startupId}`), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      // Wait for BOTH to complete in parallel using Promise.allSettled
+      const [documentAnalysisResponse, publicDataResponse] = await Promise.allSettled([
+        documentAnalysisPromise,
+        publicDataPromise
+      ])
+
+      // Check document analysis response (critical - must succeed)
+      if (documentAnalysisResponse.status === 'rejected' || !documentAnalysisResponse.value.ok) {
+        throw new Error('Document analysis failed')
       }
 
-      const result = await response.json()
+      const documentResult = await documentAnalysisResponse.value.json()
+      console.log('✅ Document analysis completed:', documentResult)
+      
+      // Check public data analysis (non-critical - can fail)
+      let publicDataResult = null
+      if (publicDataResponse.status === 'fulfilled' && publicDataResponse.value.ok) {
+        publicDataResult = await publicDataResponse.value.json()
+        console.log('✅ Public data analysis completed:', publicDataResult)
+      } else {
+        console.warn('⚠️ Public data analysis failed (non-critical), but continuing...')
+      }
       
       toast({
         title: "Analysis complete",
-        description: "AI analysis completed successfully"
+        description: publicDataResult?.success 
+          ? "Document and public data analysis completed successfully" 
+          : "Document analysis completed (public data unavailable)"
       })
 
       // Navigate to results page
@@ -267,6 +310,7 @@ export function Upload() {
       setDescription("")
       setFiles([])
     } catch (error) {
+      console.error('❌ Analysis error:', error)
       toast({
         title: "Analysis failed",
         description: "Failed to complete AI analysis",

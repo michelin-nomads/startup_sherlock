@@ -1,4 +1,4 @@
-import { BarChart3, FileUp, Home, TrendingUp, AlertTriangle, Target, Zap } from "lucide-react"
+import { BarChart3, FileUp, Home, TrendingUp, AlertTriangle, Target, Zap, LogOut, User } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -8,8 +8,20 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarHeader,
+  SidebarFooter,
 } from "@/components/ui/sidebar"
 import { useNavigate, useLocation } from "react-router-dom"
+import { useAuth } from "@/contexts/AuthContext"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 const menuItems = [
   {
@@ -38,6 +50,7 @@ export function AppSidebar() {
   const navigate = useNavigate()
   const location = useLocation()
   const currentPath = location.pathname
+  const { user, signOut } = useAuth()
 
   // Function to check if a menu item should be active
   const isMenuItemActive = (itemUrl: string) => {
@@ -53,6 +66,28 @@ export function AppSidebar() {
     }
     
     return false
+  }
+
+  const handleSignOut = async () => {
+    try {
+      await signOut()
+      navigate("/signin")
+    } catch (error) {
+      console.error("Sign out error:", error)
+    }
+  }
+
+  // Get user initials for avatar
+  const getUserInitials = () => {
+    if (user?.displayName) {
+      return user.displayName
+        .split(" ")
+        .map(n => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    }
+    return user?.email?.[0]?.toUpperCase() || "U"
   }
 
   return (
@@ -99,6 +134,43 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter className="p-4 border-t border-sidebar-border">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="w-full justify-start gap-3 px-3 py-6 hover:bg-sidebar-accent"
+            >
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-primary text-primary-foreground">
+                  {getUserInitials()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col items-start text-left flex-1">
+                <span className="text-sm font-medium text-sidebar-foreground">
+                  {user?.displayName || "User"}
+                </span>
+                <span className="text-xs text-muted-foreground truncate max-w-[180px]">
+                  {user?.email}
+                </span>
+              </div>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem disabled>
+              <User className="mr-2 h-4 w-4" />
+              Profile (Coming soon)
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
+              <LogOut className="mr-2 h-4 w-4" />
+              Sign out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarFooter>
     </Sidebar>
   )
 }

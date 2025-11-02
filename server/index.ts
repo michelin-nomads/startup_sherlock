@@ -6,16 +6,23 @@ import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
 
-// CORS configuration for Firebase frontend and Railway backend
+// CORS configuration - use environment variables for origins
+const allowedOrigins = process.env.ALLOWED_ORIGINS 
+  ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
+  : [
+      'http://localhost:5001',
+      'http://localhost:5173',
+      'http://localhost:5000'
+    ];
+
 app.use(cors({
-  origin: [
-    'https://startup-sherlock.web.app',
-    'https://startup-sherlock.firebaseapp.com'
-  ],
+  origin: allowedOrigins,
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
+
+console.log('✅ CORS enabled for origins:', allowedOrigins);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

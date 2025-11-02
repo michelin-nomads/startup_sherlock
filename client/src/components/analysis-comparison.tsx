@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { getApiUrl } from "@/lib/config"
+import { authenticatedFetchJSON } from "@/lib/api"
 import { TrendingUp, TrendingDown, Minus, GitCompare, AlertCircle } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
 
@@ -54,16 +55,9 @@ export default function AnalysisComparison({ analysisData }: ComparisonProps) {
   const { data: marketTrends, isLoading, error } = useQuery<MarketTrends>({
     queryKey: ['market-trends'],
     queryFn: async () => {
-      const response = await fetch(getApiUrl('/api/market-trends'), {
+      return await authenticatedFetchJSON(getApiUrl('/api/market-trends'), {
         method: 'GET',
-        credentials: 'include',
       })
-      
-      if (!response.ok) {
-        throw new Error(`Failed to fetch market trends: ${response.statusText}`)
-      }
-      
-      return response.json()
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
   })
@@ -188,7 +182,7 @@ export default function AnalysisComparison({ analysisData }: ComparisonProps) {
         <div className="space-y-4">
           <h4 className="font-semibold text-lg">Detailed Metrics</h4>
           <div className="space-y-4">
-            {Object.entries(analysisData.analysis.metrics).map(([metric, companyValue]) => {
+            {Object.entries(analysisData?.analysis?.metrics || {}).map(([metric, companyValue]) => {
               const marketValue = marketTrends.metrics[metric as keyof typeof marketTrends.metrics]
               return (
                 <div key={metric} className="space-y-3">
@@ -233,32 +227,32 @@ export default function AnalysisComparison({ analysisData }: ComparisonProps) {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Target Investment</span>
-                <span className="font-bold">{formatCurrency(analysisData.analysis.recommendation.targetInvestment)}</span>
+                <span className="font-bold">{formatCurrency(analysisData.analysis.recommendation?.targetInvestment || 0)}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Market Average</span>
-                <span className="font-bold">{formatCurrency(marketTrends.recommendation.targetInvestment)}</span>
+                <span className="font-bold">{formatCurrency(marketTrends.recommendation?.targetInvestment || 0)}</span>
               </div>
               <div className="flex items-center gap-2 pt-2 border-t">
-                {getComparisonIcon(analysisData.analysis.recommendation.targetInvestment, marketTrends.recommendation.targetInvestment)}
-                <span className={`text-sm ${getComparisonColor(analysisData.analysis.recommendation.targetInvestment, marketTrends.recommendation.targetInvestment)}`}>
-                  {((analysisData.analysis.recommendation.targetInvestment - marketTrends.recommendation.targetInvestment) / marketTrends.recommendation.targetInvestment * 100).toFixed(1)}% vs market
+                {getComparisonIcon(analysisData.analysis.recommendation?.targetInvestment, marketTrends.recommendation?.targetInvestment)}
+                <span className={`text-sm ${getComparisonColor(analysisData.analysis.recommendation?.targetInvestment, marketTrends.recommendation?.targetInvestment)}`}>
+                  {((analysisData.analysis.recommendation?.targetInvestment - marketTrends.recommendation?.targetInvestment) / marketTrends.recommendation?.targetInvestment * 100).toFixed(1)}% vs market
                 </span>
               </div>
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Expected Return</span>
-                <span className="font-bold">{analysisData.analysis.recommendation.expectedReturn}x</span>
+                <span className="font-bold">{analysisData.analysis.recommendation?.expectedReturn}x</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Market Average</span>
-                <span className="font-bold">{marketTrends.recommendation.expectedReturn}x</span>
+                <span className="font-bold">{marketTrends.recommendation?.expectedReturn || 0 }x</span>
               </div>
               <div className="flex items-center gap-2 pt-2 border-t">
-                {getComparisonIcon(analysisData.analysis.recommendation.expectedReturn, marketTrends.recommendation.expectedReturn)}
-                <span className={`text-sm ${getComparisonColor(analysisData.analysis.recommendation.expectedReturn, marketTrends.recommendation.expectedReturn)}`}>
-                  {((analysisData.analysis.recommendation.expectedReturn - marketTrends.recommendation.expectedReturn) / marketTrends.recommendation.expectedReturn * 100).toFixed(1)}% vs market
+                {getComparisonIcon(analysisData.analysis.recommendation?.expectedReturn, marketTrends.recommendation?.expectedReturn)}
+                <span className={`text-sm ${getComparisonColor(analysisData.analysis.recommendation?.expectedReturn, marketTrends.recommendation?.expectedReturn)}`}>
+                  {((analysisData.analysis.recommendation?.expectedReturn - marketTrends.recommendation?.expectedReturn) / marketTrends.recommendation?.expectedReturn * 100).toFixed(1)}% vs market
                 </span>
               </div>
             </div>
