@@ -19,11 +19,18 @@ export async function authenticatedFetch(
   }
 
   // Merge headers with authorization
-  const headers = new Headers(options.headers || {});
-  headers.set('Authorization', `Bearer ${token}`);
+  // Convert headers to plain object for better compatibility
+  const existingHeaders = options.headers instanceof Headers 
+    ? Object.fromEntries(options.headers.entries())
+    : (options.headers || {});
+  
+  const headers = {
+    ...existingHeaders,
+    'Authorization': `Bearer ${token}`
+  };
 
   console.log('📤 Making authenticated request to:', url);
-  console.log('📋 Headers:', Object.fromEntries(headers.entries()));
+  console.log('📋 Headers:', headers);
 
   // Make the request with auth header
   return fetch(url, {
