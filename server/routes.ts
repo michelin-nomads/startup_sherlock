@@ -205,7 +205,12 @@ app.get("/api/health", (req: Request, res: Response) => {
       const processedDocs = [];
       for (const file of files) {
         try {
-          const processed = await documentProcessor.processUploadedFile(file);
+          // Pass userId and startupId for organized GCS storage
+          const processed = await documentProcessor.processUploadedFile(
+            file,
+            req.user!.id,
+            startupId
+          );
           
           // Save document to storage
           const document = await storage.createDocument({

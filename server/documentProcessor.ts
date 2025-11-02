@@ -56,7 +56,7 @@ export class DocumentProcessor {
     }
   }
 
-  async processUploadedFile(file: any): Promise<ProcessedDocument> {
+  async processUploadedFile(file: any, userId?: string, startupId?: string): Promise<ProcessedDocument> {
     // Sanitize filename to prevent path traversal attacks
     const sanitizedName = path.basename(file.originalname).replace(/[^a-zA-Z0-9.-]/g, '_');
     const safeFileName = `${Date.now()}-${sanitizedName}`;
@@ -71,7 +71,12 @@ export class DocumentProcessor {
     if (this.storage) {
       try {
         const bucket = this.storage.bucket(this.bucketName);
-        const gcsFileName = `documents/${safeFileName}`;
+        
+        // ORGANIZATION: Store files by user and startup for clear segregation
+        // Format: documents/{userId}/{startupId}/{timestamp}-{filename}
+        const userFolder = userId || 'unknown';
+        const startupFolder = startupId || 'unassigned';
+        const gcsFileName = `documents/${userFolder}/${startupFolder}/${safeFileName}`;
         const gcsFile = bucket.file(gcsFileName);
 
         await gcsFile.save(file.buffer, {
@@ -79,12 +84,15 @@ export class DocumentProcessor {
             contentType: file.mimetype,
             metadata: {
               originalName: file.originalname,
+              userId: userFolder,
+              startupId: startupFolder,
+              uploadedAt: new Date().toISOString(),
             },
           },
         });
 
         gcsUrl = `gs://${this.bucketName}/${gcsFileName}`;
-        console.log(`☁️  Uploaded to GCS: ${gcsUrl}`);
+        console.log(`☁️  Uploaded to GCS: ${gcsUrl} (User: ${userFolder}, Startup: ${startupFolder})`);
       } catch (error) {
         console.error('Failed to upload to GCS:', error);
       }
