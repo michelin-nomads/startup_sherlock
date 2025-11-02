@@ -88,6 +88,10 @@ export const signUpWithEmail = async (email: string, password: string, displayNa
         displayName: displayName
       });
       console.log('✅ Updated Firebase profile with displayName:', displayName);
+      
+      // Force token refresh to include updated displayName in claims
+      await user.getIdToken(true);
+      console.log('✅ Refreshed Firebase token with new displayName');
     }
     
     return user;

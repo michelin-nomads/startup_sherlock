@@ -129,7 +129,33 @@ export function authorize(...allowedRoles: string[]) {
 async function getOrCreateUser(decodedToken: any) {
   const firebaseUid = decodedToken.uid;
   const email = decodedToken.email;
-  const displayName = decodedToken.name || decodedToken.display_name || null;
+  
+  // Debug: Log what's in the token
+  console.log('🔍 Firebase token contents:', {
+    uid: decodedToken.uid,
+    email: decodedToken.email,
+    name: decodedToken.name,
+    display_name: decodedToken.display_name,
+    allKeys: Object.keys(decodedToken)
+  });
+  
+  let displayName = decodedToken.name || decodedToken.display_name || null;
+  
+  // If displayName not in token, fetch from Firebase Admin
+  if (!displayName) {
+    try {
+      const { getUserByUid } = await import('./firebaseAdmin');
+      const firebaseUser = await getUserByUid(firebaseUid);
+      if (firebaseUser) {
+        displayName = firebaseUser.displayName || null;
+        console.log('📝 Fetched displayName from Firebase Admin:', displayName);
+      }
+    } catch (error) {
+      console.log('⚠️  Could not fetch user from Firebase Admin:', error);
+    }
+  } else {
+    console.log('📝 Extracted displayName from token:', displayName);
+  }
 
   // Try to find existing user by Firebase UID
   let user = await storage.getUserByFirebaseUid(firebaseUid);
