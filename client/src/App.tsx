@@ -99,8 +99,8 @@ function AppContent() {
                 <Route path="/benchmarks" element={<BenchmarksPage />} />
                 <Route path="/benchmarks/comparison/:startupId" element={<ComparisonWrapper />} />
                 <Route path="/risk" element={<RiskPage />} />
-                <Route path="/research-test" element={<ResearchTestPage />} />
-                <Route path="/public-data-analysis/:startupId" element={<PublicDataAnalysisPage />} />
+                {/* <Route path="/research-test" element={<ResearchTestPage />} /> */}
+                {/* <Route path="/public-data-analysis/:startupId" element={<PublicDataAnalysisPage />} /> */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

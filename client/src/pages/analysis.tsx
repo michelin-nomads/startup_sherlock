@@ -1,17 +1,10 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Command,
   CommandEmpty,
@@ -25,8 +18,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Tooltip,
@@ -39,6 +30,7 @@ import {
   TrendingDown,
   AlertTriangle,
   CheckCircle,
+  CheckCircle2,
   ArrowLeft,
   Star,
   ChevronDown,
@@ -50,16 +42,19 @@ import {
   Loader2,
   Plus,
   X,
+  XCircle,
   FileText,
   Database,
   GitCompare,
   BarChart,
   Target,
   RefreshCcw,
+  PieChart as PieChartIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnalysisComparison from "@/components/analysis-comparison";
 import { PublicDataSection } from "@/components/public-data-section";
+import CompanyDetailsSection from "@/components/company-details-section";
 import { useState, useEffect } from "react";
 import { getApiUrl } from "@/lib/config.ts";
 import { formatCurrency } from "@/lib/utils";
@@ -925,203 +920,160 @@ export default function Analysis({ params }: AnalysisProps) {
 
         {/* Tab 1: Document Analysis */}
         <TabsContent value="documents" className="space-y-6 mt-6">
-          {/* Detailed Metrics */}
-          <Card>
-            <details className="group">
-              <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-                <div className="flex items-center gap-2">
-                  <BarChart className="h-5 w-5" />
-                  <span className="font-semibold">
-                    Detailed Metrics Analysis
-                  </span>
-                </div>
-                <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-              </summary>
-              <CardContent className="space-y-6 pt-4">
-                {analysis.metrics &&
-                Object.keys(analysis.metrics).length > 0 ? (
-                  Object.entries(analysis?.metrics || {}).map(
-                    ([metric, score]) => (
-                      <div key={metric} className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="font-medium capitalize">
-                            {metric.replace(/([A-Z])/g, " $1").trim()}
-                          </span>
-                          <span>{score}/100</span>
-                        </div>
-                        <Progress value={score as number} className="h-2" />
-                      </div>
-                    )
-                  )
-                ) : (
-                  <p className="text-sm text-muted-foreground">
-                    No metrics data available
-                  </p>
-                )}
-              </CardContent>
-            </details>
-          </Card>
+          {/* Company Details Section - New Sections */}
+          <CompanyDetailsSection analysisData={data} />
 
           {/* Investment Recommendation */}
-          <Card>
-            <details className="group">
+          {/* <Card>
+            <details className="group" open>
               <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
                 <div className="flex items-center gap-2">
                   <Target className="h-5 w-5" />
                   <span className="font-semibold">
                     Investment Recommendation
                   </span>
+                  {analysis.recommendation?.decision && (
+                    <Badge
+                      className={`${getDecisionColor(
+                        analysis.recommendation.decision
+                      )} text-white text-xs ml-2`}
+                    >
+                      {analysis.recommendation.decision
+                        .replace("_", " ")
+                        .toUpperCase()}
+                    </Badge>
+                  )}
                 </div>
                 <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
               </summary>
-              <CardContent className="pt-4">
+              <CardContent className="space-y-4 pt-4">
                 {analysis.recommendation ? (
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3">
-                      {analysis.recommendation.decision && (
-                        <Badge
-                          className={`${getDecisionColor(
-                            analysis.recommendation.decision
-                          )} text-white px-3 py-1`}
-                        >
-                          {analysis.recommendation.decision
-                            .replace("_", " ")
-                            .toUpperCase()}
-                        </Badge>
-                      )}
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {analysis.recommendation.targetInvestment && (
-                        <span className="text-lg font-semibold">
-                          Target:{" "}
-                          {formatCurrency(
-                            analysis.recommendation.targetInvestment
-                          )}
-                        </span>
+                        <div className="p-4 border rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
+                          <p className="text-xs text-muted-foreground font-medium mb-1">Target Investment</p>
+                          <p className="text-2xl font-bold">
+                            {formatCurrency(
+                              analysis.recommendation.targetInvestment
+                            )}
+                          </p>
+                        </div>
                       )}
                       {analysis.recommendation.expectedReturn && (
-                        <span className="text-lg">
-                          Expected: {analysis.recommendation.expectedReturn}x
-                          return
-                        </span>
+                        <div className="p-4 border rounded-lg bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
+                          <p className="text-xs text-muted-foreground font-medium mb-1">Expected Return</p>
+                          <p className="text-2xl font-bold">
+                            {analysis.recommendation.expectedReturn}x
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">Multiple</p>
+                        </div>
                       )}
                     </div>
-                    <Separator />
+                    
                     {analysis.recommendation.reasoning && (
-                      <p className="text-muted-foreground leading-relaxed">
-                        {analysis.recommendation.reasoning}
-                      </p>
+                      <>
+                        <Separator />
+                        <div className="p-4 border-2 border-primary/20 rounded-lg bg-primary/5">
+                          <p className="text-sm font-semibold mb-2 text-primary">Investment Rationale</p>
+                          <p className="text-sm text-muted-foreground leading-relaxed">
+                            {analysis.recommendation.reasoning}
+                          </p>
+                        </div>
+                      </>
                     )}
-                  </div>
+                  </>
                 ) : (
-                  <p className="text-sm text-muted-foreground">
-                    No recommendation data available
-                  </p>
+                  <div className="text-center py-8">
+                    <Target className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                    <p className="text-sm text-muted-foreground">No recommendation data available</p>
+                    <p className="text-xs text-muted-foreground mt-1">Investment recommendations will appear here once generated</p>
+                  </div>
                 )}
               </CardContent>
             </details>
-          </Card>
+          </Card> */}
 
-          {/* Risk Assessment */}
-          <Card>
-            <details className="group">
-              <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-                <div className="flex items-center gap-2">
-                  <Shield className="h-5 w-5" />
-                  <span className="font-semibold">Risk Assessment</span>
-                </div>
-                <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-              </summary>
-              <CardContent className="pt-4">
-                <div className="space-y-4">
-                  {analysis.riskFlags && analysis.riskFlags.length > 0 ? (
-                    analysis.riskFlags.map((flag, index) => (
-                      <div
-                        key={index}
-                        className={`p-4 rounded-lg border-l-4 ${getRiskFlagColor(
-                          flag.type
-                        )}`}
-                      >
-                        <div className="flex items-start justify-between mb-2">
-                          <h4 className="font-semibold">{flag.category}</h4>
-                          <Badge variant="outline" className="capitalize">
-                            {flag.type} Risk
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {flag.description}
-                        </p>
-                        <p className="text-sm font-medium">
-                          Impact: {flag.impact}
-                        </p>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-sm text-muted-foreground">
-                      No risk flags identified
-                    </p>
-                  )}
-                </div>
-              </CardContent>
-            </details>
-          </Card>
-
-          {/* Market Comparison */}
-          <AnalysisComparison analysisData={data} />
 
           {/* Key Insights */}
           <Card>
             <details className="group">
               <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5" />
+                  <CheckCircle className="h-5 w-5 text-green-600" />
                   <span className="font-semibold">Key Insights</span>
+                  {analysis.keyInsights && analysis.keyInsights.length > 0 && (
+                    <Badge variant="outline" className="text-xs ml-2">
+                      {analysis.keyInsights.length} insights
+                    </Badge>
+                  )}
                 </div>
                 <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
               </summary>
-              <CardContent className="pt-4">
-                <ul className="space-y-3">
-                  {analysis.keyInsights && analysis.keyInsights.length > 0 ? (
-                    analysis.keyInsights.map((insight, index) => (
-                      <li key={index} className="flex items-start gap-3">
-                        <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">{insight}</span>
-                      </li>
-                    ))
-                  ) : (
+              <CardContent className="space-y-4 pt-4">
+                {analysis.keyInsights && analysis.keyInsights.length > 0 ? (
+                  <>
                     <p className="text-sm text-muted-foreground">
-                      No key insights available
+                      Critical findings from document analysis
                     </p>
-                  )}
-                </ul>
+                    <Separator />
+                    <ul className="space-y-3">
+                      {analysis.keyInsights.map((insight, index) => (
+                        <li key={index} className="flex items-start gap-3 p-3 border rounded-lg hover:bg-muted/30 transition-colors">
+                          <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                          <span className="text-sm leading-relaxed">{insight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : (
+                  <div className="text-center py-8">
+                    <CheckCircle className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                    <p className="text-sm text-muted-foreground">No key insights available</p>
+                    <p className="text-xs text-muted-foreground mt-1">Insights will be generated from document analysis</p>
+                  </div>
+                )}
               </CardContent>
             </details>
           </Card>
 
           {/* Documents Analyzed */}
-          <Card>
+          <Card className="border-2">
             <details className="group">
               <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-                <div className="flex items-center gap-2">
-                  <FileText className="h-5 w-5" />
+                <div className="flex items-center gap-3">
+                  <FileText className="h-5 w-5 text-primary" />
                   <span className="font-semibold">
-                    Documents Analyzed ({documents.length})
+                    Documents Analyzed
                   </span>
+                  <Badge variant="outline" className="text-xs">
+                    {documents.length} documents
+                  </Badge>
                 </div>
                 <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
               </summary>
               <CardContent className="pt-4">
                 <div className="grid gap-3">
-                  {documents.map((doc) => (
+                  {documents.map((doc, index) => (
                     <div
                       key={doc.id}
-                      className="flex items-center justify-between p-3 border rounded-lg"
+                      className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/30 transition-colors"
                     >
-                      <div>
-                        <p className="font-medium">{doc.fileName}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {doc.fileType}
-                        </p>
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold truncate">{doc.fileName}</p>
+                          <p className="text-xs text-muted-foreground uppercase">
+                            {doc.fileType} • Document {index + 1}
+                          </p>
+                        </div>
                       </div>
-                      <Badge variant="outline">Processed</Badge>
+                      <Badge variant="outline" className="text-xs bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-300 shrink-0">
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Processed
+                      </Badge>
                     </div>
                   ))}
                 </div>
@@ -1700,6 +1652,9 @@ export default function Analysis({ params }: AnalysisProps) {
                 </details>
               </Card>
             )}
+
+          {/* Market Comparison */}
+          <AnalysisComparison analysisData={data} />
 
           {/* Information Gaps - Critical Questions */}
           {publicSynthesizedData?.information_gaps?.length > 0 && (

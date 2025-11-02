@@ -243,7 +243,7 @@ export function Upload() {
       console.log('📄 Starting document analysis...')
       console.log('🌐 Starting public data analysis in parallel...')
       
-      const documentAnalysisPromise = fetch(getApiUrl(`/api/analyze/${startupId}`), {
+      const documentAnalysisPromise = fetch(getApiUrl(`/api/document-analysis/${startupId}`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

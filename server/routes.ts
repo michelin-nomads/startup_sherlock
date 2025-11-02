@@ -191,10 +191,10 @@ app.get("/api/health", (req: Request, res: Response) => {
   });
 
   // Analyze startup documents (ONLY document analysis)
-  app.post("/api/analyze/:startupId", async (req: Request, res: Response) => {
+  app.post("/api/document-analysis/:startupId", async (req: Request, res: Response) => {
     try {
       const { startupId } = req.params;
-      const { startupName, description, industry, useDeepAnalysis = false } = req.body;
+      const { startupName, description, industry} = req.body;
       
       console.log('📊 Starting document analysis for startup:', startupId);
       

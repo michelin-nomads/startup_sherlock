@@ -32,11 +32,11 @@ const menuItems = [
     url: "/benchmarks",
     icon: Target,
   },
-  {
-    title: "Research Test",
-    url: "/research-test",
-    icon: Search,
-  },
+  // {
+  //   title: "Research Test",
+  //   url: "/research-test",
+  //   icon: Search,
+  // },
 ]
 
 export function AppSidebar() {
