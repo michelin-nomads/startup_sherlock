@@ -744,10 +744,10 @@ export default function Analysis({ params }: AnalysisProps) {
     );
   }
 
-  const { startup, analysis, documents } = data;
-  const {
-    synthesizedInsights: { data: publicSynthesizedData } = { data: {} },
-  } = publicData;
+  const startup = data?.startup || '';
+  const analysis = data?.analysis || {};
+  const documents = data?.documents || [];
+  const publicSynthesizedData = publicData?.synthesizedInsights?.data || {};
 
   const getDecisionColor = (decision: string) => {
     switch (decision) {
