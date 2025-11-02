@@ -129,8 +129,7 @@ export function authorize(...allowedRoles: string[]) {
 async function getOrCreateUser(decodedToken: any) {
   const firebaseUid = decodedToken.uid;
   const email = decodedToken.email;
-  const displayName = decodedToken.name || decodedToken.email?.split('@')[0];
-  const photoURL = decodedToken.picture;
+  const displayName = decodedToken.name || decodedToken.display_name || null;
 
   // Try to find existing user by Firebase UID
   let user = await storage.getUserByFirebaseUid(firebaseUid);
@@ -141,11 +140,10 @@ async function getOrCreateUser(decodedToken: any) {
       user = await storage.createUser({
         firebaseUid,
         email,
-        displayName: displayName || null,
-        photoURL: photoURL || null,
+        displayName: displayName,
         role: 'analyst',
       });
-      console.log(`✅ Created new user: ${email}`);
+      console.log(`✅ Created new user: ${email} with displayName: ${displayName}`);
     } catch (error: any) {
       // Handle race condition where user was created by another request
       if (error.message?.includes('unique') || error.code === '23505') {
@@ -161,25 +159,19 @@ async function getOrCreateUser(decodedToken: any) {
     // Update last login time
     await storage.updateUserLastLogin(user.id);
     
-    // Update displayName and photoURL if they're missing or different
-    const needsUpdate = 
-      (!user.displayName && displayName) ||
-      (!user.photoURL && photoURL) ||
-      (user.displayName !== displayName) ||
-      (user.photoURL !== photoURL);
+    // Update displayName if it's missing or different
+    const needsUpdate = (!user.displayName && displayName) || (user.displayName !== displayName);
     
-    if (needsUpdate) {
+    if (needsUpdate && displayName) {
       try {
         await storage.updateUserProfile(user.id, {
-          displayName: displayName || user.displayName,
-          photoURL: photoURL || user.photoURL,
+          displayName: displayName,
         });
         
         // Update local user object
-        user.displayName = displayName || user.displayName;
-        user.photoURL = photoURL || user.photoURL;
+        user.displayName = displayName;
         
-        console.log(`✅ Updated user profile: ${email}`);
+        console.log(`✅ Updated user profile: ${email} with displayName: ${displayName}`);
       } catch (error) {
         console.error('Failed to update user profile:', error);
       }

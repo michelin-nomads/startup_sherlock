@@ -6,6 +6,7 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  updateProfile,
   signOut as firebaseSignOut,
   onAuthStateChanged,
   type User
@@ -76,10 +77,20 @@ export const signInWithEmail = async (email: string, password: string): Promise<
 /**
  * Sign up with email and password
  */
-export const signUpWithEmail = async (email: string, password: string): Promise<User> => {
+export const signUpWithEmail = async (email: string, password: string, displayName?: string): Promise<User> => {
   try {
     const result = await createUserWithEmailAndPassword(auth, email, password);
-    return result.user;
+    const user = result.user;
+    
+    // Update user profile with displayName if provided
+    if (displayName) {
+      await updateProfile(user, {
+        displayName: displayName
+      });
+      console.log('✅ Updated Firebase profile with displayName:', displayName);
+    }
+    
+    return user;
   } catch (error: any) {
     console.error('Email sign up error:', error);
     // Provide user-friendly error messages

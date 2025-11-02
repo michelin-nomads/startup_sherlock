@@ -142,7 +142,6 @@ export function AppSidebar() {
               className="w-full justify-start gap-3 px-3 py-6 hover:bg-sidebar-accent"
             >
               <Avatar className="h-8 w-8">
-                <AvatarImage src={user?.photoURL || undefined} alt={user?.displayName || user?.email || "User"} />
                 <AvatarFallback className="bg-primary text-primary-foreground">
                   {getUserInitials()}
                 </AvatarFallback>
