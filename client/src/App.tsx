@@ -22,6 +22,10 @@ import NotFound from "@/pages/not-found";
 import ComparisonPage from "@/pages/comparison";
 import ResearchTestPage from "@/pages/research-test"; // NEW: Hybrid Research Test
 import PublicDataAnalysisPage from "@/pages/public-data-analysis"; // NEW: Public Source Due Diligence
+import SignInPage from "@/pages/signin"; // NEW: Sign In
+import SignUpPage from "@/pages/signup"; // NEW: Sign Up
+import { ProtectedRoute } from "./components/protected-route";
+import { AuthProvider } from "./contexts/AuthContext";
 
 // Wrapper components to handle params
 function AnalysisWrapper() {
@@ -107,6 +111,15 @@ function AppContent() {
                 <Route path="/risk" element={<RiskPage />} />
                 <Route path="/research-test" element={<ResearchTestPage />} />
                 <Route path="/public-data-analysis/:startupId" element={<PublicDataAnalysisPage />} />
+                {/* Protected Routes */}
+                <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+                <Route path="/upload" element={<ProtectedRoute><UploadPage /></ProtectedRoute>} />
+                <Route path="/analysis" element={<ProtectedRoute><AnalysisWrapper /></ProtectedRoute>} />
+                <Route path="/analysis/:id" element={<ProtectedRoute><AnalysisWrapper /></ProtectedRoute>} />
+                <Route path="/benchmarks" element={<ProtectedRoute><BenchmarksPage /></ProtectedRoute>} />
+                <Route path="/benchmarks/comparison/:startupId" element={<ProtectedRoute><ComparisonWrapper /></ProtectedRoute>} />
+                <Route path="/risk" element={<ProtectedRoute><RiskPage /></ProtectedRoute>} />
+                <Route path="/public-data-analysis/:startupId" element={<ProtectedRoute><PublicDataAnalysisPage /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
@@ -134,14 +147,28 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="startup-sherlock-theme">
       <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Router>
-            <SidebarProvider style={style as React.CSSProperties}>
-              <AppContent />
-            </SidebarProvider>
-          </Router>
-          <Toaster />
-        </TooltipProvider>
+        <AuthProvider>
+          <TooltipProvider>
+            <Router>
+              <Routes>
+                {/* Public Auth Routes */}
+                <Route path="/signin" element={<SignInPage />} />
+                <Route path="/signup" element={<SignUpPage />} />
+
+                {/* Protected App Routes */}
+                <Route
+                  path="/*"
+                  element={
+                    <SidebarProvider style={style as React.CSSProperties}>
+                      <AppContent />
+                    </SidebarProvider>
+                  }
+                />
+              </Routes>
+              <Toaster />
+            </Router>
+          </TooltipProvider>
+        </AuthProvider>
       </QueryClientProvider>
     </ThemeProvider>
   );

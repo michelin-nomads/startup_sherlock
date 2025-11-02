@@ -9,6 +9,7 @@ import { ArrowLeft, TrendingUp, TrendingDown, BarChart3, Target, Users, DollarSi
 import AnalysisComparison from "@/components/analysis-comparison"
 import { useParams } from "react-router-dom"
 import { getApiUrl } from "@/lib/config"
+import { authenticatedFetchJSON } from "@/lib/api"
 
 interface AnalysisData {
     startup: {
@@ -70,11 +71,7 @@ export default function Comparison({ params }: ComparisonProps) {
     const { data: analysisData, isLoading: analysisLoading, error: analysisError } = useQuery<AnalysisData>({
         queryKey: ['/api/analysis', startupId],
         queryFn: async () => {
-            const response = await fetch(getApiUrl(`/api/analysis/${startupId}`))
-            if (!response.ok) {
-                throw new Error('Failed to fetch analysis data')
-            }
-            return response.json()
+            return await authenticatedFetchJSON(getApiUrl(`/api/analysis/${startupId}`))
         },
         enabled: !!startupId
     })
@@ -83,11 +80,7 @@ export default function Comparison({ params }: ComparisonProps) {
     const { data: benchmarkMetrics, isLoading: metricsLoading, error: metricsError } = useQuery<BenchmarkMetrics>({
         queryKey: ['/api/benchmark-metrics'],
         queryFn: async () => {
-            const response = await fetch(getApiUrl('/api/benchmark-metrics'))
-            if (!response.ok) {
-                throw new Error('Failed to fetch benchmark metrics')
-            }
-            return response.json()
+            return await authenticatedFetchJSON(getApiUrl('/api/benchmark-metrics'))
         },
         staleTime: 5 * 60 * 1000, // 5 minutes
     })

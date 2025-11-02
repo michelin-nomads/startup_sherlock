@@ -21,20 +21,222 @@ export interface StartupAnalysisResult {
     financials: number;
     competition: number;
   };
-  riskFlags: Array<{
-    type: 'high' | 'medium' | 'low';
-    category: string;
-    description: string;
-    impact: string;
-  }>;
   keyInsights: string[];
   recommendation: {
     decision: 'strong_buy' | 'buy' | 'hold' | 'pass';
     reasoning: string;
     targetInvestment: number;
     expectedReturn: number;
+    timeHorizon?: string;
   };
-  riskLevel: 'Low' | 'Medium' | 'High';
+  // New sections for detailed company information
+  companyInfo?: {
+    companyName: string;
+    companyType: string;
+    sector: string;
+    industry: string;
+    description: string;
+    foundedYear: string | number;
+    headquarters: string;
+    website: string;
+    otherLocations?: string[];
+  };
+  foundersInfo?: {
+    founders: Array<{
+      name: string;
+      role: string;
+      background: string;
+      experience: string[];
+      education: string[];
+    }>;
+    currentLeadership: Array<{
+      name: string;
+      title: string;
+      background: string;
+    }>;
+  };
+  corporateStructure?: {
+    parentCompany: string | null;
+    subsidiaries: string[];
+    mergers: Array<{
+      company: string;
+      year: string;
+      amount: string;
+    }>;
+    acquisitions: Array<{
+      company: string;
+      year: string;
+      amount: string;
+      rationale: string;
+    }>;
+  };
+  employeeInfo?: {
+    currentEmployeeSize: string | number;
+    employeeGrowthRate: string;
+    keyDepartments: string[];
+    hiringPlans: string;
+    departmentBreakdown?: Array<{
+      department: string;
+      size: number;
+    }>;
+    // Enhanced for visualization
+    employeeHistory?: Array<{
+      year: string;
+      count: number;
+    }>;
+  };
+  financialInfo?: {
+    currentRevenue: string;
+    revenueGrowthRate: string;
+    revenueModel: string;
+    grossMargin: string;
+    netMargin: string;
+    burnRate: string;
+    runway: string;
+    profitabilityStatus: string;
+    ebitda?: string;
+    pat?: string;
+    // Enhanced for visualization
+    revenueHistory?: Array<{
+      year: string;
+      revenue: string;
+      growthRate: string;
+    }>;
+    keyMetrics?: {
+      arr?: string;
+      mrr?: string;
+      cac?: string;
+      ltv?: string;
+      ltvCacRatio?: string;
+      paybackPeriod?: string;
+    };
+  };
+  fundingInfo?: {
+    totalFundingRaised: string;
+    lastFundingRound: string;
+    lastFundingAmount: string;
+    lastFundingDate: string;
+    currentValuation: string;
+    fundingRounds: Array<{
+      round: string;
+      amount: string;
+      date: string;
+      valuation: string;
+      valuationPre?: string;
+      valuationPost?: string;
+      leadInvestors: string[];
+      participatingInvestors?: string[];
+    }>;
+    currentInvestors: string[];
+    pastInvestorsExited?: Array<{
+      name: string;
+      exitReason: string;
+      exitDate: string;
+    }>;
+    notableVCInvestors?: string[];
+    fundingGoal: string;
+  };
+  // Additional structured sections for visualization
+  marketAnalysis?: {
+    marketSize: string;
+    marketGrowthRate: string;
+    targetMarket: string;
+    marketShare: string;
+    tam?: string;
+    sam?: string;
+    som?: string;
+    marketRanking?: string;
+    competitiveAdvantages: string[];
+    marketTrends?: string[];
+  };
+  competitorInfo?: {
+    mainCompetitors: string[];
+    competitivePosition: string;
+    differentiators: string[];
+    competitorComparison?: Array<{
+      name: string;
+      funding: string;
+      marketShare: string;
+      strengths: string[];
+      weaknesses: string[];
+    }>;
+  };
+  productInfo?: {
+    productDescription: string;
+    keyFeatures: string[];
+    technologyStack: string[];
+    developmentStage: string;
+    intellectualProperty: string[];
+    productRoadmap?: string[];
+    scalabilityFactors?: string[];
+  };
+  growthMetrics?: {
+    userGrowth: string;
+    revenueGrowth: string;
+    marketExpansion: string;
+    keyMilestones: Array<{
+      date: string;
+      milestone: string;
+    }>;
+    growthDrivers?: string[];
+    growthChallenges?: string[];
+  };
+  recentDevelopments?: {
+    allNews: Array<{
+      date: string;
+      title: string;
+      summary: string;
+      sentiment: 'positive' | 'negative' | 'neutral';
+    }>;
+    productLaunches?: string[];
+    partnerships?: string[];
+    awards?: string[];
+  };
+  riskAssessment?: {
+    overallRiskLevel: 'Low' | 'Medium' | 'High';
+    riskFlags: Array<{
+      type: 'high' | 'medium' | 'low';
+      category: string;
+      description: string;
+      impact: string;
+    }>;
+    categorizedRisks: {
+      marketRisks: string[];
+      competitiveRisks: string[];
+      financialRisks: string[];
+      operationalRisks: string[];
+      regulatoryRisks: string[];
+    };
+    mitigationStrategies: string[];
+  };
+  ipoAnalysis?: {
+    ipoPotential: 'High' | 'Medium' | 'Low' | 'Not Likely';
+    estimatedTimeline: string;
+    ipoReadiness: string;
+    marketConditions: string;
+    comparableIPOs?: string[];
+    estimatedValuation?: string;
+  };
+  customerFeedback?: {
+    customerSatisfaction: string;
+    npsScore?: string;
+    positiveReviews: string[];
+    negativeReviews: string[];
+    commonComplaints?: string[];
+    customerRetention?: string;
+  };
+  employeeSatisfaction?: {
+    glassdoorRating?: string;
+    pros: string[];
+    cons: string[];
+    workCulture?: string;
+    leadershipRating?: string;
+  };
+  informationGaps?: Array<{
+    question: string;
+    category: string;
+    importance: string;
+  }>;
 }
 
 // Retry configuration
@@ -227,6 +429,13 @@ function extractAnalysisFromText(text: string): StartupAnalysisResult {
   return {
     overallScore,
     metrics,
+    keyInsights: [
+      'Analysis performed using open source model fallback',
+      'Gemini API was unavailable, using alternative analysis method',
+      'Results based on document content analysis'
+    ],
+    riskAssessment: {
+      overallRiskLevel: riskLevel,
     riskFlags: [
       {
         type: 'medium',
@@ -235,61 +444,107 @@ function extractAnalysisFromText(text: string): StartupAnalysisResult {
         impact: 'Results may be less detailed than Gemini analysis'
       }
     ],
-    keyInsights: [
-      'Analysis performed using open source model fallback',
-      'Gemini API was unavailable, using alternative analysis method',
-      'Results based on document content analysis'
-    ],
+      categorizedRisks: {
+        marketRisks: [],
+        competitiveRisks: [],
+        financialRisks: [],
+        operationalRisks: [],
+        regulatoryRisks: []
+      },
+      mitigationStrategies: []
+    },
     recommendation: {
       decision,
       reasoning: `Based on overall score of ${overallScore}, this appears to be a ${decision.replace('_', ' ')} opportunity.`,
       targetInvestment: calculateDynamicInvestment(overallScore, metrics),
       expectedReturn: calculateDynamicReturn(overallScore, metrics)
-    },
-    riskLevel
+    }
   };
 }
 
 export async function analyzeStartupDocuments(documents: Array<{ content: string; type: string; name: string }>): Promise<StartupAnalysisResult> {
   try {
-    const systemPrompt = `You are an expert startup investment analyst with 15+ years of experience in venture capital and startup evaluation. Your task is to analyze startup documents and provide a comprehensive investment assessment.
+    const systemPrompt = `You are an expert startup investment analyst with 15+ years of experience in venture capital and startup evaluation. Your task is to analyze startup documents and provide a comprehensive, data-rich investment assessment with structured, visualization-ready data.
 
-ANALYSIS FRAMEWORK:
+KEY PRINCIPLES FOR DOCUMENT ANALYSIS:
+1. Extract SPECIFIC NUMBERS, DATES, and FACTS from documents - prioritize quantitative data
+2. Structure data for charts and graphs (time-series data, growth metrics, comparisons)
+3. Break down information into quantifiable metrics where possible
+4. Keep text descriptions concise (under 200 characters per item)
+5. Use arrays for lists to enable easy visualization
+6. Extract ALL available financial metrics (ARR, MRR, CAC, LTV, burn rate, runway, margins, etc.)
+7. Document ALL funding rounds with valuations (pre-money and post-money if available)
+8. Identify past investors who exited and document WHY they exited (critical insight)
+9. Extract competitor data with specific numbers (funding amounts, market share, etc.)
+10. Categorize recent news and developments by type (product launches, partnerships, awards, etc.)
+11. If exact data unavailable, use "N/A" - do not estimate or assume
+12. Flag information gaps - what questions need to be asked to the company
+
+ANALYSIS FRAMEWORK (Score each 0-100):
+
 1. Market Size & Opportunity (0-100)
-   - Total Addressable Market (TAM)
-   - Market growth rate and trends
-   - Competitive landscape saturation
-   - Regulatory environment
+   Evaluate and extract:
+   - Total Addressable Market (TAM) - extract numeric value with currency
+   - Market growth rate - extract percentage (e.g., "25% CAGR")
+   - Target market segments - list specific segments
+   - Competitive landscape - number of competitors, market saturation
+   - Market trends - extract specific trends mentioned
+   - Regulatory environment assessment
 
 2. Traction & Growth Metrics (0-100)
-   - Revenue growth rate
-   - User/customer acquisition
-   - Product-market fit indicators
-   - Key performance metrics
+   Extract specific metrics:
+   - Revenue figures (current, historical) - with currency and dates
+   - Revenue growth rate - percentage with time period
+   - User/customer count - current number and growth rate
+   - Customer acquisition metrics (CAC, conversion rates)
+   - Retention rates and churn
+   - Product-market fit indicators - specific evidence
+   - Key milestones achieved - with dates
 
 3. Team Quality & Experience (0-100)
-   - Founder backgrounds and expertise
-   - Team composition and skills
-   - Previous startup experience
-   - Advisory board quality
+   Document structure:
+   - Founders: names, roles, previous companies, years of experience, education
+   - Leadership team: names, titles, relevant background (concise)
+   - Team size and composition - numbers by department
+   - Advisory board members - names and credentials
+   - Gaps in team structure
 
 4. Product/Technology Innovation (0-100)
-   - Technology differentiation
-   - Intellectual property
-   - Scalability and defensibility
-   - Product roadmap clarity
+   Extract details:
+   - Product description - what it does, how it works (concise)
+   - Key features - list specific features
+   - Technology stack - specific technologies used
+   - Intellectual property - number of patents, trademarks
+   - Development stage (MVP, Beta, Launch, Scale)
+   - Technical advantages - list specific differentiators
+   - Scalability factors
+   - Product roadmap - future features with timelines
 
 5. Financial Health & Unit Economics (0-100)
-   - Revenue model viability
-   - Unit economics (CAC, LTV, payback period)
-   - Burn rate and runway
-   - Path to profitability
+   Extract all financial data:
+   - Current revenue - amount with currency and date
+   - Revenue history - year-by-year data (for charts)
+   - Revenue model - description (subscription, transaction, etc.)
+   - Gross margin - percentage
+   - Net margin - percentage
+   - Unit economics:
+     * CAC (Customer Acquisition Cost) - amount
+     * LTV (Lifetime Value) - amount
+     * LTV/CAC ratio - numeric ratio
+     * Payback period - months
+   - Burn rate - monthly amount with currency
+   - Cash runway - months remaining
+   - Path to profitability - timeline and strategy
+   - Key financial metrics (ARR, MRR, GMV, etc.)
 
 6. Competitive Positioning (0-100)
-   - Competitive advantages
-   - Market positioning
-   - Barriers to entry
-   - Threat of substitutes
+   Structure competitive data:
+   - Main competitors - list names
+   - Competitive advantages - list specific advantages
+   - Market positioning - where they fit in market
+   - Differentiators - what makes them unique
+   - Barriers to entry they've built
+   - Threat assessment
 
 SCORING GUIDELINES:
 - 90-100: Exceptional, industry-leading
@@ -300,9 +555,12 @@ SCORING GUIDELINES:
 - 0-49: Poor, major red flags
 
 RISK ASSESSMENT:
-- High Risk: Multiple critical issues, poor fundamentals
-- Medium Risk: Some concerns but manageable
-- Low Risk: Strong fundamentals, minor issues
+Categorize risks into specific areas:
+- Market Risks: List specific market-related risks
+- Competitive Risks: List competitive threats
+- Financial Risks: List financial concerns
+- Operational Risks: List execution risks
+- Overall Risk Level: High/Medium/Low with brief explanation
 
 INVESTMENT RECOMMENDATIONS:
 - strong_buy: Exceptional opportunity (score 85+)
@@ -310,7 +568,194 @@ INVESTMENT RECOMMENDATIONS:
 - hold: Wait and see (score 55-69)
 - pass: Not recommended (score <55)
 
-CRITICAL: You MUST respond with valid JSON in the exact format specified below. Do not include any text before or after the JSON. Ensure all numbers are valid (no NaN, null, or undefined values).
+DATA EXTRACTION REQUIREMENTS:
+Extract and structure ALL available data from documents with maximum detail and specificity:
+
+1. COMPANY INFORMATION:
+   - Company name (exact legal name)
+   - Company type (Pvt Ltd, LLC, Inc, etc.)
+   - Sector (Technology, Healthcare, Finance, etc.)
+   - Industry (SaaS, FinTech, AI/ML, E-commerce, etc.)
+   - Description (what they do - concise, under 200 chars)
+   - Founded year/date (exact date if available)
+   - Headquarters (city, country)
+   - Other locations (list all office locations)
+   - Website URL
+
+2. CORPORATE STRUCTURE:
+   - Parent company (if any)
+   - Subsidiaries (list all subsidiary companies)
+   - Mergers (if any):
+     * Company name
+     * Year of merger
+     * Deal amount (if mentioned)
+   - Acquisitions (if any):
+     * Company name acquired
+     * Year of acquisition
+     * Deal amount (if mentioned)
+     * Rationale for acquisition
+
+3. FOUNDERS & LEADERSHIP:
+   For each founder:
+   - Name
+   - Role/Title
+   - Background (previous companies, experience - concise)
+   - Experience array (list previous roles/companies)
+   - Education array (degrees, institutions)
+   
+   For current leadership:
+   - Name, Title, Background (concise)
+
+4. EMPLOYEE INFORMATION:
+   - Current employee count or range
+   - Employee growth rate (percentage or trend)
+   - Key departments (list)
+   - Department breakdown (if available):
+     * Department name
+     * Size (number of employees)
+   - Hiring plans (brief description)
+   - Employee history (if available): year-by-year count for charts
+
+5. FINANCIAL INFORMATION (Critical for visualization - extract ALL metrics):
+   - Current revenue (amount with currency, e.g., "$5M USD")
+   - Revenue growth rate (percentage, e.g., "+120% YoY")
+   - Revenue model (subscription, transaction, hybrid, etc.)
+   - Gross margin (percentage if available)
+   - Net margin (percentage if available)
+   - Burn rate (monthly amount, e.g., "$200K/month")
+   - Runway (months, e.g., "18 months")
+   - Profitability status (profitable/unprofitable/break-even)
+   - EBITDA (if mentioned)
+   - PAT (Profit After Tax, if mentioned)
+   
+   Revenue history (for charts):
+   - Array of year, revenue, growth rate
+   
+   Key metrics (extract ALL available):
+   - ARR (Annual Recurring Revenue)
+   - MRR (Monthly Recurring Revenue)
+   - CAC (Customer Acquisition Cost)
+   - LTV (Lifetime Value)
+   - LTV/CAC Ratio
+   - Payback Period (months)
+
+6. FUNDING INFORMATION (CRITICAL - Be very detailed):
+   - Total funding raised (amount with currency)
+   - Last funding round (Seed, Series A/B/C, etc.)
+   - Last funding amount
+   - Last funding date
+   - Current valuation (if mentioned)
+   - Funding rounds array (ALL rounds):
+     * Round type
+     * Amount raised
+     * Date (exact date)
+     * Valuation (post-money if available)
+     * Valuation Pre (pre-money if available)
+     * Valuation Post (post-money if available)
+     * Lead investors (names)
+     * Participating investors (all other investors)
+   - Current investors (list all current investor names)
+   - Past investors who exited (CRITICAL):
+     * Investor name
+     * Exit reason (WHY they exited - very important insight)
+     * Exit date
+   - Notable VC investors (YC, Sequoia, a16z, Tiger Global, Accel, etc.)
+   - Funding goal (if seeking new funding)
+
+7. MARKET ANALYSIS (Extract detailed market metrics):
+   - Market size (TAM - Total Addressable Market with currency)
+   - SAM (Serviceable Addressable Market)
+   - SOM (Serviceable Obtainable Market)
+   - Market growth rate (percentage with timeframe)
+   - Target market (description - concise)
+   - Market share (percentage if mentioned)
+   - Market ranking (e.g., "#3 in the space")
+   - Competitive advantages (list specific advantages)
+   - Market trends (list relevant market trends)
+
+8. COMPETITOR INFORMATION (Detailed competitive analysis):
+   - Main competitors (list names)
+   - Competitive position (market leader/challenger/niche player)
+   - Differentiators (list what makes them unique)
+   - Competitor comparison (if data available):
+     * Competitor name
+     * Their funding amount
+     * Their market share
+     * Their strengths
+     * Their weaknesses
+
+9. PRODUCT INFORMATION:
+   - Product description (concise, under 200 chars)
+   - Key features (list)
+   - Technology stack (list technologies)
+   - Development stage (MVP/Beta/Launched/Scaling)
+   - Intellectual property (patents, trademarks - list)
+   - Product roadmap (future features with timelines if mentioned)
+   - Scalability factors (technical advantages for scaling)
+
+10. GROWTH METRICS:
+    - User growth (rate or trend with numbers)
+    - Revenue growth (percentage with timeframe)
+    - Market expansion plans (specific plans)
+    - Key milestones (array with date and milestone)
+
+11. RECENT DEVELOPMENTS (Last 6-12 months - categorize by type):
+    All News:
+    - Date (YYYY-MM-DD)
+    - Title
+    - Summary (brief, under 200 chars)
+    - Sentiment (positive/negative/neutral)
+    
+    Categorize into:
+    - Product launches (list with dates)
+    - Partnerships (list with dates)
+    - Awards and recognition (list with dates)
+
+12. RISK ASSESSMENT (Comprehensive risk analysis - CRITICAL SECTION):
+    This is a unified risk assessment combining overall risk evaluation, specific risk flags, and categorized risks.
+
+    A. Overall Risk Level:
+       - Assess and provide: Low / Medium / High
+
+    B. Individual Risk Flags (Top 5-10 most critical risks):
+       For each risk flag:
+       - Type: high / medium / low
+       - Category: (e.g., "Market Risk", "Financial Risk", "Team Risk", "Product Risk", "Competitive Risk", "Regulatory Risk")
+       - Description: (brief, specific description - under 150 chars)
+       - Impact: (what happens if this risk materializes - under 150 chars)
+    
+    C. Categorized Risks (Comprehensive list by type):
+       - Market risks (list with impact assessment)
+       - Competitive risks (list specific threats)
+       - Financial risks (list concerns)
+       - Operational risks (list execution risks)
+       - Regulatory risks (list compliance/legal concerns)
+    
+    D. Mitigation Strategies:
+       - List strategies to address each risk category
+
+13. IPO ANALYSIS (If relevant):
+    - IPO potential (High/Medium/Low/Not Likely)
+    - Estimated timeline (when could they go public)
+    - IPO readiness factors (what makes them ready/not ready)
+    - Market conditions (current market for IPOs)
+    - Comparable IPOs (similar companies that went public)
+    - Estimated IPO valuation (if projectable)
+
+
+IMPORTANT FORMATTING RULES:
+- Use "N/A" if information not found in documents
+- Extract exact numbers and dates when available
+- Keep text descriptions under 200 characters
+- Use arrays for lists (enables easy visualization)
+- Include currency symbols ($ for USD, ₹ for INR, etc.)
+- Format dates as YYYY-MM-DD or YYYY-MM or YYYY
+- For historical data, create arrays suitable for time-series charts
+- Empty arrays [] if no information found (never null)
+- For investor exits, the reason WHY they exited is CRITICAL - research/infer carefully
+- Categorize news by type for better organization
+
+CRITICAL: You MUST respond with valid JSON in the exact format specified below. Do not include any text before or after the JSON. Ensure all numbers are valid (no NaN, null, or undefined values). All optional fields should be included with "N/A" or empty arrays if data is not available.
 
 {
   "overallScore": number,
@@ -335,9 +780,201 @@ CRITICAL: You MUST respond with valid JSON in the exact format specified below. 
     "decision": "strong_buy|buy|hold|pass",
     "reasoning": "string",
     "targetInvestment": number,
-    "expectedReturn": number
+      "expectedReturn": number,
+      "timeHorizon": "string (e.g., '3-5 years')"
   },
-  "riskLevel": "Low|Medium|High"
+  "riskLevel": "Low|Medium|High",
+  "companyInfo": {
+    "companyName": "string",
+    "companyType": "string",
+    "sector": "string",
+    "industry": "string",
+    "description": "string",
+    "foundedYear": "string or number",
+    "headquarters": "string",
+      "website": "string",
+      "otherLocations": ["string"]
+    },
+    "corporateStructure": {
+      "parentCompany": "string or null",
+      "subsidiaries": ["string"],
+      "mergers": [
+        {
+          "company": "string",
+          "year": "string",
+          "amount": "string"
+        }
+      ],
+      "acquisitions": [
+        {
+          "company": "string",
+          "year": "string",
+          "amount": "string",
+          "rationale": "string"
+        }
+      ]
+  },
+  "foundersInfo": {
+    "founders": [
+      {
+        "name": "string",
+        "role": "string",
+        "background": "string",
+        "experience": ["string"],
+        "education": ["string"]
+      }
+    ],
+    "currentLeadership": [
+      {
+        "name": "string",
+        "title": "string",
+        "background": "string"
+      }
+    ]
+  },
+  "employeeInfo": {
+    "currentEmployeeSize": "string or number",
+    "employeeGrowthRate": "string",
+    "keyDepartments": ["string"],
+      "hiringPlans": "string",
+      "departmentBreakdown": [
+        {
+          "department": "string",
+          "size": number
+        }
+      ],
+      "employeeHistory": [
+        {
+          "year": "string",
+          "count": number
+        }
+      ]
+  },
+  "financialInfo": {
+    "currentRevenue": "string",
+    "revenueGrowthRate": "string",
+    "revenueModel": "string",
+    "grossMargin": "string",
+    "netMargin": "string",
+    "burnRate": "string",
+    "runway": "string",
+      "profitabilityStatus": "string",
+      "ebitda": "string",
+      "pat": "string",
+      "revenueHistory": [
+        {
+          "year": "string",
+          "revenue": "string",
+          "growthRate": "string"
+        }
+      ],
+      "keyMetrics": {
+        "arr": "string",
+        "mrr": "string",
+        "cac": "string",
+        "ltv": "string",
+        "ltvCacRatio": "string",
+        "paybackPeriod": "string"
+      }
+  },
+  "fundingInfo": {
+    "totalFundingRaised": "string",
+    "lastFundingRound": "string",
+    "lastFundingAmount": "string",
+    "lastFundingDate": "string",
+    "currentValuation": "string",
+    "fundingRounds": [
+      {
+        "round": "string",
+        "amount": "string",
+        "date": "string",
+        "valuation": "string",
+          "valuationPre": "string",
+          "valuationPost": "string",
+          "leadInvestors": ["string"],
+          "participatingInvestors": ["string"]
+      }
+    ],
+    "currentInvestors": ["string"],
+      "pastInvestorsExited": [
+        {
+          "name": "string",
+          "exitReason": "string (WHY they exited - critical)",
+          "exitDate": "string"
+        }
+      ],
+      "notableVCInvestors": ["string"],
+    "fundingGoal": "string"
+    },
+    "marketAnalysis": {
+      "marketSize": "string (TAM)",
+      "marketGrowthRate": "string",
+      "targetMarket": "string",
+      "marketShare": "string",
+      "competitiveAdvantages": ["string"]
+    },
+    "competitorInfo": {
+      "mainCompetitors": ["string"],
+      "competitivePosition": "string",
+      "differentiators": ["string"],
+      "competitorComparison": [
+        {
+          "name": "string",
+          "funding": "string",
+          "marketShare": "string",
+          "strengths": ["string"],
+          "weaknesses": ["string"]
+        }
+      ]
+    },
+    "productInfo": {
+      "productDescription": "string",
+      "keyFeatures": ["string"],
+      "technologyStack": ["string"],
+      "developmentStage": "string",
+      "intellectualProperty": ["string"],
+      "productRoadmap": ["string"],
+      "scalabilityFactors": ["string"]
+    },
+    "growthMetrics": {
+      "userGrowth": "string",
+      "revenueGrowth": "string",
+      "marketExpansion": "string",
+      "keyMilestones": [
+        {
+          "date": "string",
+          "milestone": "string"
+        }
+    },
+    "recentDevelopments": {
+      "allNews": [
+        {
+          "date": "string (YYYY-MM-DD)",
+          "title": "string",
+          "summary": "string",
+          "sentiment": "positive|negative|neutral"
+        }
+      ],
+      "productLaunches": ["string"],
+      "partnerships": ["string"],
+      "awards": ["string"]
+    },
+    "riskAssessment": {
+      "marketRisks": ["string"],
+      "competitiveRisks": ["string"],
+      "financialRisks": ["string"],
+      "operationalRisks": ["string"],
+      "regulatoryRisks": ["string"],
+      "mitigationStrategies": ["string"]
+    },
+    "ipoAnalysis": {
+      "ipoPotential": "High|Medium|Low|Not Likely",
+      "estimatedTimeline": "string",
+      "ipoReadiness": "string",
+      "marketConditions": "string",
+      "comparableIPOs": ["string"],
+      "estimatedValuation": "string"
+    },
 }`;
 
     const documentContent = documents.map(doc => 
@@ -350,62 +987,15 @@ CRITICAL: You MUST respond with valid JSON in the exact format specified below. 
     // Try multiple models with retry logic
     const response = await tryModelsInOrder(async (model) => {
       if (model.startsWith('gemini')) {
-        // Gemini API call
+        // Gemini API call - using responseMimeType without strict schema (like buildDueDiligencePrompt)
         return await retryWithBackoff(async () => {
           const geminiResponse = await ai.models.generateContent({
             model: model,
             config: {
-              systemInstruction: systemPrompt,
               responseMimeType: "application/json",
-              responseSchema: {
-                type: "object",
-                properties: {
-                  overallScore: { type: "number", minimum: 0, maximum: 100 },
-                  metrics: {
-                    type: "object",
-                    properties: {
-                      marketSize: { type: "number", minimum: 0, maximum: 100 },
-                      traction: { type: "number", minimum: 0, maximum: 100 },
-                      team: { type: "number", minimum: 0, maximum: 100 },
-                      product: { type: "number", minimum: 0, maximum: 100 },
-                      financials: { type: "number", minimum: 0, maximum: 100 },
-                      competition: { type: "number", minimum: 0, maximum: 100 }
-                    },
-                    required: ["marketSize", "traction", "team", "product", "financials", "competition"]
-                  },
-                  riskFlags: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        type: { type: "string", enum: ["high", "medium", "low"] },
-                        category: { type: "string" },
-                        description: { type: "string" },
-                        impact: { type: "string" }
-                      },
-                      required: ["type", "category", "description", "impact"]
-                    }
-                  },
-                  keyInsights: {
-                    type: "array",
-                    items: { type: "string" }
-                  },
-                  recommendation: {
-                    type: "object",
-                    properties: {
-                      decision: { type: "string", enum: ["strong_buy", "buy", "hold", "pass"] },
-                      reasoning: { type: "string" },
-                      targetInvestment: { type: "number", minimum: 0 },
-                      expectedReturn: { type: "number", minimum: 0 }
-                    },
-                    required: ["decision", "reasoning", "targetInvestment", "expectedReturn"]
-                  },
-                  riskLevel: { type: "string", enum: ["Low", "Medium", "High"] }
-                },
-                required: ["overallScore", "metrics", "riskFlags", "keyInsights", "recommendation", "riskLevel"]
-              }
+              temperature: 0.3, // Lower temperature for more factual analysis
             },
-            contents: documentContent,
+            contents: systemPrompt + "\n\nDOCUMENTS TO ANALYZE:\n\n" + documentContent,
           });
           return { text: geminiResponse.text };
         });

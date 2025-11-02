@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react"
+import { authenticatedFetchJSON } from "@/lib/api"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -337,11 +338,7 @@ export function Dashboard() {
   const { data: startups, isLoading } = useQuery({
     queryKey: ['/api/startups'],
     queryFn: async () => {
-      const response = await fetch(getApiUrl('/api/startups'))
-      if (!response.ok) {
-        throw new Error('Failed to fetch startups')
-      }
-      const data = await response.json()
+      const data = await authenticatedFetchJSON(getApiUrl('/api/startups'))
       
       // Save to local storage for persistence
       localStorage.setItem('startups', JSON.stringify(data))

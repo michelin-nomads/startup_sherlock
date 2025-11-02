@@ -1,17 +1,10 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Command,
   CommandEmpty,
@@ -25,8 +18,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Tooltip,
@@ -39,6 +30,7 @@ import {
   TrendingDown,
   AlertTriangle,
   CheckCircle,
+  CheckCircle2,
   ArrowLeft,
   Star,
   ChevronDown,
@@ -50,22 +42,23 @@ import {
   Loader2,
   Plus,
   X,
+  XCircle,
   FileText,
   Database,
   GitCompare,
   BarChart,
   Target,
   RefreshCcw,
-  MessageSquare,
+  PieChart as PieChartIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnalysisComparison from "@/components/analysis-comparison";
 import { PublicDataSection } from "@/components/public-data-section";
-import { DataDiscrepancyComparison } from "@/components/data-discrepancy-comparison";
-import { AIChatbot } from "@/components/ai-chatbot";
+import CompanyDetailsSection from "@/components/company-details-section";
 import { useState, useEffect } from "react";
 import { getApiUrl } from "@/lib/config.ts";
 import { formatCurrency } from "@/lib/utils";
+import { authenticatedFetchJSON } from "@/lib/api";
 
 interface AnalysisData {
   startup: {
@@ -235,7 +228,9 @@ interface AnalysisProps {
 export default function Analysis({ params }: AnalysisProps) {
   const id = params.id;
   const navigate = useNavigate();
-  const [publicData, setPublicData] = useState<any>({ synthesizedInsights: { data: {} } });
+  const [publicData, setPublicData] = useState<any>({
+    synthesizedInsights: { data: {} },
+  });
   const [publicDataStatus, setPublicDataStatus] = useState<
     "loading" | "failed" | "success"
   >("loading");
@@ -243,14 +238,10 @@ export default function Analysis({ params }: AnalysisProps) {
   const [hasSuccessfulRetry, setHasSuccessfulRetry] = useState(false);
 
   const { data, isLoading, error, refetch } = useQuery<AnalysisData>({
-    queryKey: ["/api/analysis", id],
+    queryKey: ['/api/analysis', id],
     queryFn: async () => {
-      const response = await fetch(getApiUrl(`/api/analysis/${id}`));
-      if (!response.ok) {
-        throw new Error("Failed to fetch analysis data");
-      }
-      const analysisData = await response.json();
-
+      const analysisData = await authenticatedFetchJSON(getApiUrl(`/api/analysis/${id}`))
+      
       // Save to local storage for persistence
       if (analysisData && id) {
         localStorage.setItem(`analysis_${id}`, JSON.stringify(analysisData));
@@ -302,39 +293,51 @@ export default function Analysis({ params }: AnalysisProps) {
     }
   }, [data, hasSuccessfulRetry, publicData, publicDataStatus]);
 
+  // Extract public data from analysis data (stored in startup.analysisData)
+  useEffect(() => {
+    // Don't override if we have successfully retried and fetched public data
+    if (hasSuccessfulRetry && publicData && publicDataStatus === 'success') {
+      return;
+    }
+
+    if (data?.startup?.analysisData) {
+      const analysisData = data.startup.analysisData as any;
+      if (analysisData.publicSourceDueDiligence) {
+        // Public data available
+        setPublicData(analysisData.publicSourceDueDiligence);
+        setPublicDataStatus('success');
+      } else if (analysisData.analysisType) {
+        // Analysis is complete but public data is missing - it failed during parallel execution
+        setPublicData(null);
+        setPublicDataStatus('failed');
+      } else {
+        // Still loading (old background mode, shouldn't happen with new parallel execution)
+        setPublicDataStatus('loading');
+      }
+    }
+  }, [data, hasSuccessfulRetry, publicData, publicDataStatus]);
+
   // Function to retry public data analysis
   const handleRefreshPublicData = async () => {
     if (!id) return;
-
+    
     setIsRefreshingPublicData(true);
-    setPublicDataStatus("loading");
+    setPublicDataStatus('loading');
     setHasSuccessfulRetry(false); // Reset the flag
-
+    
     try {
-      const response = await fetch(
-        getApiUrl(`/api/public-data-analysis/${id}`),
-        {
-          method: "POST",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to refresh public data analysis");
-      }
-
-      const result = await response.json();
-
+      const result = await authenticatedFetchJSON(getApiUrl(`/api/public-data-analysis/${id}`), {
+        method: 'POST',
+      });
+      
       // Update the public data with the new result
-      if (result.publicData) {
+      if (result.publicSourceDueDiligence) {
         // Create a new object reference to ensure React detects the change
-        const newPublicData = {
-          ...result.publicData,
-          _refreshTimestamp: Date.now(),
-        };
+        const newPublicData = { ...result.publicSourceDueDiligence, _refreshTimestamp: Date.now() };
         setPublicData(newPublicData);
-        setPublicDataStatus("success");
+        setPublicDataStatus('success');
         setHasSuccessfulRetry(true); // Mark as successful retry
-
+        
         // Update localStorage with the new data
         if (id) {
           const existingData = localStorage.getItem(`analysis_${id}`);
@@ -343,24 +346,23 @@ export default function Analysis({ params }: AnalysisProps) {
               const parsed = JSON.parse(existingData);
               parsed.startup = parsed.startup || {};
               parsed.startup.analysisData = parsed.startup.analysisData || {};
-              parsed.startup.analysisData.publicSourceDueDiligence =
-                result.publicData;
+              parsed.startup.analysisData.publicSourceDueDiligence = result.publicSourceDueDiligence;
               localStorage.setItem(`analysis_${id}`, JSON.stringify(parsed));
             } catch (e) {
-              console.error("Failed to update localStorage:", e);
+              console.error('Failed to update localStorage:', e);
             }
           }
         }
-
+        
         // Invalidate and refetch the query to ensure consistency
-        queryClient.invalidateQueries({ queryKey: ["/api/analysis", id] });
+        queryClient.invalidateQueries({ queryKey: ['/api/analysis', id] });
       } else {
-        setPublicDataStatus("failed");
+        setPublicDataStatus('failed');
         setHasSuccessfulRetry(false);
       }
     } catch (error) {
-      console.error("Error refreshing public data:", error);
-      setPublicDataStatus("failed");
+      console.error('Error refreshing public data:', error);
+      setPublicDataStatus('failed');
       setHasSuccessfulRetry(false);
     } finally {
       setIsRefreshingPublicData(false);
@@ -373,12 +375,8 @@ export default function Analysis({ params }: AnalysisProps) {
   >({
     queryKey: ["/api/startups"],
     queryFn: async () => {
-      const response = await fetch(getApiUrl("/api/startups"));
-      if (!response.ok) {
-        throw new Error("Failed to fetch startups");
-      }
-      const data = await response.json();
-
+      const data = await authenticatedFetchJSON(getApiUrl('/api/startups'))
+      
       // Save to local storage for persistence
       localStorage.setItem("startups", JSON.stringify(data));
 
@@ -411,15 +409,9 @@ export default function Analysis({ params }: AnalysisProps) {
 
   // Enhanced Analysis Mutation
   const enhancedAnalysisMutation = useMutation({
-    mutationFn: async ({
-      startupId,
-      websites,
-    }: {
-      startupId: string;
-      websites: string[];
-    }) => {
-      const response = await fetch(getApiUrl("/api/enhanced-analysis"), {
-        method: "POST",
+    mutationFn: async ({ startupId, websites }: { startupId: string, websites: string[] }) => {
+      return await authenticatedFetchJSON(getApiUrl('/api/enhanced-analysis'), {
+        method: 'POST',
         headers: {
           "Content-Type": "application/json",
         },
@@ -427,13 +419,7 @@ export default function Analysis({ params }: AnalysisProps) {
           startupId,
           websites: websites.filter((url) => url.trim() !== ""),
         }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to perform enhanced analysis");
-      }
-
-      return response.json();
+      })
     },
     onSuccess: (data) => {
       // Save enhanced analysis results to local storage
@@ -454,7 +440,9 @@ export default function Analysis({ params }: AnalysisProps) {
       }
 
       // Refetch the analysis data to show the new enhanced sections
-      queryClient.invalidateQueries({ queryKey: ["/api/analysis", id] });
+      queryClient.invalidateQueries({
+        queryKey: ["/api/analysis", id],
+      });
       setIsEnhancedAnalysisLoading(false);
     },
     onError: (error) => {
@@ -729,7 +717,6 @@ export default function Analysis({ params }: AnalysisProps) {
       </div>
     );
   }
-
   if (error || !data) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -779,14 +766,10 @@ export default function Analysis({ params }: AnalysisProps) {
 
   const getRiskColor = (risk: string) => {
     switch (risk?.toLowerCase()) {
-      case "low":
-        return "text-green-600";
-      case "medium":
-        return "text-yellow-600";
-      case "high":
-        return "text-red-600";
-      default:
-        return "text-gray-600";
+      case 'low': return 'text-green-600'
+      case 'medium': return 'text-yellow-600'
+      case 'high': return 'text-red-600'
+      default: return 'text-gray-600'
     }
   };
 
@@ -814,18 +797,10 @@ export default function Analysis({ params }: AnalysisProps) {
                 <ArrowLeft className="h-4 w-4" />
               </Link>
             </Button>
-            <h1 className="text-3xl font-bold tracking-tight">
-              {startup.name}
-            </h1>
+            <h1 className="text-3xl font-bold tracking-tight">{startup.name}</h1>
             {analysis.recommendation?.decision && (
-              <Badge
-                className={`${getDecisionColor(
-                  analysis.recommendation.decision
-                )} text-white`}
-              >
-                {analysis.recommendation.decision
-                  .replace("_", " ")
-                  .toUpperCase()}
+              <Badge className={`${getDecisionColor(analysis.recommendation.decision)} text-white`}>
+                {analysis.recommendation.decision.replace('_', ' ').toUpperCase()}
               </Badge>
             )}
           </div>
@@ -883,9 +858,9 @@ export default function Analysis({ params }: AnalysisProps) {
                   Target Investment
                 </p>
                 <p className="text-2xl font-bold">
-                  {analysis.recommendation?.targetInvestment
-                    ? formatCurrency(analysis.recommendation.targetInvestment)
-                    : "N/A"}
+                  {analysis.recommendation?.targetInvestment 
+                    ? formatCurrency(analysis.recommendation.targetInvestment) 
+                    : 'N/A'}
                 </p>
               </div>
               <TrendingUp className="h-8 w-8 text-green-500" />
@@ -897,13 +872,11 @@ export default function Analysis({ params }: AnalysisProps) {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Expected Return
-                </p>
+                <p className="text-sm font-medium text-muted-foreground">Expected Return</p>
                 <p className="text-2xl font-bold">
-                  {analysis.recommendation?.expectedReturn
-                    ? `${analysis.recommendation.expectedReturn}x`
-                    : "N/A"}
+                  {analysis.recommendation?.expectedReturn 
+                    ? `${analysis.recommendation.expectedReturn}x` 
+                    : 'N/A'}
                 </p>
               </div>
               <TrendingUp className="h-8 w-8 text-blue-500" />
@@ -931,126 +904,162 @@ export default function Analysis({ params }: AnalysisProps) {
 
         {/* Tab 1: Document Analysis */}
         <TabsContent value="documents" className="space-y-6 mt-6">
-          {/* Detailed Metrics */}
-          <Card>
-            <details className="group">
-              <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-                <div className="flex items-center gap-2">
-                  <BarChart className="h-5 w-5" />
-                  <span className="font-semibold">
-                    Detailed Metrics Analysis
-                  </span>
-                </div>
-                <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-              </summary>
-              <CardContent className="space-y-6 pt-4">
-                {analysis.metrics &&
-                Object.keys(analysis.metrics).length > 0 ? (
-                  Object.entries(analysis?.metrics || {}).map(
-                    ([metric, score]) => (
-                      <div key={metric} className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="font-medium capitalize">
-                            {metric.replace(/([A-Z])/g, " $1").trim()}
-                          </span>
-                          <span>{score}/100</span>
-                        </div>
-                        <Progress value={score as number} className="h-2" />
-                      </div>
-                    )
-                  )
-                ) : (
-                  <p className="text-sm text-muted-foreground">
-                    No metrics data available
-                  </p>
-                )}
-              </CardContent>
-            </details>
-          </Card>
+          {/* Company Details Section - New Sections */}
+          <CompanyDetailsSection analysisData={data} />
 
           {/* Investment Recommendation */}
-          <Card>
-            <details className="group">
+          {/* <Card>
+            <details className="group" open>
               <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
                 <div className="flex items-center gap-2">
                   <Target className="h-5 w-5" />
                   <span className="font-semibold">
                     Investment Recommendation
                   </span>
+                  {analysis.recommendation?.decision && (
+                    <Badge
+                      className={`${getDecisionColor(
+                        analysis.recommendation.decision
+                      )} text-white text-xs ml-2`}
+                    >
+                      {analysis.recommendation.decision
+                        .replace("_", " ")
+                        .toUpperCase()}
+                    </Badge>
+                  )}
                 </div>
                 <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
               </summary>
-              <CardContent className="pt-4">
+              <CardContent className="space-y-4 pt-4">
                 {analysis.recommendation ? (
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3">
-                      {analysis.recommendation.decision && (
-                        <Badge
-                          className={`${getDecisionColor(
-                            analysis.recommendation.decision
-                          )} text-white px-3 py-1`}
-                        >
-                          {analysis.recommendation.decision
-                            .replace("_", " ")
-                            .toUpperCase()}
-                        </Badge>
-                      )}
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {analysis.recommendation.targetInvestment && (
-                        <span className="text-lg font-semibold">
-                          Target:{" "}
-                          {formatCurrency(
-                            analysis.recommendation.targetInvestment
-                          )}
-                        </span>
+                        <div className="p-4 border rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
+                          <p className="text-xs text-muted-foreground font-medium mb-1">Target Investment</p>
+                          <p className="text-2xl font-bold">
+                            {formatCurrency(
+                              analysis.recommendation.targetInvestment
+                            )}
+                          </p>
+                        </div>
                       )}
                       {analysis.recommendation.expectedReturn && (
-                        <span className="text-lg">
-                          Expected: {analysis.recommendation.expectedReturn}x
-                          return
-                        </span>
+                        <div className="p-4 border rounded-lg bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
+                          <p className="text-xs text-muted-foreground font-medium mb-1">Expected Return</p>
+                          <p className="text-2xl font-bold">
+                            {analysis.recommendation.expectedReturn}x
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">Multiple</p>
+                        </div>
                       )}
                     </div>
-                    <Separator />
+                    
                     {analysis.recommendation.reasoning && (
-                      <p className="text-muted-foreground leading-relaxed">
-                        {analysis.recommendation.reasoning}
-                      </p>
+                      <>
+                        <Separator />
+                        <div className="p-4 border-2 border-primary/20 rounded-lg bg-primary/5">
+                          <p className="text-sm font-semibold mb-2 text-primary">Investment Rationale</p>
+                          <p className="text-sm text-muted-foreground leading-relaxed">
+                            {analysis.recommendation.reasoning}
+                          </p>
+                        </div>
+                      </>
                     )}
-                  </div>
+                  </>
                 ) : (
-                  <p className="text-sm text-muted-foreground">
-                    No recommendation data available
-                  </p>
+                  <div className="text-center py-8">
+                    <Target className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                    <p className="text-sm text-muted-foreground">No recommendation data available</p>
+                    <p className="text-xs text-muted-foreground mt-1">Investment recommendations will appear here once generated</p>
+                  </div>
+                )}
+              </CardContent>
+            </details>
+          </Card> */}
+
+          {/* Key Insights */}
+          <Card>
+            <details className="group">
+              <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <span className="font-semibold">Key Insights</span>
+                  {analysis.keyInsights && analysis.keyInsights.length > 0 && (
+                    <Badge variant="outline" className="text-xs ml-2">
+                      {analysis.keyInsights.length} insights
+                    </Badge>
+                  )}
+                </div>
+                <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+              </summary>
+              <CardContent className="space-y-4 pt-4">
+                {analysis.keyInsights && analysis.keyInsights.length > 0 ? (
+                  <>
+                    <p className="text-sm text-muted-foreground">
+                      Critical findings from document analysis
+                    </p>
+                    <Separator />
+                    <ul className="space-y-3">
+                      {analysis.keyInsights.map((insight, index) => (
+                        <li
+                          key={index}
+                          className="flex items-start gap-3 p-3 border rounded-lg hover:bg-muted/30 transition-colors"
+                        >
+                          <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                          <span className="text-sm leading-relaxed">
+                            {insight}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : (
+                  <div className="text-center py-8">
+                    <CheckCircle className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                    <p className="text-sm text-muted-foreground">
+                      No key insights available
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Insights will be generated from document analysis
+                    </p>
+                  </div>
                 )}
               </CardContent>
             </details>
           </Card>
 
-          {/* Risk Assessment */}
-          <Card>
+          {/* Documents Analyzed */}
+          <Card className="border-2">
             <details className="group">
               <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-                <div className="flex items-center gap-2">
-                  <Shield className="h-5 w-5" />
-                  <span className="font-semibold">Risk Assessment</span>
+                <div className="flex items-center gap-3">
+                  <FileText className="h-5 w-5 text-primary" />
+                  <span className="font-semibold">Documents Analyzed</span>
+                  <Badge variant="outline" className="text-xs">
+                    {documents.length} documents
+                  </Badge>
                 </div>
                 <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
               </summary>
               <CardContent className="pt-4">
-                <div className="space-y-4">
-                  {analysis.riskFlags && analysis.riskFlags.length > 0 ? (
-                    analysis.riskFlags.map((flag, index) => (
-                      <div
-                        key={index}
-                        className={`p-4 rounded-lg border-l-4 ${getRiskFlagColor(
-                          flag.type
-                        )}`}
-                      >
-                        <div className="flex items-start justify-between mb-2">
-                          <h4 className="font-semibold">{flag.category}</h4>
-                          <Badge variant="outline" className="capitalize">
-                            {flag.type} Risk
-                          </Badge>
+                <div className="grid gap-3">
+                  {documents.map((doc, index) => (
+                    <div
+                      key={doc.id}
+                      className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/30 transition-colors"
+                    >
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold truncate">
+                            {doc.fileName}
+                          </p>
+                          <p className="text-xs text-muted-foreground uppercase">
+                            {doc.fileType} • Document {index + 1}
+                          </p>
                         </div>
                         <p className="text-sm text-muted-foreground mb-2">
                           {flag.description}
@@ -1059,75 +1068,13 @@ export default function Analysis({ params }: AnalysisProps) {
                           Impact: {flag.impact}
                         </p>
                       </div>
-                    ))
-                  ) : (
-                    <p className="text-sm text-muted-foreground">
-                      No risk flags identified
-                    </p>
-                  )}
-                </div>
-              </CardContent>
-            </details>
-          </Card>
-
-          {/* Market Comparison */}
-          <AnalysisComparison analysisData={data} />
-
-          {/* Key Insights */}
-          <Card>
-            <details className="group">
-              <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5" />
-                  <span className="font-semibold">Key Insights</span>
-                </div>
-                <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-              </summary>
-              <CardContent className="pt-4">
-                <ul className="space-y-3">
-                  {analysis.keyInsights && analysis.keyInsights.length > 0 ? (
-                    analysis.keyInsights.map((insight, index) => (
-                      <li key={index} className="flex items-start gap-3">
-                        <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">{insight}</span>
-                      </li>
-                    ))
-                  ) : (
-                    <p className="text-sm text-muted-foreground">
-                      No key insights available
-                    </p>
-                  )}
-                </ul>
-              </CardContent>
-            </details>
-          </Card>
-
-          {/* Documents Analyzed */}
-          <Card>
-            <details className="group">
-              <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-                <div className="flex items-center gap-2">
-                  <FileText className="h-5 w-5" />
-                  <span className="font-semibold">
-                    Documents Analyzed ({documents.length})
-                  </span>
-                </div>
-                <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-              </summary>
-              <CardContent className="pt-4">
-                <div className="grid gap-3">
-                  {documents.map((doc) => (
-                    <div
-                      key={doc.id}
-                      className="flex items-center justify-between p-3 border rounded-lg"
-                    >
-                      <div>
-                        <p className="font-medium">{doc.fileName}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {doc.fileType}
-                        </p>
-                      </div>
-                      <Badge variant="outline">Processed</Badge>
+                      <Badge
+                        variant="outline"
+                        className="text-xs bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-300 shrink-0"
+                      >
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Processed
+                      </Badge>
                     </div>
                   ))}
                 </div>
@@ -1707,16 +1654,357 @@ export default function Analysis({ params }: AnalysisProps) {
               </Card>
             )}
 
-          {/* Data Comparison: Document vs Public Data */}
-          <DataDiscrepancyComparison 
-            documentData={data} 
-            publicData={publicData} 
-          />
+          {/* Document vs Public Data Comparison */}
+          {publicSynthesizedData &&
+            Object.keys(publicSynthesizedData).length > 0 && (
+              <Card>
+                <details className="group">
+                  <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+                    <div className="flex items-center gap-2">
+                      <GitCompare className="h-5 w-5" />
+                      <span className="font-semibold">
+                        Document vs Public Data Comparison
+                      </span>
+                    </div>
+                    <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <CardContent className="pt-4">
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Side-by-side comparison of information from uploaded
+                      documents versus publicly available data
+                    </p>
+                    <div className="space-y-3">
+                      {(() => {
+                        const comparisons: Array<{
+                          field: string;
+                          documentValue: string;
+                          publicValue: string;
+                          match: boolean;
+                        }> = [];
+
+                        // Helper function to normalize values for comparison
+                        const normalizeValue = (val: any): string => {
+                          if (
+                            val === null ||
+                            val === undefined ||
+                            val === "" ||
+                            val === "N/A"
+                          )
+                            return "";
+                          return String(val).trim().toLowerCase();
+                        };
+
+                        // Helper function to check if field exists in both sources
+                        const compareField = (
+                          fieldName: string,
+                          docValue: any,
+                          publicValue: any
+                        ) => {
+                          const normalizedDoc = normalizeValue(docValue);
+                          const normalizedPublic = normalizeValue(publicValue);
+
+                          // Only add if both values exist
+                          if (normalizedDoc && normalizedPublic) {
+                            comparisons.push({
+                              field: fieldName,
+                              documentValue: String(docValue),
+                              publicValue: String(publicValue),
+                              match: normalizedDoc === normalizedPublic,
+                            });
+                          }
+                        };
+
+                        // Compare Company Info fields
+                        if (
+                          (analysis as any).companyInfo &&
+                          publicSynthesizedData.company_overview
+                        ) {
+                          const docInfo = (analysis as any).companyInfo;
+                          const pubInfo =
+                            publicSynthesizedData.company_overview;
+
+                          compareField(
+                            "Company Name",
+                            docInfo.companyName,
+                            pubInfo.name || docInfo.companyName
+                          );
+                          compareField(
+                            "Founded Year",
+                            docInfo.foundedYear,
+                            pubInfo.founded_date
+                          );
+                          compareField(
+                            "Sector",
+                            docInfo.sector,
+                            pubInfo.sector
+                          );
+                          compareField(
+                            "Industry",
+                            docInfo.industry,
+                            pubInfo.industry
+                          );
+                          compareField(
+                            "Headquarters",
+                            docInfo.headquarters,
+                            pubInfo.headquarters?.city
+                              ? `${pubInfo.headquarters.city}, ${pubInfo.headquarters.country}`
+                              : pubInfo.headquarters
+                          );
+                          compareField(
+                            "Website",
+                            docInfo.website,
+                            pubInfo.website
+                          );
+                        }
+
+                        // Compare Employee Info
+                        if (
+                          (analysis as any).employeeInfo &&
+                          publicSynthesizedData.employee_metrics
+                        ) {
+                          const docEmp = (analysis as any).employeeInfo;
+                          const pubEmp = publicSynthesizedData.employee_metrics;
+
+                          compareField(
+                            "Employee Count",
+                            docEmp.currentEmployeeSize,
+                            pubEmp.current_employees?.value
+                          );
+                        }
+
+                        // Compare Financial Info
+                        if (
+                          (analysis as any).financialInfo &&
+                          publicSynthesizedData.financial_health
+                        ) {
+                          const docFin = (analysis as any).financialInfo;
+                          const pubFin = publicSynthesizedData.financial_health;
+
+                          // Format revenue for comparison
+                          const pubRevenue = pubFin.annual_revenue?.value_usd
+                            ? `$${(
+                                pubFin.annual_revenue.value_usd / 1000000
+                              ).toFixed(0)}M`
+                            : null;
+                          const pubGrowthRate = pubFin.revenue_growth_rate_pct
+                            ?.value
+                            ? `${pubFin.revenue_growth_rate_pct.value.toFixed(
+                                1
+                              )}%`
+                            : null;
+
+                          compareField(
+                            "Annual Revenue",
+                            docFin.currentRevenue,
+                            pubRevenue
+                          );
+                          compareField(
+                            "Revenue Growth Rate",
+                            docFin.revenueGrowthRate,
+                            pubGrowthRate
+                          );
+                          compareField(
+                            "Profitability Status",
+                            docFin.profitabilityStatus,
+                            pubFin.profitability?.status
+                          );
+
+                          // Key metrics
+                          if (docFin.keyMetrics && pubFin.key_metrics) {
+                            const pubARR = pubFin.key_metrics.ARR_usd?.value
+                              ? `$${(
+                                  pubFin.key_metrics.ARR_usd.value / 1000000
+                                ).toFixed(0)}M`
+                              : null;
+                            const pubMRR = pubFin.key_metrics.MRR_usd?.value
+                              ? `$${(
+                                  pubFin.key_metrics.MRR_usd.value / 1000000
+                                ).toFixed(1)}M`
+                              : null;
+
+                            compareField("ARR", docFin.keyMetrics.arr, pubARR);
+                            compareField("MRR", docFin.keyMetrics.mrr, pubMRR);
+                          }
+                        }
+
+                        // Compare Funding Info
+                        if (
+                          (analysis as any).fundingInfo &&
+                          publicSynthesizedData.funding_history
+                        ) {
+                          const docFund = (analysis as any).fundingInfo;
+                          const pubFund = publicSynthesizedData.funding_history;
+
+                          // Format funding amounts
+                          const pubTotalFunding = pubFund.total_funding_usd
+                            ? `$${(pubFund.total_funding_usd / 1000000).toFixed(
+                                1
+                              )}M`
+                            : null;
+                          const pubValuation = pubFund.current_valuation_usd
+                            ?.value
+                            ? `$${(
+                                pubFund.current_valuation_usd.value / 1000000000
+                              ).toFixed(1)}B`
+                            : null;
+
+                          // Get last round info
+                          const lastRound =
+                            pubFund.rounds?.[pubFund.rounds.length - 1];
+                          const pubLastRoundType = lastRound?.round_type;
+                          const pubLastRoundAmount = lastRound?.amount_usd
+                            ? `$${(lastRound.amount_usd / 1000000).toFixed(0)}M`
+                            : null;
+
+                          compareField(
+                            "Total Funding Raised",
+                            docFund.totalFundingRaised,
+                            pubTotalFunding
+                          );
+                          compareField(
+                            "Last Funding Round",
+                            docFund.lastFundingRound,
+                            pubLastRoundType
+                          );
+                          compareField(
+                            "Last Funding Amount",
+                            docFund.lastFundingAmount,
+                            pubLastRoundAmount
+                          );
+                          compareField(
+                            "Current Valuation",
+                            docFund.currentValuation,
+                            pubValuation
+                          );
+                        }
+
+                        // Compare Market Analysis
+                        if (
+                          (analysis as any).marketAnalysis &&
+                          publicSynthesizedData.market_position
+                        ) {
+                          const docMkt = (analysis as any).marketAnalysis;
+                          const pubMkt = publicSynthesizedData.market_position;
+
+                          // Format TAM
+                          const pubTAM = pubMkt.TAM_usd?.value
+                            ? `$${(pubMkt.TAM_usd.value / 1000000000).toFixed(
+                                1
+                              )}B`
+                            : null;
+                          const pubMarketShare = pubMkt.market_share_pct?.value
+                            ? `${pubMkt.market_share_pct.value}%`
+                            : null;
+
+                          compareField(
+                            "Market Size (TAM)",
+                            docMkt.marketSize,
+                            pubTAM
+                          );
+                          compareField(
+                            "Market Share",
+                            docMkt.marketShare,
+                            pubMarketShare
+                          );
+                          compareField(
+                            "Market Ranking",
+                            docMkt.marketRanking,
+                            pubMkt.market_ranking?.rank
+                          );
+                          compareField(
+                            "Competitive Position",
+                            docMkt.competitivePosition,
+                            pubMkt.competitive_positioning
+                          );
+                        }
+
+                        return comparisons.length > 0 ? (
+                          <div className="overflow-x-auto">
+                            <table className="w-full border-collapse">
+                              <thead>
+                                <tr className="border-b">
+                                  <th className="text-left p-3 font-semibold text-sm bg-muted/30">
+                                    Field
+                                  </th>
+                                  <th className="text-left p-3 font-semibold text-sm bg-muted/30">
+                                    <div className="flex items-center gap-2">
+                                      <FileText className="h-4 w-4" />
+                                      Document Data
+                                    </div>
+                                  </th>
+                                  <th className="text-left p-3 font-semibold text-sm bg-muted/30">
+                                    <div className="flex items-center gap-2">
+                                      <Database className="h-4 w-4" />
+                                      Public Data
+                                    </div>
+                                  </th>
+                                  <th className="text-center p-3 font-semibold text-sm bg-muted/30">
+                                    Status
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {comparisons.map((comp, index) => (
+                                  <tr
+                                    key={index}
+                                    className="border-b hover:bg-muted/20 transition-colors"
+                                  >
+                                    <td className="p-3 font-medium text-sm">
+                                      {comp.field}
+                                    </td>
+                                    <td className="p-3 text-sm">
+                                      {comp.documentValue}
+                                    </td>
+                                    <td className="p-3 text-sm">
+                                      {comp.publicValue}
+                                    </td>
+                                    <td className="p-3 text-center">
+                                      {comp.match ? (
+                                        <Badge
+                                          variant="outline"
+                                          className="bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300"
+                                        >
+                                          <CheckCircle2 className="h-3 w-3 mr-1" />
+                                          Match
+                                        </Badge>
+                                      ) : (
+                                        <Badge
+                                          variant="outline"
+                                          className="bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-950 dark:text-orange-300"
+                                        >
+                                          <AlertTriangle className="h-3 w-3 mr-1" />
+                                          Different
+                                        </Badge>
+                                      )}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        ) : (
+                          <div className="p-4 border-2 border-dashed rounded-lg text-center text-muted-foreground">
+                            <Info className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                            <p className="text-sm">
+                              No comparable fields found between document and
+                              public data
+                            </p>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  </CardContent>
+                </details>
+              </Card>
+            )}
+
+          {/* Market Comparison */}
+          <AnalysisComparison analysisData={data} />
 
           {/* Information Gaps - Critical Questions */}
           {publicSynthesizedData?.information_gaps?.length > 0 && (
             <Card>
-              <details className="group" open>
+              <details className="group">
                 <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
                   <div className="flex items-center gap-2">
                     <AlertCircle className="h-5 w-5" />
@@ -1797,21 +2085,30 @@ export default function Analysis({ params }: AnalysisProps) {
             </Card>
           )}
 
-          {/* AI Chatbot for Q&A */}
+          {/* Ask Questions Section - Placeholder for future Q&A feature */}
           <Card>
             <details className="group">
               <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
                 <div className="flex items-center gap-2">
-                  <MessageSquare className="h-5 w-5 text-blue-500" />
-                  <span className="font-semibold">Ask AI About This Analysis</span>
-                  <Badge variant="outline" className="text-xs ml-2">
-                    4 Personas
+                  <Search className="h-5 w-5" />
+                  <span className="font-semibold">
+                    Ask AI About This Analysis
+                  </span>
+                  <Badge variant="secondary" className="text-xs ml-2">
+                    Coming Soon
                   </Badge>
                 </div>
                 <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
               </summary>
               <CardContent className="pt-4">
-                <AIChatbot startupId={id!} startupData={data} />
+                <div className="p-4 border-2 border-dashed rounded-lg text-center text-muted-foreground">
+                  <Info className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">AI Q&A feature coming soon</p>
+                  <p className="text-xs mt-1">
+                    You'll be able to ask detailed questions about the analysis
+                    and get AI-powered answers
+                  </p>
+                </div>
               </CardContent>
             </details>
           </Card>

@@ -9,9 +9,22 @@ vite.config.ts.*
 .idea
 .env
 .env.*
+!.env.example
 .local
 .vscode
 uploads/
 
-# Lock files - let Railway generate fresh ones
+# Service account keys (CRITICAL - DO NOT COMMIT!)
+*service-account*.json
+gcloud-service-account-key.json
+
+# Firebase
+.firebase/
+firebase-debug.log
+firebaserc
+
 package-lock.json
+# Environment variable files (contain secrets)
+env-vars.yaml
+*.env.yaml
+cloud-run-env-vars.txt

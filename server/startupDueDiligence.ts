@@ -16,9 +16,6 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
  * - Risks & opportunities
  * - IPO potential
  * - Employee & customer satisfaction
- * 
- * NOTE: All financial data is stored in USD (as returned by public APIs like Crunchbase, PitchBook)
- * but is converted to INR for display on the frontend using the current exchange rate.
  */
 
 export interface DueDiligenceResult {
