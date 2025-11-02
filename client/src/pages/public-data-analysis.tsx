@@ -59,22 +59,7 @@ export default function PublicDataAnalysisPage() {
     setError(null);
 
     try {
-      const response = await authenticatedFetch(getApiUrl(`api/due-diligence/${startupId}`));
-      
-      if (response.status === 404) {
-        // No due diligence exists, show option to conduct
-        setError('no_data');
-        if (!skipLoadingState) {
-          setLoading(false);
-        }
-        return;
-      }
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch due diligence');
-      }
-
-      const result = await response.json();
+      const result = await authenticatedFetchJSON(getApiUrl(`api/due-diligence/${startupId}`));
       setData(result.dueDiligence);
       setDocData(result.documentAnalysis);
       setStartupName(result.startupName);
@@ -95,16 +80,10 @@ export default function PublicDataAnalysisPage() {
     setError(null);
 
     try {
-      const response = await authenticatedFetch(getApiUrl(`api/due-diligence/${startupId}`), {
+      // Get the result directly from the POST response
+      const result = await authenticatedFetchJSON(getApiUrl(`api/due-diligence/${startupId}`), {
         method: 'POST',
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to conduct due diligence');
-      }
-
-      // Get the result directly from the POST response
-      const result = await response.json();
       
       // Update the state with the new data immediately
       setData(result.dueDiligence);
