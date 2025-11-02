@@ -10,6 +10,7 @@ Analyze startup documents, get comprehensive risk assessments, and make informed
 
 ## ✨ Features
 
+
 ### 📊 **Intelligent Document Analysis**
 - Upload business plans, financial statements, pitch decks, and more
 - AI-powered extraction and analysis using Google Gemini
