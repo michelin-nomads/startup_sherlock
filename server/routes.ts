@@ -311,7 +311,7 @@ app.get("/api/health", (req: Request, res: Response) => {
 
 
   // Get startup analysis
-  app.get("/api/analysis/:startupId", async (req: Request, res: Response) => {
+  app.get("/api/document-analysis/:startupId", async (req: Request, res: Response) => {
     try {
       const startup = await storage.getStartup(req.params.startupId);
       if (!startup) {

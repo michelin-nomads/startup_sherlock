@@ -227,7 +227,9 @@ interface AnalysisProps {
 export default function Analysis({ params }: AnalysisProps) {
   const id = params.id;
   const navigate = useNavigate();
-  const [publicData, setPublicData] = useState<any>({ synthesizedInsights: { data: {} } });
+  const [publicData, setPublicData] = useState<any>({
+    synthesizedInsights: { data: {} },
+  });
   const [publicDataStatus, setPublicDataStatus] = useState<
     "loading" | "failed" | "success"
   >("loading");
@@ -235,9 +237,9 @@ export default function Analysis({ params }: AnalysisProps) {
   const [hasSuccessfulRetry, setHasSuccessfulRetry] = useState(false);
 
   const { data, isLoading, error, refetch } = useQuery<AnalysisData>({
-    queryKey: ["/api/analysis", id],
+    queryKey: ["/api/document-analysis", id],
     queryFn: async () => {
-      const response = await fetch(getApiUrl(`/api/analysis/${id}`));
+      const response = await fetch(getApiUrl(`/api/document-analysis/${id}`));
       if (!response.ok) {
         throw new Error("Failed to fetch analysis data");
       }
@@ -343,7 +345,9 @@ export default function Analysis({ params }: AnalysisProps) {
         }
 
         // Invalidate and refetch the query to ensure consistency
-        queryClient.invalidateQueries({ queryKey: ["/api/analysis", id] });
+        queryClient.invalidateQueries({
+          queryKey: ["/api/document-analysis", id],
+        });
       } else {
         setPublicDataStatus("failed");
         setHasSuccessfulRetry(false);
@@ -443,7 +447,9 @@ export default function Analysis({ params }: AnalysisProps) {
       }
 
       // Refetch the analysis data to show the new enhanced sections
-      queryClient.invalidateQueries({ queryKey: ["/api/analysis", id] });
+      queryClient.invalidateQueries({
+        queryKey: ["/api/document-analysis", id],
+      });
       setIsEnhancedAnalysisLoading(false);
     },
     onError: (error) => {
@@ -718,7 +724,6 @@ export default function Analysis({ params }: AnalysisProps) {
       </div>
     );
   }
-
   if (error || !data) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -994,7 +999,6 @@ export default function Analysis({ params }: AnalysisProps) {
             </details>
           </Card> */}
 
-
           {/* Key Insights */}
           <Card>
             <details className="group">
@@ -1019,9 +1023,14 @@ export default function Analysis({ params }: AnalysisProps) {
                     <Separator />
                     <ul className="space-y-3">
                       {analysis.keyInsights.map((insight, index) => (
-                        <li key={index} className="flex items-start gap-3 p-3 border rounded-lg hover:bg-muted/30 transition-colors">
+                        <li
+                          key={index}
+                          className="flex items-start gap-3 p-3 border rounded-lg hover:bg-muted/30 transition-colors"
+                        >
                           <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                          <span className="text-sm leading-relaxed">{insight}</span>
+                          <span className="text-sm leading-relaxed">
+                            {insight}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -1029,8 +1038,12 @@ export default function Analysis({ params }: AnalysisProps) {
                 ) : (
                   <div className="text-center py-8">
                     <CheckCircle className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
-                    <p className="text-sm text-muted-foreground">No key insights available</p>
-                    <p className="text-xs text-muted-foreground mt-1">Insights will be generated from document analysis</p>
+                    <p className="text-sm text-muted-foreground">
+                      No key insights available
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Insights will be generated from document analysis
+                    </p>
                   </div>
                 )}
               </CardContent>
@@ -1043,9 +1056,7 @@ export default function Analysis({ params }: AnalysisProps) {
               <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
                 <div className="flex items-center gap-3">
                   <FileText className="h-5 w-5 text-primary" />
-                  <span className="font-semibold">
-                    Documents Analyzed
-                  </span>
+                  <span className="font-semibold">Documents Analyzed</span>
                   <Badge variant="outline" className="text-xs">
                     {documents.length} documents
                   </Badge>
@@ -1064,13 +1075,18 @@ export default function Analysis({ params }: AnalysisProps) {
                           <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold truncate">{doc.fileName}</p>
+                          <p className="text-sm font-semibold truncate">
+                            {doc.fileName}
+                          </p>
                           <p className="text-xs text-muted-foreground uppercase">
                             {doc.fileType} • Document {index + 1}
                           </p>
                         </div>
                       </div>
-                      <Badge variant="outline" className="text-xs bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-300 shrink-0">
+                      <Badge
+                        variant="outline"
+                        className="text-xs bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-300 shrink-0"
+                      >
                         <CheckCircle className="h-3 w-3 mr-1" />
                         Processed
                       </Badge>
@@ -1653,13 +1669,357 @@ export default function Analysis({ params }: AnalysisProps) {
               </Card>
             )}
 
+          {/* Document vs Public Data Comparison */}
+          {publicSynthesizedData &&
+            Object.keys(publicSynthesizedData).length > 0 && (
+              <Card>
+                <details className="group">
+                  <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+                    <div className="flex items-center gap-2">
+                      <GitCompare className="h-5 w-5" />
+                      <span className="font-semibold">
+                        Document vs Public Data Comparison
+                      </span>
+                    </div>
+                    <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <CardContent className="pt-4">
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Side-by-side comparison of information from uploaded
+                      documents versus publicly available data
+                    </p>
+                    <div className="space-y-3">
+                      {(() => {
+                        const comparisons: Array<{
+                          field: string;
+                          documentValue: string;
+                          publicValue: string;
+                          match: boolean;
+                        }> = [];
+
+                        // Helper function to normalize values for comparison
+                        const normalizeValue = (val: any): string => {
+                          if (
+                            val === null ||
+                            val === undefined ||
+                            val === "" ||
+                            val === "N/A"
+                          )
+                            return "";
+                          return String(val).trim().toLowerCase();
+                        };
+
+                        // Helper function to check if field exists in both sources
+                        const compareField = (
+                          fieldName: string,
+                          docValue: any,
+                          publicValue: any
+                        ) => {
+                          const normalizedDoc = normalizeValue(docValue);
+                          const normalizedPublic = normalizeValue(publicValue);
+
+                          // Only add if both values exist
+                          if (normalizedDoc && normalizedPublic) {
+                            comparisons.push({
+                              field: fieldName,
+                              documentValue: String(docValue),
+                              publicValue: String(publicValue),
+                              match: normalizedDoc === normalizedPublic,
+                            });
+                          }
+                        };
+
+                        // Compare Company Info fields
+                        if (
+                          (analysis as any).companyInfo &&
+                          publicSynthesizedData.company_overview
+                        ) {
+                          const docInfo = (analysis as any).companyInfo;
+                          const pubInfo =
+                            publicSynthesizedData.company_overview;
+
+                          compareField(
+                            "Company Name",
+                            docInfo.companyName,
+                            pubInfo.name || docInfo.companyName
+                          );
+                          compareField(
+                            "Founded Year",
+                            docInfo.foundedYear,
+                            pubInfo.founded_date
+                          );
+                          compareField(
+                            "Sector",
+                            docInfo.sector,
+                            pubInfo.sector
+                          );
+                          compareField(
+                            "Industry",
+                            docInfo.industry,
+                            pubInfo.industry
+                          );
+                          compareField(
+                            "Headquarters",
+                            docInfo.headquarters,
+                            pubInfo.headquarters?.city
+                              ? `${pubInfo.headquarters.city}, ${pubInfo.headquarters.country}`
+                              : pubInfo.headquarters
+                          );
+                          compareField(
+                            "Website",
+                            docInfo.website,
+                            pubInfo.website
+                          );
+                        }
+
+                        // Compare Employee Info
+                        if (
+                          (analysis as any).employeeInfo &&
+                          publicSynthesizedData.employee_metrics
+                        ) {
+                          const docEmp = (analysis as any).employeeInfo;
+                          const pubEmp = publicSynthesizedData.employee_metrics;
+
+                          compareField(
+                            "Employee Count",
+                            docEmp.currentEmployeeSize,
+                            pubEmp.current_employees?.value
+                          );
+                        }
+
+                        // Compare Financial Info
+                        if (
+                          (analysis as any).financialInfo &&
+                          publicSynthesizedData.financial_health
+                        ) {
+                          const docFin = (analysis as any).financialInfo;
+                          const pubFin = publicSynthesizedData.financial_health;
+
+                          // Format revenue for comparison
+                          const pubRevenue = pubFin.annual_revenue?.value_usd
+                            ? `$${(
+                                pubFin.annual_revenue.value_usd / 1000000
+                              ).toFixed(0)}M`
+                            : null;
+                          const pubGrowthRate = pubFin.revenue_growth_rate_pct
+                            ?.value
+                            ? `${pubFin.revenue_growth_rate_pct.value.toFixed(
+                                1
+                              )}%`
+                            : null;
+
+                          compareField(
+                            "Annual Revenue",
+                            docFin.currentRevenue,
+                            pubRevenue
+                          );
+                          compareField(
+                            "Revenue Growth Rate",
+                            docFin.revenueGrowthRate,
+                            pubGrowthRate
+                          );
+                          compareField(
+                            "Profitability Status",
+                            docFin.profitabilityStatus,
+                            pubFin.profitability?.status
+                          );
+
+                          // Key metrics
+                          if (docFin.keyMetrics && pubFin.key_metrics) {
+                            const pubARR = pubFin.key_metrics.ARR_usd?.value
+                              ? `$${(
+                                  pubFin.key_metrics.ARR_usd.value / 1000000
+                                ).toFixed(0)}M`
+                              : null;
+                            const pubMRR = pubFin.key_metrics.MRR_usd?.value
+                              ? `$${(
+                                  pubFin.key_metrics.MRR_usd.value / 1000000
+                                ).toFixed(1)}M`
+                              : null;
+
+                            compareField("ARR", docFin.keyMetrics.arr, pubARR);
+                            compareField("MRR", docFin.keyMetrics.mrr, pubMRR);
+                          }
+                        }
+
+                        // Compare Funding Info
+                        if (
+                          (analysis as any).fundingInfo &&
+                          publicSynthesizedData.funding_history
+                        ) {
+                          const docFund = (analysis as any).fundingInfo;
+                          const pubFund = publicSynthesizedData.funding_history;
+
+                          // Format funding amounts
+                          const pubTotalFunding = pubFund.total_funding_usd
+                            ? `$${(pubFund.total_funding_usd / 1000000).toFixed(
+                                1
+                              )}M`
+                            : null;
+                          const pubValuation = pubFund.current_valuation_usd
+                            ?.value
+                            ? `$${(
+                                pubFund.current_valuation_usd.value / 1000000000
+                              ).toFixed(1)}B`
+                            : null;
+
+                          // Get last round info
+                          const lastRound =
+                            pubFund.rounds?.[pubFund.rounds.length - 1];
+                          const pubLastRoundType = lastRound?.round_type;
+                          const pubLastRoundAmount = lastRound?.amount_usd
+                            ? `$${(lastRound.amount_usd / 1000000).toFixed(0)}M`
+                            : null;
+
+                          compareField(
+                            "Total Funding Raised",
+                            docFund.totalFundingRaised,
+                            pubTotalFunding
+                          );
+                          compareField(
+                            "Last Funding Round",
+                            docFund.lastFundingRound,
+                            pubLastRoundType
+                          );
+                          compareField(
+                            "Last Funding Amount",
+                            docFund.lastFundingAmount,
+                            pubLastRoundAmount
+                          );
+                          compareField(
+                            "Current Valuation",
+                            docFund.currentValuation,
+                            pubValuation
+                          );
+                        }
+
+                        // Compare Market Analysis
+                        if (
+                          (analysis as any).marketAnalysis &&
+                          publicSynthesizedData.market_position
+                        ) {
+                          const docMkt = (analysis as any).marketAnalysis;
+                          const pubMkt = publicSynthesizedData.market_position;
+
+                          // Format TAM
+                          const pubTAM = pubMkt.TAM_usd?.value
+                            ? `$${(pubMkt.TAM_usd.value / 1000000000).toFixed(
+                                1
+                              )}B`
+                            : null;
+                          const pubMarketShare = pubMkt.market_share_pct?.value
+                            ? `${pubMkt.market_share_pct.value}%`
+                            : null;
+
+                          compareField(
+                            "Market Size (TAM)",
+                            docMkt.marketSize,
+                            pubTAM
+                          );
+                          compareField(
+                            "Market Share",
+                            docMkt.marketShare,
+                            pubMarketShare
+                          );
+                          compareField(
+                            "Market Ranking",
+                            docMkt.marketRanking,
+                            pubMkt.market_ranking?.rank
+                          );
+                          compareField(
+                            "Competitive Position",
+                            docMkt.competitivePosition,
+                            pubMkt.competitive_positioning
+                          );
+                        }
+
+                        return comparisons.length > 0 ? (
+                          <div className="overflow-x-auto">
+                            <table className="w-full border-collapse">
+                              <thead>
+                                <tr className="border-b">
+                                  <th className="text-left p-3 font-semibold text-sm bg-muted/30">
+                                    Field
+                                  </th>
+                                  <th className="text-left p-3 font-semibold text-sm bg-muted/30">
+                                    <div className="flex items-center gap-2">
+                                      <FileText className="h-4 w-4" />
+                                      Document Data
+                                    </div>
+                                  </th>
+                                  <th className="text-left p-3 font-semibold text-sm bg-muted/30">
+                                    <div className="flex items-center gap-2">
+                                      <Database className="h-4 w-4" />
+                                      Public Data
+                                    </div>
+                                  </th>
+                                  <th className="text-center p-3 font-semibold text-sm bg-muted/30">
+                                    Status
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {comparisons.map((comp, index) => (
+                                  <tr
+                                    key={index}
+                                    className="border-b hover:bg-muted/20 transition-colors"
+                                  >
+                                    <td className="p-3 font-medium text-sm">
+                                      {comp.field}
+                                    </td>
+                                    <td className="p-3 text-sm">
+                                      {comp.documentValue}
+                                    </td>
+                                    <td className="p-3 text-sm">
+                                      {comp.publicValue}
+                                    </td>
+                                    <td className="p-3 text-center">
+                                      {comp.match ? (
+                                        <Badge
+                                          variant="outline"
+                                          className="bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300"
+                                        >
+                                          <CheckCircle2 className="h-3 w-3 mr-1" />
+                                          Match
+                                        </Badge>
+                                      ) : (
+                                        <Badge
+                                          variant="outline"
+                                          className="bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-950 dark:text-orange-300"
+                                        >
+                                          <AlertTriangle className="h-3 w-3 mr-1" />
+                                          Different
+                                        </Badge>
+                                      )}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        ) : (
+                          <div className="p-4 border-2 border-dashed rounded-lg text-center text-muted-foreground">
+                            <Info className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                            <p className="text-sm">
+                              No comparable fields found between document and
+                              public data
+                            </p>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  </CardContent>
+                </details>
+              </Card>
+            )}
+
           {/* Market Comparison */}
           <AnalysisComparison analysisData={data} />
 
           {/* Information Gaps - Critical Questions */}
           {publicSynthesizedData?.information_gaps?.length > 0 && (
             <Card>
-              <details className="group" open>
+              <details className="group">
                 <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
                   <div className="flex items-center gap-2">
                     <AlertCircle className="h-5 w-5" />

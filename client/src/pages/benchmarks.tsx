@@ -236,9 +236,9 @@ export default function BenchmarksPage() {
 
   // Fetch analysis data for selected startup
   const { data: selectedAnalysisData, isLoading: analysisLoading, isFetching: analysisFetching } = useQuery<AnalysisData>({
-    queryKey: ['/api/analysis', selectedStartupId],
+    queryKey: ['/api/document-analysis', selectedStartupId],
     queryFn: async () => {
-      const response = await fetch(getApiUrl(`/api/analysis/${selectedStartupId}`))
+      const response = await fetch(getApiUrl(`/api/document-analysis/${selectedStartupId}`))
       if (!response.ok) {
         throw new Error('Failed to fetch analysis data')
       }
