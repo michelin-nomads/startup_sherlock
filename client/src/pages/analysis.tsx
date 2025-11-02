@@ -18,7 +18,7 @@ import { PublicDataSection } from "@/components/public-data-section"
 import { useState, useEffect } from "react"
 import {getApiUrl} from "@/lib/config.ts";
 import { formatCurrency } from "@/lib/utils"
-import { authenticatedFetch } from "@/lib/api"
+import { authenticatedFetchJSON } from "@/lib/api"
 
 interface AnalysisData {
   startup: {
@@ -190,11 +190,7 @@ export default function Analysis({ params }: AnalysisProps) {
   const { data, isLoading, error, refetch } = useQuery<AnalysisData>({
     queryKey: ['/api/analysis', id],
     queryFn: async () => {
-      const response = await authenticatedFetch(getApiUrl(`/api/analysis/${id}`))
-      if (!response.ok) {
-        throw new Error('Failed to fetch analysis data')
-      }
-      const analysisData = await response.json()
+      const analysisData = await authenticatedFetchJSON(getApiUrl(`/api/analysis/${id}`))
       
       // Save to local storage for persistence
       if (analysisData && id) {
@@ -254,15 +250,9 @@ export default function Analysis({ params }: AnalysisProps) {
     setHasSuccessfulRetry(false); // Reset the flag
     
     try {
-      const response = await authenticatedFetch(getApiUrl(`/api/public-data-analysis/${id}`), {
+      const result = await authenticatedFetchJSON(getApiUrl(`/api/public-data-analysis/${id}`), {
         method: 'POST',
       });
-      
-      if (!response.ok) {
-        throw new Error('Failed to refresh public data analysis');
-      }
-      
-      const result = await response.json();
       
       // Update the public data with the new result
       if (result.publicSourceDueDiligence) {
@@ -307,11 +297,7 @@ export default function Analysis({ params }: AnalysisProps) {
   const { data: startups = [], isLoading: startupsLoading } = useQuery<Startup[]>({
     queryKey: ['/api/startups'],
     queryFn: async () => {
-      const response = await authenticatedFetch(getApiUrl('/api/startups'))
-      if (!response.ok) {
-        throw new Error('Failed to fetch startups')
-      }
-      const data = await response.json()
+      const data = await authenticatedFetchJSON(getApiUrl('/api/startups'))
       
       // Save to local storage for persistence
       localStorage.setItem('startups', JSON.stringify(data))
@@ -344,7 +330,7 @@ export default function Analysis({ params }: AnalysisProps) {
   // Enhanced Analysis Mutation
   const enhancedAnalysisMutation = useMutation({
     mutationFn: async ({ startupId, websites }: { startupId: string, websites: string[] }) => {
-      const response = await authenticatedFetch(getApiUrl('/api/enhanced-analysis'), {
+      return await authenticatedFetchJSON(getApiUrl('/api/enhanced-analysis'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -354,12 +340,6 @@ export default function Analysis({ params }: AnalysisProps) {
           websites: websites.filter(url => url.trim() !== '')
         }),
       })
-      
-      if (!response.ok) {
-        throw new Error('Failed to perform enhanced analysis')
-      }
-      
-      return response.json()
     },
     onSuccess: (data) => {
       // Save enhanced analysis results to local storage
