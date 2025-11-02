@@ -1,6 +1,5 @@
 import puppeteer, { Browser, Page } from 'puppeteer';
 import axios from 'axios';
-import * as cheerio from 'cheerio';
 import { sourceDiscoveryService, DiscoveredSource, SourceDiscoveryResult } from './sourceDiscovery';
 
 export interface PublicDataResult {
@@ -352,7 +351,11 @@ export class WebCrawlerService {
           registeredAgent: ''
         },
         confidenceScore: 0,
-        lastUpdated: new Date().toISOString()
+        lastUpdated: new Date().toISOString(),
+        discoveredSources: {
+          sources: [],
+          summary: { total: 0, byType: {}, quality: { high: 0, medium: 0, low: 0 } }
+        }
       };
 
       // Step 2: Crawl all provided sources
