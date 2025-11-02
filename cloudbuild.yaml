@@ -22,8 +22,7 @@ steps:
       - '--all-tags'
       - 'gcr.io/$PROJECT_ID/startup-sherlock-backend'
 
-  # Step 3: Deploy to Cloud Run
-  # This deployment KEEPS existing environment variables
+  # Step 3: Deploy to Cloud Run with Cloud SQL connection
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
@@ -36,6 +35,20 @@ steps:
       - 'us-central1'
       - '--platform'
       - 'managed'
+      - '--add-cloudsql-instances'
+      - 'startup-sherlock:us-central1:startup-sherlock-db'
+      - '--port'
+      - '8080'
+      - '--memory'
+      - '2Gi'
+      - '--cpu'
+      - '2'
+      - '--timeout'
+      - '300'
+      - '--max-instances'
+      - '10'
+      - '--min-instances'
+      - '0'
 
 # Images to store in Container Registry
 images:
