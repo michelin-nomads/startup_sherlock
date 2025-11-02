@@ -1,3 +1,4 @@
+import { authenticatedFetch } from "@/lib/api"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { StartupChart } from "@/components/startup-chart"
 import { MetricsCard } from "@/components/metrics-card"
@@ -144,7 +145,7 @@ export default function BenchmarksPage() {
   const { data: industryBenchmarks = [], isLoading, error } = useQuery<IndustryBenchmark[]>({
     queryKey: ['/api/benchmarks'],
     queryFn: async () => {
-      const response = await fetch(getApiUrl('/api/benchmarks'))
+      const response = await authenticatedFetch(getApiUrl('/api/benchmarks'))
       if (!response.ok) {
         throw new Error('Failed to fetch industry benchmarks')
       }
@@ -160,7 +161,7 @@ export default function BenchmarksPage() {
       selectedIndustries.forEach(industry => params.append('industries', industry))
       params.append('companySize', companySize)
       
-      const response = await fetch(getApiUrl(`/api/benchmarks/custom?${params.toString()}`))
+      const response = await authenticatedFetch(getApiUrl(`/api/benchmarks/custom?${params.toString()}`))
       if (!response.ok) {
         throw new Error('Failed to fetch custom benchmarks')
       }
@@ -173,7 +174,7 @@ export default function BenchmarksPage() {
   const { data: benchmarkMetrics, isLoading: metricsLoading, error: metricsError } = useQuery<BenchmarkMetrics>({
     queryKey: ['/api/benchmark-metrics'],
     queryFn: async () => {
-      const response = await fetch(getApiUrl('/api/benchmark-metrics'))
+      const response = await authenticatedFetch(getApiUrl('/api/benchmark-metrics'))
       if (!response.ok) {
         throw new Error('Failed to fetch benchmark metrics')
       }
@@ -186,7 +187,7 @@ export default function BenchmarksPage() {
   const { data: allStartups = [], isLoading: startupsLoading } = useQuery<Startup[]>({
     queryKey: ['/api/startups'],
     queryFn: async () => {
-      const response = await fetch(getApiUrl('/api/startups'))
+      const response = await authenticatedFetch(getApiUrl('/api/startups'))
       if (!response.ok) {
         throw new Error('Failed to fetch startups')
       }
@@ -238,7 +239,7 @@ export default function BenchmarksPage() {
   const { data: selectedAnalysisData, isLoading: analysisLoading, isFetching: analysisFetching } = useQuery<AnalysisData>({
     queryKey: ['/api/analysis', selectedStartupId],
     queryFn: async () => {
-      const response = await fetch(getApiUrl(`/api/analysis/${selectedStartupId}`))
+      const response = await authenticatedFetch(getApiUrl(`/api/analysis/${selectedStartupId}`))
       if (!response.ok) {
         throw new Error('Failed to fetch analysis data')
       }

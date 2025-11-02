@@ -11,6 +11,7 @@ import { useMutation } from "@tanstack/react-query"
 import { useToast } from "@/hooks/use-toast"
 import { getApiUrl } from "@/lib/config"
 import { useNavigate } from "react-router-dom"
+import { authenticatedFetch } from "@/lib/api"
 
 interface UploadedFile {
   id: string
@@ -90,7 +91,8 @@ export function Upload() {
       formData.append('description', description)
       formData.append('industry', industry)
 
-      const response = await fetch(getApiUrl('/api/upload'), {
+      // Use authenticated fetch (automatically adds JWT token)
+      const response = await authenticatedFetch(getApiUrl('/api/upload'), {
         method: 'POST',
         body: formData
       })
@@ -243,7 +245,7 @@ export function Upload() {
       console.log('📄 Starting document analysis...')
       console.log('🌐 Starting public data analysis in parallel...')
       
-      const documentAnalysisPromise = fetch(getApiUrl(`/api/analyze/${startupId}`), {
+      const documentAnalysisPromise = authenticatedFetch(getApiUrl(`/api/analyze/${startupId}`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -255,7 +257,7 @@ export function Upload() {
         })
       })
 
-      const publicDataPromise = fetch(getApiUrl(`/api/public-data-analysis/${startupId}`), {
+      const publicDataPromise = authenticatedFetch(getApiUrl(`/api/public-data-analysis/${startupId}`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

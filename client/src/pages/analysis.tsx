@@ -18,6 +18,7 @@ import { PublicDataSection } from "@/components/public-data-section"
 import { useState, useEffect } from "react"
 import {getApiUrl} from "@/lib/config.ts";
 import { formatCurrency } from "@/lib/utils"
+import { authenticatedFetch } from "@/lib/api"
 
 interface AnalysisData {
   startup: {
@@ -306,7 +307,7 @@ export default function Analysis({ params }: AnalysisProps) {
   const { data: startups = [], isLoading: startupsLoading } = useQuery<Startup[]>({
     queryKey: ['/api/startups'],
     queryFn: async () => {
-      const response = await fetch(getApiUrl('/api/startups'))
+      const response = await authenticatedFetch(getApiUrl('/api/startups'))
       if (!response.ok) {
         throw new Error('Failed to fetch startups')
       }
