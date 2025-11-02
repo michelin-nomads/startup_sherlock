@@ -58,6 +58,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
 app.get("/api/health", (req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
+
+  // Update user profile (REQUIRES AUTH)
+  app.patch("/api/user/profile", authenticate, async (req: Request, res: Response) => {
+    try {
+      const { displayName } = req.body;
+      
+      if (!displayName || typeof displayName !== 'string') {
+        return res.status(400).json({ error: "displayName is required" });
+      }
+      
+      await storage.updateUserProfile(req.user!.id, {
+        displayName: displayName.trim()
+      });
+      
+      console.log(`✅ Updated user profile via API: ${req.user!.email} -> ${displayName}`);
+      
+      res.json({ success: true, displayName: displayName.trim() });
+    } catch (error) {
+      console.error("Failed to update user profile:", error);
+      res.status(500).json({ error: "Failed to update profile" });
+    }
+  });
   
   // Get all startups (REQUIRES AUTH - returns only user's startups)
   app.get("/api/startups", authenticate, async (req: Request, res: Response) => {

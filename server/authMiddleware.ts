@@ -168,6 +168,7 @@ async function getOrCreateUser(decodedToken: any) {
         email,
         displayName: displayName,
         role: 'analyst',
+        lastLoginAt: new Date(), // Set login time on creation
       });
       console.log(`✅ Created new user: ${email} with displayName: ${displayName}`);
     } catch (error: any) {
@@ -181,26 +182,29 @@ async function getOrCreateUser(decodedToken: any) {
         throw error;
       }
     }
-  } else {
-    // Update last login time
+  }
+  
+  // ALWAYS update last login time (for both new and existing users)
+  try {
     await storage.updateUserLastLogin(user.id);
-    
-    // Update displayName if it's missing or different
-    const needsUpdate = (!user.displayName && displayName) || (user.displayName !== displayName);
-    
-    if (needsUpdate && displayName) {
-      try {
-        await storage.updateUserProfile(user.id, {
-          displayName: displayName,
-        });
-        
-        // Update local user object
-        user.displayName = displayName;
-        
-        console.log(`✅ Updated user profile: ${email} with displayName: ${displayName}`);
-      } catch (error) {
-        console.error('Failed to update user profile:', error);
-      }
+    console.log(`✅ Updated last_login_at for: ${email}`);
+  } catch (error) {
+    console.error('Failed to update last login time:', error);
+  }
+  
+  // Update displayName if it's missing or different (for existing users)
+  if (user.displayName !== displayName && displayName) {
+    try {
+      await storage.updateUserProfile(user.id, {
+        displayName: displayName,
+      });
+      
+      // Update local user object
+      user.displayName = displayName;
+      
+      console.log(`✅ Updated user profile: ${email} with displayName: ${displayName}`);
+    } catch (error) {
+      console.error('Failed to update user profile:', error);
     }
   }
 

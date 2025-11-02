@@ -7,6 +7,8 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Icons } from '@/components/ui/icons';
 import { CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
+import { authenticatedFetch } from '@/lib/api';
+import { getApiUrl } from '@/lib/config';
 
 export default function SignUpPage() {
   const navigate = useNavigate();
@@ -148,7 +150,33 @@ export default function SignUpPage() {
     try {
       setLoading(true);
       setError('');
+      
+      // Sign up with Firebase
       await signUpWithEmail(email, password, displayName);
+      
+      // Wait a moment for auth to complete
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Update profile in database via API (more reliable than token)
+      try {
+        const response = await authenticatedFetch(getApiUrl('/api/user/profile'), {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ displayName }),
+        });
+        
+        if (!response.ok) {
+          console.error('Failed to update profile in DB');
+        } else {
+          console.log('✅ Profile updated in database via API');
+        }
+      } catch (apiError) {
+        console.error('Error updating profile via API:', apiError);
+        // Don't block navigation even if API fails
+      }
+      
       navigate('/', { replace: true });
     } catch (err: any) {
       setError(getUserFriendlyError(err));
