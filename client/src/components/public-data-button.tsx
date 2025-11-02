@@ -3,6 +3,7 @@ import { Globe, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { getApiUrl } from "@/lib/config";
+import { authenticatedFetch } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
 interface PublicDataButtonProps {
@@ -31,7 +32,7 @@ export function PublicDataButton({
       setLoading(true);
 
       // First, try to get existing due diligence
-      const getResponse = await fetch(getApiUrl(`api/due-diligence/${startupId}`));
+      const getResponse = await authenticatedFetch(getApiUrl(`api/due-diligence/${startupId}`));
       
       if (getResponse.ok) {
         // Data exists, navigate directly
@@ -46,7 +47,7 @@ export function PublicDataButton({
           description: "Gathering data from public sources. This may take 30-60 seconds...",
         });
 
-        const postResponse = await fetch(getApiUrl(`api/due-diligence/${startupId}`), {
+        const postResponse = await authenticatedFetch(getApiUrl(`api/due-diligence/${startupId}`), {
           method: 'POST',
         });
 

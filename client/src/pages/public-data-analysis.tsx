@@ -12,6 +12,7 @@ import {
   Briefcase, FileText, Eye, MessageSquare
 } from 'lucide-react';
 import { getApiUrl } from '@/lib/config';
+import { authenticatedFetch } from '@/lib/api';
 
 interface DueDiligenceData {
   companyOverview: any;
@@ -58,7 +59,7 @@ export default function PublicDataAnalysisPage() {
     setError(null);
 
     try {
-      const response = await fetch(getApiUrl(`api/due-diligence/${startupId}`));
+      const response = await authenticatedFetch(getApiUrl(`api/due-diligence/${startupId}`));
       
       if (response.status === 404) {
         // No due diligence exists, show option to conduct
@@ -94,7 +95,7 @@ export default function PublicDataAnalysisPage() {
     setError(null);
 
     try {
-      const response = await fetch(getApiUrl(`api/due-diligence/${startupId}`), {
+      const response = await authenticatedFetch(getApiUrl(`api/due-diligence/${startupId}`), {
         method: 'POST',
       });
 
