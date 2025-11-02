@@ -9,6 +9,7 @@ vite.config.ts.*
 .idea
 .env
 .env.*
+!.env.example
 .local
 .vscode
 uploads/
