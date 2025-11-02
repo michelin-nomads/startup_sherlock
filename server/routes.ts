@@ -8,6 +8,7 @@ import { analyzeStartupDocuments, generateIndustryBenchmarks, generateBenchmarkM
 import { enhancedAnalysisService } from "./enhancedAnalysis";
 import { registerHybridResearchRoutes } from "./hybridResearchRoutes"; // NEW: Hybrid research routes
 import { startupDueDiligenceService } from "./startupDueDiligence"; // NEW: Public source due diligence
+import { exchangeRateService } from "./exchangeRateService"; // NEW: Dynamic exchange rate service
 import { insertStartupSchema } from "@shared/schema";
 
 // Configure multer for file uploads
@@ -58,6 +59,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
 app.get("/api/health", (req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
+
+  app.get("/api/exchange-rate", async (req: Request, res: Response) => {
+    try {
+      const rate = await exchangeRateService.refreshIfStale();
+      
+      res.json({
+        rate: rate.rate,
+        lastUpdated: rate.lastUpdated,
+        source: rate.source,
+        message: rate.source === 'api' 
+          ? `Live rate from currency API` 
+          : `Fallback rate (API unavailable)`
+      });
+    } catch (error) {
+      console.error('Error fetching exchange rate:', error);
+      const fallbackRate = exchangeRateService.getRate();
+      res.json({
+        rate: fallbackRate.rate,
+        lastUpdated: fallbackRate.lastUpdated,
+        source: 'fallback',
+        message: 'Using fallback rate due to error'
+      });
+    }
+  });
+
   // Get all startups
   app.get("/api/startups", async (req: Request, res: Response) => {
     try {

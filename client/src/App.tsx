@@ -8,6 +8,7 @@ import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sid
 import { AppSidebar } from "@/components/app-sidebar";
 import { LoadingPage } from "@/components/loading-page";
 import { motion, AnimatePresence } from "framer-motion";
+import { exchangeRateManager } from "@/lib/exchangeRate";
 
 // Pages
 import DashboardPage from "@/pages/dashboard";
@@ -117,6 +118,13 @@ function App() {
     "--sidebar-width": "20rem",       // 320px for better content
     "--sidebar-width-icon": "4rem",   // default icon width
   };
+
+  // Initialize exchange rate on app load
+  useEffect(() => {
+    exchangeRateManager.initialize().catch(err => {
+      console.error('Failed to initialize exchange rate:', err);
+    });
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

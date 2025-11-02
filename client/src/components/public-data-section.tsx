@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
+import { exchangeRateManager } from "@/lib/exchangeRate";
 import { 
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, 
   XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, 
@@ -151,23 +152,33 @@ export function PublicDataSection({
   // Chart colors
   const CHART_COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
 
-  // Format large numbers properly (e.g., $10B instead of $10000.0M)
-  const formatNumber = (num: number, currency = true): string => {
+  // Format large numbers - converts USD to INR with Indian numbering system (Cr, L, K)
+  const formatNumber = (num: number, currency = true, isUSD = true): string => {
     if (!num && num !== 0) return 'N/A';
 
     if(typeof num !== 'number') return num
     
-    const prefix = currency ? '$' : '';
-    const absNum = Math.abs(num);
+    // Convert USD to INR if the input is in USD (default behavior for API data)
+    // Uses dynamic exchange rate from API (fallback to 89 if not initialized)
+    const rate = exchangeRateManager.getRate();
+    const inrValue = isUSD ? num * rate : num;
     
-    if (absNum >= 1_000_000_000) {
-      return `${prefix}${(num / 1_000_000_000).toFixed(1)}B`;
-    } else if (absNum >= 1_000_000) {
-      return `${prefix}${(num / 1_000_000).toFixed(1)}M`;
-    } else if (absNum >= 1_000) {
-      return `${prefix}${(num / 1_000).toFixed(1)}K`;
+    if (!currency) {
+      // For non-currency numbers (like employee count), return as is
+      return num.toLocaleString();
+    }
+    
+    const absValue = Math.abs(inrValue);
+    
+    // Indian numbering system: Crore (10M), Lakh (100K), Thousand (1K)
+    if (absValue >= 10000000) {
+      return `₹${(inrValue / 10000000).toFixed(2)}Cr`;
+    } else if (absValue >= 100000) {
+      return `₹${(inrValue / 100000).toFixed(2)}L`;
+    } else if (absValue >= 1000) {
+      return `₹${(inrValue / 1000).toFixed(2)}K`;
     } else {
-      return `${prefix}${num.toLocaleString()}`;
+      return `₹${inrValue.toFixed(0)}`;
     }
   };
 
