@@ -64,9 +64,13 @@ export function initializeFirebaseAdmin(): Auth {
     
     // If service account was loaded, initialize with it
     if (serviceAccount) {
+      if (!process.env.GCS_PROJECT_ID) {
+        throw new Error('GCS_PROJECT_ID environment variable is required');
+      }
+      
       adminApp = initializeApp({
         credential: cert(serviceAccount),
-        projectId: process.env.GCS_PROJECT_ID || 'startup-sherlock',
+        projectId: process.env.GCS_PROJECT_ID,
       });
       
       adminAuth = getAuth(adminApp);
@@ -75,8 +79,12 @@ export function initializeFirebaseAdmin(): Auth {
     }
 
     // Fallback: Initialize with default credentials (for Cloud environments)
+    if (!process.env.GCS_PROJECT_ID) {
+      throw new Error('GCS_PROJECT_ID environment variable is required');
+    }
+    
     adminApp = initializeApp({
-      projectId: process.env.GCS_PROJECT_ID || 'startup-sherlock',
+      projectId: process.env.GCS_PROJECT_ID,
     });
     
     adminAuth = getAuth(adminApp);

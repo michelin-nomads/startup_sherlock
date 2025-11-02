@@ -63,26 +63,17 @@ export class DatabaseStorage {
   private currentUserId: string | null = null;
 
   constructor(connectionString: string) {
-    // Parse connection string or use direct config
-    try {
-      this.sql = postgres(connectionString, {
-        max: 20,
-        idle_timeout: 30,
-        connect_timeout: 10,
-      });
-    } catch (error) {
-      // Fallback to direct connection config
-      this.sql = postgres({
-        host: 'localhost',
-        port: 5432,
-        database: 'startup_sherlock',
-        username: 'postgres',
-        password: 'StartupSherlock2025',
-        max: 20,
-        idle_timeout: 30,
-        connect_timeout: 10,
-      });
+    if (!connectionString) {
+      throw new Error('Database connection string is required');
     }
+    
+    // Initialize database connection with the provided connection string
+    this.sql = postgres(connectionString, {
+      max: 20,
+      idle_timeout: 30,
+      connect_timeout: 10,
+    });
+    
     this.db = drizzle(this.sql);
     
     // Set timezone to IST (Indian Standard Time)
