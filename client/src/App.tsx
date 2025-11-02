@@ -8,6 +8,8 @@ import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sid
 import { AppSidebar } from "@/components/app-sidebar";
 import { LoadingPage } from "@/components/loading-page";
 import { motion, AnimatePresence } from "framer-motion";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/protected-route";
 
 // Pages
 import DashboardPage from "@/pages/dashboard";
@@ -19,6 +21,8 @@ import NotFound from "@/pages/not-found";
 import ComparisonPage from "@/pages/comparison";
 import ResearchTestPage from "@/pages/research-test"; // NEW: Hybrid Research Test
 import PublicDataAnalysisPage from "@/pages/public-data-analysis"; // NEW: Public Source Due Diligence
+import SignInPage from "@/pages/signin"; // NEW: Sign In
+import SignUpPage from "@/pages/signup"; // NEW: Sign Up
 
 // Wrapper components to handle params
 function AnalysisWrapper() {
@@ -92,15 +96,16 @@ function AppContent() {
             <AppHeader />
             <main className="flex-1 overflow-auto p-6">
               <Routes>
-                <Route path="/" element={<DashboardPage />} />
-                <Route path="/upload" element={<UploadPage />} />
-                <Route path="/analysis" element={<AnalysisWrapper />} />
-                <Route path="/analysis/:id" element={<AnalysisWrapper />} />
-                <Route path="/benchmarks" element={<BenchmarksPage />} />
-                <Route path="/benchmarks/comparison/:startupId" element={<ComparisonWrapper />} />
-                <Route path="/risk" element={<RiskPage />} />
-                <Route path="/research-test" element={<ResearchTestPage />} />
-                <Route path="/public-data-analysis/:startupId" element={<PublicDataAnalysisPage />} />
+                {/* Protected Routes */}
+                <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+                <Route path="/upload" element={<ProtectedRoute><UploadPage /></ProtectedRoute>} />
+                <Route path="/analysis" element={<ProtectedRoute><AnalysisWrapper /></ProtectedRoute>} />
+                <Route path="/analysis/:id" element={<ProtectedRoute><AnalysisWrapper /></ProtectedRoute>} />
+                <Route path="/benchmarks" element={<ProtectedRoute><BenchmarksPage /></ProtectedRoute>} />
+                <Route path="/benchmarks/comparison/:startupId" element={<ProtectedRoute><ComparisonWrapper /></ProtectedRoute>} />
+                <Route path="/risk" element={<ProtectedRoute><RiskPage /></ProtectedRoute>} />
+                <Route path="/research-test" element={<ProtectedRoute><ResearchTestPage /></ProtectedRoute>} />
+                <Route path="/public-data-analysis/:startupId" element={<ProtectedRoute><PublicDataAnalysisPage /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
@@ -120,14 +125,25 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Router>
-          <SidebarProvider style={style as React.CSSProperties}>
-            <AppContent />
-          </SidebarProvider>
-        </Router>
-        <Toaster />
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Router>
+            <Routes>
+              {/* Public Auth Routes */}
+              <Route path="/signin" element={<SignInPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              
+              {/* Protected App Routes */}
+              <Route path="/*" element={
+                <SidebarProvider style={style as React.CSSProperties}>
+                  <AppContent />
+                </SidebarProvider>
+              } />
+            </Routes>
+            <Toaster />
+          </Router>
+        </TooltipProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

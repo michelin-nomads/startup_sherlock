@@ -52,6 +52,7 @@ import type { IStorage } from './storage';
 export class DatabaseStorage implements IStorage {
   private db;
   private sql;
+  private currentUserId: string | null = null;
 
   constructor(connectionString: string) {
     // Parse connection string or use direct config
@@ -78,6 +79,28 @@ export class DatabaseStorage implements IStorage {
     console.log('✅ Database storage initialized');
   }
 
+  /**
+   * Set current user ID for Row-Level Security
+   * This should be called at the beginning of each request
+   */
+  async setCurrentUserId(userId: string | null): Promise<void> {
+    this.currentUserId = userId;
+    if (userId) {
+      // Set PostgreSQL session variable for RLS policies
+      await this.sql`SELECT set_config('app.current_user_id', ${userId}, false)`;
+    } else {
+      // Clear the session variable
+      await this.sql`SELECT set_config('app.current_user_id', '', false)`;
+    }
+  }
+
+  /**
+   * Get current user ID (for debugging)
+   */
+  getCurrentUserId(): string | null {
+    return this.currentUserId;
+  }
+
   async testConnection(): Promise<boolean> {
     try {
       await this.sql`SELECT 1`;
@@ -102,13 +125,32 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    const result = await this.db.select().from(users).where(eq(users.username, username)).limit(1);
+    // Deprecated: kept for backward compatibility
+    // Use getUserByEmail instead
+    const result = await this.db.select().from(users).where(eq(users.email, username)).limit(1);
+    return result[0];
+  }
+
+  async getUserByFirebaseUid(firebaseUid: string): Promise<User | undefined> {
+    const result = await this.db.select().from(users).where(eq(users.firebaseUid, firebaseUid)).limit(1);
+    return result[0];
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const result = await this.db.select().from(users).where(eq(users.email, email)).limit(1);
     return result[0];
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
     const result = await this.db.insert(users).values(insertUser).returning();
     return result[0];
+  }
+
+  async updateUserLastLogin(userId: string): Promise<void> {
+    await this.db
+      .update(users)
+      .set({ lastLoginAt: new Date() })
+      .where(eq(users.id, userId));
   }
 
   // ============================================================================
@@ -122,6 +164,15 @@ export class DatabaseStorage implements IStorage {
 
   async getAllStartups(): Promise<Startup[]> {
     const result = await this.db.select().from(startups).orderBy(desc(startups.updatedAt));
+    return result;
+  }
+
+  async getStartupsByUser(userId: string): Promise<Startup[]> {
+    const result = await this.db
+      .select()
+      .from(startups)
+      .where(eq(startups.userId, userId))
+      .orderBy(desc(startups.updatedAt));
     return result;
   }
 
