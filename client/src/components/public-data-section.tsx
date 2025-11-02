@@ -710,28 +710,28 @@ export function PublicDataSection({
                       <p className="text-sm font-bold">{formatNumber(financialHealth.key_metrics.ARR_usd.value)}</p>
                     </div>
                   )} */}
-                  {financialHealth.key_metrics?.MRR_usd?.value !== null && (
+                  {financialHealth.key_metrics?.MRR_usd?.value != null && (
                     <div className="p-3 border rounded-lg bg-muted/30">
                       <p className="text-xs text-muted-foreground font-medium mb-1">MRR</p>
-                      <p className="text-sm font-bold">{formatNumber(financialHealth.key_metrics.MRR_usd.value)}</p>
+                      <p className="text-sm font-bold">{formatNumber(financialHealth.key_metrics?.MRR_usd?.value)}</p>
                     </div>
                   )}
-                  {financialHealth.revenue_growth_rate_pct && financialHealth.revenue_growth_rate_pct.value && (
+                  {financialHealth.revenue_growth_rate_pct?.value != null && (
                     <div className="p-3 border rounded-lg bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20">
                       <p className="text-xs text-muted-foreground font-medium mb-1">Growth Rate</p>
-                      <p className="text-sm font-bold">{financialHealth.revenue_growth_rate_pct.value}%</p>
+                      <p className="text-sm font-bold">{financialHealth.revenue_growth_rate_pct?.value}%</p>
                     </div>
                   )}
-                  {financialHealth.key_metrics?.CAC_usd?.value !== null && (
+                  {financialHealth.key_metrics?.CAC_usd?.value != null && (
                     <div className="p-3 border rounded-lg bg-muted/30">
                       <p className="text-xs text-muted-foreground font-medium mb-1">CAC</p>
-                      <p className="text-sm font-bold">{formatNumber(financialHealth.key_metrics.CAC_usd.value)}</p>
+                      <p className="text-sm font-bold">{formatNumber(financialHealth.key_metrics?.CAC_usd?.value)}</p>
                     </div>
                   )}
-                  {financialHealth.key_metrics?.LTV_usd?.value !== null && (
+                  {financialHealth.key_metrics?.LTV_usd?.value != null && (
                     <div className="p-3 border rounded-lg bg-muted/30">
                       <p className="text-xs text-muted-foreground font-medium mb-1">LTV</p>
-                      <p className="text-sm font-bold">{formatNumber(financialHealth.key_metrics.LTV_usd.value)}</p>
+                      <p className="text-sm font-bold">{formatNumber(financialHealth.key_metrics?.LTV_usd?.value)}</p>
                     </div>
                   )}
                   {financialHealth.burn_rate_monthly_usd?.value && (
@@ -820,6 +820,120 @@ export function PublicDataSection({
                         </AreaChart>
                       </ResponsiveContainer>
                     </div>
+
+                    {/* Revenue Table */}
+                    <details className="mt-4">
+                      <summary className="text-sm font-medium cursor-pointer hover:text-blue-600">
+                        View Detailed Revenue Table
+                      </summary>
+                      <div className="border rounded-lg overflow-hidden mt-3">
+                        <div className="overflow-x-auto">
+                          <table className="w-full">
+                            <thead className="bg-muted/50 border-b">
+                              <tr>
+                                <th className="text-left text-xs font-semibold text-muted-foreground p-2">
+                                  Year
+                                </th>
+                                <th className="text-right text-xs font-semibold text-muted-foreground p-2">
+                                  Revenue
+                                </th>
+                                <th className="text-right text-xs font-semibold text-muted-foreground p-2">
+                                  YoY Growth
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {financialHealth.revenueHistory?.map(
+                                (item: any, i: number) => {
+                                  const currentRevenue =
+                                    item.revenue || item.amount;
+                                  const previousRevenue =
+                                    i > 0
+                                      ? financialHealth.revenueHistory[i - 1]
+                                          .revenue ||
+                                        financialHealth.revenueHistory[i - 1]
+                                          .amount
+                                      : null;
+
+                                  let growthText = "-";
+                                  let growthClass = "text-muted-foreground";
+
+                                  if (previousRevenue && currentRevenue) {
+                                    const parseRevenue = (rev: string) => {
+                                      const cleaned = rev.replace(
+                                        /[^0-9.KMBkmb]/g,
+                                        ""
+                                      );
+                                      let multiplier = 1;
+                                      if (/[Kk]/.test(rev)) multiplier = 1000;
+                                      else if (/[Mm]/.test(rev))
+                                        multiplier = 1000000;
+                                      else if (/[Bb]/.test(rev))
+                                        multiplier = 1000000000;
+                                      const num = parseFloat(cleaned);
+                                      return isNaN(num)
+                                        ? null
+                                        : num * multiplier;
+                                    };
+
+                                    const currentNum =
+                                      parseRevenue(currentRevenue);
+                                    const previousNum =
+                                      parseRevenue(previousRevenue);
+
+                                    if (
+                                      currentNum != null &&
+                                      previousNum != null &&
+                                      previousNum !== 0
+                                    ) {
+                                      const growthPercent =
+                                        ((currentNum - previousNum) /
+                                          previousNum) *
+                                        100;
+                                      if (growthPercent > 0.1) {
+                                        growthText = `+${growthPercent.toFixed(
+                                          0
+                                        )}%`;
+                                        growthClass =
+                                          "text-green-600 font-semibold";
+                                      } else if (growthPercent < -0.1) {
+                                        growthText = `${growthPercent.toFixed(
+                                          0
+                                        )}%`;
+                                        growthClass =
+                                          "text-red-600 font-semibold";
+                                      } else {
+                                        growthText = "~0%";
+                                        growthClass = "text-muted-foreground";
+                                      }
+                                    }
+                                  }
+
+                                  return (
+                                    <tr
+                                      key={i}
+                                      className="border-b last:border-b-0 hover:bg-muted/30 transition-colors"
+                                    >
+                                      <td className="text-xs font-medium p-2">
+                                        {item.year || item.period}
+                                      </td>
+                                      <td className="text-sm font-bold text-right p-2">
+                                        {currentRevenue}
+                                      </td>
+                                      <td
+                                        className={`text-xs text-right p-2 ${growthClass}`}
+                                      >
+                                        {growthText}
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </details>
                   </div>
                 </>
               )}

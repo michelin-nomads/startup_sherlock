@@ -638,7 +638,7 @@ export default function PublicDataAnalysisPage() {
                 <div>
                   <p className="font-semibold mb-3">Revenue History</p>
                   <div className="space-y-2">
-                    {data.financialHealth.revenueHistory.map((year: any, i: number) => (
+                    {data.financialHealth.revenueHistory?.map((year: any, i: number) => (
                       <div key={i} className="flex items-center justify-between p-3 border rounded">
                         <span className="font-medium">{year.year}</span>
                         <div className="text-right">

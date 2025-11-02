@@ -4,7 +4,7 @@ import multer from "multer";
 import { z } from "zod";
 import { storage } from "./storage";
 import { DocumentProcessor } from "./documentProcessor";
-import { analyzeStartupDocuments, generateIndustryBenchmarks, generateBenchmarkMetrics, generateCustomIndustryBenchmarks, generateMarketRecommendation } from "./gemini";
+import { analyzeStartupDocuments, generateIndustryBenchmarks, generateBenchmarkMetrics, generateCustomIndustryBenchmarks, generateMarketRecommendation, generateChatResponse } from "./gemini";
 import { enhancedAnalysisService } from "./enhancedAnalysis";
 import { registerHybridResearchRoutes } from "./hybridResearchRoutes"; // NEW: Hybrid research routes
 import { startupDueDiligenceService } from "./startupDueDiligence"; // NEW: Public source due diligence
@@ -46,6 +46,14 @@ const upload = multer({
 
 const documentProcessor = new DocumentProcessor();
 
+// Cache for market trends data (refreshes every hour)
+let marketTrendsCache: {
+  data: any;
+  timestamp: number;
+} | null = null;
+
+const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+
 export async function registerRoutes(app: Express): Promise<Server> {
 app.get("/api/health", (req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
@@ -57,6 +65,44 @@ app.get("/api/health", (req: Request, res: Response) => {
       res.json(startups);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch startups" });
+    }
+  });
+
+  // Get dashboard summary (optimized lightweight endpoint)
+  app.get("/api/dashboard/summary", async (req: Request, res: Response) => {
+    try {
+      const startups = await storage.getAllStartups();
+      
+      // Return only essential data for dashboard
+      const summary = startups.map((startup: any) => ({
+        id: startup.id,
+        name: startup.name,
+        industry: startup.industry,
+        overallScore: startup.overallScore,
+        riskLevel: startup.riskLevel,
+        recommendation: startup.recommendation,
+        createdAt: startup.createdAt,
+        // Extract only essential metrics
+        metrics: startup.analysisData?.metrics ? {
+          marketSize: startup.analysisData.metrics.marketSize || 0,
+          traction: startup.analysisData.metrics.traction || 0,
+          team: startup.analysisData.metrics.team || 0,
+          product: startup.analysisData.metrics.product || 0,
+          financials: startup.analysisData.metrics.financials || 0,
+          competition: startup.analysisData.metrics.competition || 0
+        } : null,
+        // Top 3 risk flags only
+        topRiskFlags: startup.analysisData?.riskFlags?.slice(0, 3) || [],
+        // Investment data only
+        investment: {
+          targetInvestment: startup.analysisData?.recommendation?.targetInvestment || 0,
+          expectedReturn: startup.analysisData?.recommendation?.expectedReturn || 0
+        }
+      }));
+      
+      res.json(summary);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch dashboard summary" });
     }
   });
 
@@ -432,6 +478,15 @@ app.get("/api/benchmark-metrics", async (req: Request, res: Response) => {
 // Market trends for analysis comparison
 app.get("/api/market-trends", async (req: Request, res: Response) => {
   try {
+    // Check cache validity
+    const now = Date.now();
+    if (marketTrendsCache && (now - marketTrendsCache.timestamp < CACHE_DURATION)) {
+      console.log(`✅ Returning cached market trends (age: ${Math.round((now - marketTrendsCache.timestamp) / 1000)}s)`);
+      return res.json(marketTrendsCache.data);
+    }
+
+    console.log('🔄 Cache expired or empty, generating fresh market trends...');
+
     const [benchmarks, metrics] = await Promise.all([
       generateIndustryBenchmarks(),
       generateBenchmarkMetrics()
@@ -458,6 +513,12 @@ app.get("/api/market-trends", async (req: Request, res: Response) => {
         targetInvestment: recommendation.targetInvestment,
         expectedReturn: recommendation.expectedReturn
       }
+    };
+
+    // Update cache
+    marketTrendsCache = {
+      data: marketTrends,
+      timestamp: now
     };
 
     res.json(marketTrends);
@@ -650,6 +711,54 @@ app.post("/api/enhanced-analysis", async (req: Request, res: Response) => {
 
   // NEW: Register Hybrid Research Routes (Gemini Grounding + Custom Search)
   registerHybridResearchRoutes(app);
+
+  // AI Chatbot endpoint for Q&A
+  app.post("/api/chat", async (req: Request, res: Response) => {
+    try {
+      const { startupId, persona, message, context, conversationHistory } = req.body;
+
+      if (!message || !persona) {
+        return res.status(400).json({ error: "Message and persona are required" });
+      }
+
+      // Build system prompt based on persona
+      let systemPrompt = "";
+      switch (persona) {
+        case "vc":
+          systemPrompt = "You are a seasoned Venture Capital analyst with 15+ years of experience. Focus on: scalability, market size, competitive moats, unit economics, burn rate, CAC/LTV ratios, and exit potential. Be analytical, data-driven, and ask tough questions about sustainability.";
+          break;
+        case "angel":
+          systemPrompt = "You are an experienced Angel Investor who backs early-stage founders. Focus on: team quality, founder vision, early traction, MVP validation, product-market fit, and go-to-market strategy. Be supportive but realistic, focus on founder strengths and early signals.";
+          break;
+        case "combined":
+          systemPrompt = "You are an investment advisor combining VC and Angel investor perspectives. Provide balanced analysis considering both metrics AND team quality. Address scalability, financials, team, product, and market opportunity. Give holistic investment recommendations.";
+          break;
+        default: // general
+          systemPrompt = "You are an AI assistant helping analyze startup investments. Provide clear, concise answers about the startup analysis. Be neutral and informative.";
+      }
+
+      // Build conversation context
+      let conversationContext = `${systemPrompt}\n\n`;
+      conversationContext += `STARTUP CONTEXT:\n${JSON.stringify(context, null, 2)}\n\n`;
+      
+      if (conversationHistory && conversationHistory.length > 0) {
+        conversationContext += "PREVIOUS CONVERSATION:\n";
+        conversationHistory.forEach((msg: any) => {
+          conversationContext += `${msg.role === "user" ? "User" : "Assistant"}: ${msg.content}\n`;
+        });
+      }
+      
+      conversationContext += `\nUser: ${message}\nAssistant:`;
+
+      // Generate response
+      const response = await generateChatResponse(conversationContext);
+
+      res.json({ response });
+    } catch (error) {
+      console.error("Chat error:", error);
+      res.status(500).json({ error: "Failed to generate response" });
+    }
+  });
 
   const httpServer = createServer(app);
   return httpServer;

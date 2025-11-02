@@ -1,11 +1,18 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { MetricsCard } from "./metrics-card"
 import { RiskFlags } from "./risk-flags"
 import { StartupChart } from "./startup-chart"
-import { FileUp, TrendingUp, AlertTriangle, Target, Users, IndianRupee, Eye } from "lucide-react"
+import { 
+  ScoreDistributionChart, 
+  RecommendationBreakdownChart, 
+  RiskDistributionChart, 
+  ActivityTimelineChart, 
+  AvgMetricsRadarChart 
+} from "./charts"
+import { FileUp, TrendingUp, AlertTriangle, Target, Users, IndianRupee, Eye, Calendar, Filter } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import type { StartupMetrics, RiskFlag } from "@shared/schema"
@@ -172,9 +179,160 @@ const calculatePortfolioInvestment = (startups: any[]): { totalInvestment: numbe
   }
 }
 
+// Time filter helper
+type TimePeriod = 'today' | 'week' | 'month' | 'all';
+
+const filterByTimePeriod = (startups: any[], period: TimePeriod) => {
+  if (period === 'all') return startups;
+  
+  const now = new Date();
+  const cutoffDate = new Date();
+  
+  switch (period) {
+    case 'today':
+      cutoffDate.setHours(0, 0, 0, 0);
+      break;
+    case 'week':
+      cutoffDate.setDate(now.getDate() - 7);
+      break;
+    case 'month':
+      cutoffDate.setDate(now.getDate() - 30);
+      break;
+  }
+  
+  return startups.filter((s: any) => {
+    const createdAt = new Date(s.createdAt);
+    return createdAt >= cutoffDate;
+  });
+};
+
+// Chart calculation functions
+const calculateScoreDistribution = (startups: any[]) => {
+  const ranges = [
+    { range: '0-20', min: 0, max: 20, fill: '#ef4444' },
+    { range: '21-40', min: 21, max: 40, fill: '#f97316' },
+    { range: '41-60', min: 41, max: 60, fill: '#eab308' },
+    { range: '61-80', min: 61, max: 80, fill: '#84cc16' },
+    { range: '81-100', min: 81, max: 100, fill: '#22c55e' }
+  ];
+  
+  return ranges.map(({ range, min, max, fill }) => ({
+    range,
+    count: startups.filter(s => s.overallScore >= min && s.overallScore <= max).length,
+    fill
+  }));
+};
+
+const calculateRecommendationBreakdown = (startups: any[]) => {
+  const recommendations = [
+    { name: 'Strong Buy', value: 0, color: '#22c55e' },
+    { name: 'Buy', value: 0, color: '#84cc16' },
+    { name: 'Hold', value: 0, color: '#eab308' },
+    { name: 'Pass', value: 0, color: '#ef4444' }
+  ];
+  
+  startups.forEach(s => {
+    const rec = (s.recommendation || '').toLowerCase();
+    if (rec.includes('strong') || rec === 'strong_buy') recommendations[0].value++;
+    else if (rec === 'buy') recommendations[1].value++;
+    else if (rec === 'hold') recommendations[2].value++;
+    else if (rec === 'pass') recommendations[3].value++;
+  });
+  
+  return recommendations.filter(r => r.value > 0);
+};
+
+const calculateRiskDistribution = (startups: any[]) => {
+  const risks = [
+    { name: 'Low', value: 0, color: '#22c55e' },
+    { name: 'Medium', value: 0, color: '#eab308' },
+    { name: 'High', value: 0, color: '#ef4444' }
+  ];
+  
+  startups.forEach(s => {
+    const risk = (s.riskLevel || '').toLowerCase();
+    if (risk === 'low') risks[0].value++;
+    else if (risk === 'medium') risks[1].value++;
+    else if (risk === 'high') risks[2].value++;
+  });
+  
+  return risks.filter(r => r.value > 0);
+};
+
+const calculateActivityTimeline = (startups: any[]) => {
+  const dateMap = new Map<string, number>();
+  
+  startups.forEach(s => {
+    const date = new Date(s.createdAt).toLocaleDateString();
+    dateMap.set(date, (dateMap.get(date) || 0) + 1);
+  });
+  
+  return Array.from(dateMap.entries())
+    .map(([date, count]) => ({ date, count }))
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+};
+
+const calculateAvgMetricsRadar = (startups: any[]) => {
+  const analyzed = startups.filter(s => 
+    s.metrics || s.analysisData?.metrics
+  );
+  
+  if (analyzed.length === 0) {
+    return { data: [], avgScore: 0 };
+  }
+  
+  const totals = {
+    marketSize: 0,
+    traction: 0,
+    team: 0,
+    product: 0,
+    financials: 0,
+    competition: 0
+  };
+
+  analyzed.forEach(startup => {
+    const metrics = startup.metrics || startup.analysisData?.metrics;
+    if (metrics) {
+      totals.marketSize += metrics.marketSize || 0;
+      totals.traction += metrics.traction || 0;
+      totals.team += metrics.team || 0;
+      totals.product += metrics.product || 0;
+      totals.financials += metrics.financials || 0;
+      totals.competition += metrics.competition || 0;
+    }
+  });
+
+  const count = analyzed.length;
+  const avgMetrics = {
+    marketSize: Math.round(totals.marketSize / count),
+    traction: Math.round(totals.traction / count),
+    team: Math.round(totals.team / count),
+    product: Math.round(totals.product / count),
+    financials: Math.round(totals.financials / count),
+    competition: Math.round(totals.competition / count)
+  };
+  
+  const data = [
+    { metric: 'Market', value: avgMetrics.marketSize, fullMark: 100 },
+    { metric: 'Traction', value: avgMetrics.traction, fullMark: 100 },
+    { metric: 'Team', value: avgMetrics.team, fullMark: 100 },
+    { metric: 'Product', value: avgMetrics.product, fullMark: 100 },
+    { metric: 'Financial', value: avgMetrics.financials, fullMark: 100 },
+    { metric: 'Competition', value: avgMetrics.competition, fullMark: 100 }
+  ];
+  
+  const avgScore = Math.round(
+    (avgMetrics.marketSize + avgMetrics.traction + avgMetrics.team + 
+     avgMetrics.product + avgMetrics.financials + avgMetrics.competition) / 6
+  );
+  
+  return { data, avgScore };
+};
+
 export function Dashboard() {
   const navigate = useNavigate()
   const [selectedPeriod, setSelectedPeriod] = useState("30d")
+  const [timePeriod, setTimePeriod] = useState<TimePeriod>('month')
 
   const { data: startups, isLoading } = useQuery({
     queryKey: ['/api/startups'],
@@ -211,16 +369,48 @@ export function Dashboard() {
     setSelectedPeriod(period)
   }
 
-  const analyzedStartups = startups?.filter(s => s.overallScore !== null && s.overallScore !== undefined) || []
+  // Filter startups by time period
+  const filteredStartups = useMemo(
+    () => filterByTimePeriod(startups || [], timePeriod),
+    [startups, timePeriod]
+  );
+
+  const analyzedStartups = filteredStartups.filter(s => s.overallScore !== null && s.overallScore !== undefined)
   const totalAnalysis = analyzedStartups.length
   const avgScore = totalAnalysis > 0 
     ? analyzedStartups.reduce((sum, s) => sum + (s.overallScore || 0), 0) / totalAnalysis 
     : 0
   const highRiskCount = analyzedStartups.filter(s => s.riskLevel === 'High').length
   
-  const aggregateMetrics = calculateAggregateMetrics(startups || [])
-  const aggregateRiskFlags = calculateAggregateRiskFlags(startups || [])
-  const portfolioInvestment = calculatePortfolioInvestment(startups || [])
+  const aggregateMetrics = calculateAggregateMetrics(filteredStartups)
+  const aggregateRiskFlags = calculateAggregateRiskFlags(filteredStartups)
+  const portfolioInvestment = calculatePortfolioInvestment(filteredStartups)
+
+  // Calculate chart data with useMemo for performance
+  const scoreDistribution = useMemo(
+    () => calculateScoreDistribution(analyzedStartups),
+    [analyzedStartups]
+  );
+
+  const recommendationBreakdown = useMemo(
+    () => calculateRecommendationBreakdown(analyzedStartups),
+    [analyzedStartups]
+  );
+
+  const riskDistribution = useMemo(
+    () => calculateRiskDistribution(analyzedStartups),
+    [analyzedStartups]
+  );
+
+  const activityTimeline = useMemo(
+    () => calculateActivityTimeline(filteredStartups),
+    [filteredStartups]
+  );
+
+  const metricsRadar = useMemo(
+    () => calculateAvgMetricsRadar(analyzedStartups),
+    [analyzedStartups]
+  );
 
 
   return (
@@ -238,6 +428,51 @@ export function Dashboard() {
           Analyze New Startup
         </Button>
       </div>
+
+      {/* Time Period Filter */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Calendar className="h-5 w-5 text-muted-foreground" />
+              <span className="text-sm font-medium">Time Period:</span>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant={timePeriod === 'today' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setTimePeriod('today')}
+              >
+                Today
+              </Button>
+              <Button
+                variant={timePeriod === 'week' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setTimePeriod('week')}
+              >
+                This Week
+              </Button>
+              <Button
+                variant={timePeriod === 'month' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setTimePeriod('month')}
+              >
+                This Month
+              </Button>
+              <Button
+                variant={timePeriod === 'all' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setTimePeriod('all')}
+              >
+                All Time
+              </Button>
+            </div>
+            <div className="text-sm text-muted-foreground">
+              Showing <span className="font-semibold">{filteredStartups.length}</span> analyses
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Key Stats */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -306,6 +541,20 @@ export function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Portfolio Analytics Charts */}
+      {totalAnalysis > 0 && (
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight mb-4">Portfolio Analytics</h2>
+          <div className="grid gap-6 lg:grid-cols-2">
+            <ScoreDistributionChart data={scoreDistribution} />
+            <RecommendationBreakdownChart data={recommendationBreakdown} />
+            <RiskDistributionChart data={riskDistribution} />
+            <AvgMetricsRadarChart data={metricsRadar.data} avgScore={metricsRadar.avgScore} />
+            <ActivityTimelineChart data={activityTimeline} />
+          </div>
+        </div>
+      )}
 
       {/* Main Content Grid */}
       <div className="grid gap-6 lg:grid-cols-3">
