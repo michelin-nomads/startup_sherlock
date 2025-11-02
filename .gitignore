@@ -13,5 +13,13 @@ vite.config.ts.*
 .vscode
 uploads/
 
-# Lock files - let Railway generate fresh ones
+# Service account keys (CRITICAL - DO NOT COMMIT!)
+*service-account*.json
+gcloud-service-account-key.json
+
+# Firebase
+.firebase/
+firebase-debug.log
+firebaserc
+
 package-lock.json
