@@ -13,7 +13,6 @@ if (!process.env.DATABASE_URL) {
 const storage = initDatabaseStorage(process.env.DATABASE_URL);
 import { analyzeStartupDocuments, extractTextFromDocument, generateIndustryBenchmarks, generateBenchmarkMetrics, generateCustomIndustryBenchmarks, generateMarketRecommendation } from "./gemini";
 import { enhancedAnalysisService } from "./enhancedAnalysis";
-// import { enhancedReasoningService } from "./deepResearch"; // NEW: Deep research capabilities - TODO: Implement this module
 import { registerHybridResearchRoutes } from "./hybridResearchRoutes"; // NEW: Hybrid research routes
 import { startupDueDiligenceService } from "./startupDueDiligence"; // NEW: Public source due diligence
 import { insertStartupSchema, insertDocumentSchema } from "@shared/schema";
@@ -350,7 +349,7 @@ app.get("/api/health", (req: Request, res: Response) => {
 
   // Analyze startup documents (ONLY document analysis)
   // Analyze startup documents (REQUIRES AUTH + ownership check)
-  app.post("/api/analyze/:startupId", authenticate, async (req: Request, res: Response) => {
+  app.post("/api/document-analysis/:startupId", authenticate, async (req: Request, res: Response) => {
     try {
       const { startupId } = req.params;
       const { startupName, description, industry, useDeepAnalysis = false } = req.body;
@@ -586,69 +585,6 @@ app.get("/api/health", (req: Request, res: Response) => {
     }
   });
 
-  // NEW: Deep Analysis Endpoint (automatic deep reasoning)
-  app.post("/api/deep-analyze/:startupId", async (req: Request, res: Response) => {
-    try {
-      const { startupId } = req.params;
-      const { analysisType = 'comprehensive' } = req.body;
-
-      console.log(`⚠️ Deep analysis not yet implemented - using standard analysis for startup: ${startupId}`);
-
-      const startup = await storage.getStartup(startupId);
-      if (!startup) {
-        return res.status(404).json({ error: "Startup not found" });
-      }
-
-      const documents = await storage.getDocumentsByStartup(startupId);
-      if (documents.length === 0) {
-        return res.status(400).json({ error: "No documents found for analysis" });
-      }
-
-      const documentData = documents.map(doc => ({
-        content: doc.extractedText || '',
-        type: doc.fileType,
-        name: doc.fileName
-      }));
-
-      // Analyze documents
-      const analysisResult = await analyzeStartupDocuments(documentData);
-
-      // Extract scores for storage
-      const overallScore = analysisResult.overallScore || 0;
-      const riskLevel = analysisResult.riskLevel || 'Medium';
-      const recommendation = analysisResult.recommendation?.decision || 'hold';
-
-      // Update startup
-      await storage.updateStartup(startupId, {
-        overallScore,
-        riskLevel,
-        recommendation,
-        analysisData: {
-          ...analysisResult,
-          analysisType: 'standard',
-          analyzedAt: new Date().toISOString()
-        }
-      });
-
-      res.json({
-        success: true,
-        startupId,
-        analysisType: 'standard',
-        overallScore,
-        riskLevel,
-        recommendation,
-        analysis: analysisResult,
-        message: 'Analysis completed successfully (deep analysis not yet implemented)'
-      });
-
-    } catch (error) {
-      console.error('Analysis error:', error);
-      res.status(500).json({ 
-        error: "Failed to perform analysis",
-        details: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
 
   // Get startup analysis
   app.get("/api/analysis/:startupId", async (req: Request, res: Response) => {

@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { 
   TrendingUp, DollarSign, Users, AlertTriangle, Globe, 
   CheckCircle2, XCircle, Building2, Target, Briefcase, Search, Database, ExternalLink, FileText, Clock, RefreshCcw, ChevronDown, ChevronUp,
-  BarChart3, Activity, Zap, Calendar, Newspaper, LineChart as LineChartIcon, PieChart as PieChartIcon, Star, Info 
+  BarChart3, Activity, Zap, Calendar, Newspaper, LineChart as LineChartIcon, PieChart as PieChartIcon, Star, Info, AlertCircle, 
+  TrendingUpDown
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
@@ -180,7 +181,7 @@ export function PublicDataSection({
     <div className="space-y-6">
       {/* Company Overview */}
       <Card>
-        <details className="group">
+        <details className="group" open>
           <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
             <div className="flex items-center gap-2">
               <Building2 className="h-5 w-5" />
@@ -261,17 +262,18 @@ export function PublicDataSection({
           </Card>
 
       {/* Corporate Structure */}
-      {corporateStructure && (corporateStructure.mergers?.length > 0 || corporateStructure.acquisitions?.length > 0 || corporateStructure.parent_company || (recentDevelopments && !Array.isArray(recentDevelopments) && recentDevelopments.partnerships?.length > 0)) && (
-        <Card>
-          <details className="group">
-            <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-              <div className="flex items-center gap-2">
-                <Briefcase className="h-5 w-5" />
-                <span className="font-semibold">Corporate Structure</span>
-              </div>
-              <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-            </summary>
-            <CardContent className="space-y-4 pt-4">
+      <Card>
+        <details className="group">
+          <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+            <div className="flex items-center gap-2">
+              <Briefcase className="h-5 w-5" />
+              <span className="font-semibold">Corporate Structure</span>
+            </div>
+            <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+          </summary>
+          <CardContent className="space-y-4 pt-4">
+            {corporateStructure && (corporateStructure.mergers?.length > 0 || corporateStructure.acquisitions?.length > 0 || corporateStructure.parent_company || (recentDevelopments && !Array.isArray(recentDevelopments) && recentDevelopments.partnerships?.length > 0)) ? (
+              <>
               {corporateStructure.parent_company && (
                 <div className="p-3 border rounded-lg bg-muted/30">
                   <p className="text-xs text-muted-foreground font-medium mb-1">Parent Company</p>
@@ -366,14 +368,21 @@ export function PublicDataSection({
                   </div>
                 </>
               )}
-            </CardContent>
-          </details>
-        </Card>
-      )}
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <Briefcase className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                <p className="text-sm text-muted-foreground">No corporate structure data available</p>
+                <p className="text-xs text-muted-foreground mt-1">Information about mergers, acquisitions, and corporate relationships not available</p>
+              </div>
+            )}
+          </CardContent>
+        </details>
+      </Card>
 
       {/* Team & Leadership */}
       <Card>
-        <details className="group" open>
+        <details className="group">
           <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
             <div className="flex items-center gap-2">
               <Users className="h-5 w-5" />
@@ -461,7 +470,7 @@ export function PublicDataSection({
               <>
                 <Separator />
                 <div>
-                  <p className="text-sm font-semibold mb-3">Employee Growth History</p>
+                  <p className="text-sm font-semibold mb-3">Employee Growth Trend</p>
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart data={[...employeeMetrics.employee_history].sort((a: any, b: any) => {
@@ -520,17 +529,18 @@ export function PublicDataSection({
       </Card>
 
       {/* Funding History */}
-      {fundingHistory && fundingHistory.rounds && fundingHistory.rounds.length > 0 && (
-          <Card>
-          <details className="group">
-            <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-              <div className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5" />
-                <span className="font-semibold">Funding History</span>
-              </div>
-              <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-            </summary>
-            <CardContent className="space-y-4 pt-4">
+      <Card>
+        <details className="group">
+          <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5" />
+              <span className="font-semibold">Funding History</span>
+            </div>
+            <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+          </summary>
+          <CardContent className="space-y-4 pt-4">
+            {fundingHistory && fundingHistory.rounds && fundingHistory.rounds.length > 0 ? (
+              <>
               {fundingHistory.total_funding_usd && (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   <div className="p-3 border rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
@@ -661,23 +671,31 @@ export function PublicDataSection({
                   </div>
                 </>
               )}
-            </CardContent>
-          </details>
-        </Card>
-      )}
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <DollarSign className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                <p className="text-sm text-muted-foreground">No funding data available</p>
+                <p className="text-xs text-muted-foreground mt-1">This startup has not reported any funding rounds yet</p>
+              </div>
+            )}
+          </CardContent>
+        </details>
+      </Card>
 
       {/* Financial Health & Revenue */}
-      {financialHealth && (financialHealth.annual_revenue || financialHealth.revenue_history) && (
-        <Card>
-          <details className="group">
-            <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-              <div className="flex items-center gap-2">
-                <DollarSign className="h-5 w-5" />
-                <span className="font-semibold">Financial Health & Revenue</span>
-              </div>
-              <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-            </summary>
-            <CardContent className="space-y-4 pt-4">
+      <Card>
+        <details className="group">
+          <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+            <div className="flex items-center gap-2">
+              <DollarSign className="h-5 w-5" />
+              <span className="font-semibold">Financial Health & Revenue</span>
+            </div>
+            <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+          </summary>
+          <CardContent className="space-y-4 pt-4">
+            {financialHealth && (financialHealth.annual_revenue || financialHealth.revenue_history) ? (
+              <>
               {financialHealth.annual_revenue && financialHealth.annual_revenue.value_usd && (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <div className="p-3 border rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
@@ -696,7 +714,7 @@ export function PublicDataSection({
                   {financialHealth.key_metrics?.MRR_usd?.value !== null && (
                     <div className="p-3 border rounded-lg bg-muted/30">
                       <p className="text-xs text-muted-foreground font-medium mb-1">MRR</p>
-                      <p className="text-sm font-bold">{formatNumber(financialHealth.key_metrics.MRR_usd.value)}</p>
+                      <p className="text-sm font-bold">{formatNumber(financialHealth.key_metrics.MRR_usd?.value)}</p>
                     </div>
                   )}
                   {financialHealth.revenue_growth_rate_pct && financialHealth.revenue_growth_rate_pct.value && (
@@ -708,30 +726,30 @@ export function PublicDataSection({
                   {financialHealth.key_metrics?.CAC_usd?.value !== null && (
                     <div className="p-3 border rounded-lg bg-muted/30">
                       <p className="text-xs text-muted-foreground font-medium mb-1">CAC</p>
-                      <p className="text-sm font-bold">{formatNumber(financialHealth.key_metrics.CAC_usd.value)}</p>
+                      <p className="text-sm font-bold">{formatNumber(financialHealth.key_metrics.CAC_usd?.value)}</p>
                     </div>
                   )}
                   {financialHealth.key_metrics?.LTV_usd?.value !== null && (
                     <div className="p-3 border rounded-lg bg-muted/30">
                       <p className="text-xs text-muted-foreground font-medium mb-1">LTV</p>
-                      <p className="text-sm font-bold">{formatNumber(financialHealth.key_metrics.LTV_usd.value)}</p>
+                      <p className="text-sm font-bold">{formatNumber(financialHealth.key_metrics.LTV_usd?.value)}</p>
                     </div>
                   )}
                   {financialHealth.burn_rate_monthly_usd?.value && (
                     <div className="p-3 border rounded-lg bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20">
                       <p className="text-xs text-muted-foreground font-medium mb-1">Monthly Burn Rate</p>
-                      <p className="text-sm font-bold">{formatNumber(financialHealth.burn_rate_monthly_usd.value)}</p>
+                      <p className="text-sm font-bold">{formatNumber(financialHealth.burn_rate_monthly_usd?.value)}</p>
                       {financialHealth.burn_rate_monthly_usd.as_of && (
-                        <p className="text-xs text-muted-foreground mt-1">{financialHealth.burn_rate_monthly_usd.as_of}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{financialHealth.burn_rate_monthly_usd?.as_of}</p>
                       )}
                     </div>
                   )}
                   {financialHealth.cash_runway_months?.value && (
                     <div className="p-3 border rounded-lg bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20">
                       <p className="text-xs text-muted-foreground font-medium mb-1">Cash Runway</p>
-                      <p className="text-sm font-bold">{financialHealth.cash_runway_months.value} months</p>
+                      <p className="text-sm font-bold">{financialHealth.cash_runway_months?.value} months</p>
                       {financialHealth.cash_runway_months.as_of && (
-                        <p className="text-xs text-muted-foreground mt-1">{financialHealth.cash_runway_months.as_of}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{financialHealth.cash_runway_months?.as_of}</p>
                       )}
                     </div>
                   )}
@@ -806,13 +824,20 @@ export function PublicDataSection({
                   </div>
                 </>
               )}
-            </CardContent>
-          </details>
-        </Card>
-      )}
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <BarChart3 className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                <p className="text-sm text-muted-foreground">No financial data available</p>
+                <p className="text-xs text-muted-foreground mt-1">Financial information has not been reported for this startup</p>
+              </div>
+            )}
+          </CardContent>
+        </details>
+      </Card>
 
       {/* Growth Trajectory */}
-      {growthTrajectory && (growthTrajectory.chart_series || growthTrajectory.historical_growth || growthTrajectory.projected_growth || growthTrajectory.key_milestones) && (
+      {growthTrajectory && (growthTrajectory.historical_growth || growthTrajectory.projected_growth || growthTrajectory.key_milestones) && (
         <Card>
           <details className="group">
             <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
@@ -1035,45 +1060,46 @@ export function PublicDataSection({
                         ))}
                       </div>
                     </div>
-                  </div>
-                </>
-              )}
+                </div>
+              </>
+            )}
             </CardContent>
           </details>
         </Card>
       )}
-
+      
       {/* Market Position */}
-      {marketPosition && (marketPosition.TAM_usd || marketPosition.market_share_pct || marketPosition.market_ranking) && (
-        <Card>
-          <details className="group">
-            <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-              <div className="flex items-center gap-2">
-                <Globe className="h-5 w-5" />
-                <span className="font-semibold">Market Position</span>
-              </div>
-              <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-            </summary>
-            <CardContent className="space-y-4 pt-4">
+      <Card>
+        <details className="group">
+          <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+            <div className="flex items-center gap-2">
+              <Globe className="h-5 w-5" />
+              <span className="font-semibold">Market Position</span>
+            </div>
+            <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+          </summary>
+          <CardContent className="space-y-4 pt-4">
+            {marketPosition && (marketPosition.TAM_usd || marketPosition.market_share_pct || marketPosition.market_ranking) ? (
+              <>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {marketPosition.TAM_usd?.value !== null && (
                   <div className="p-3 border rounded-lg bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20">
                     <p className="text-xs text-muted-foreground font-medium mb-1">TAM</p>
-                    <p className="text-sm font-bold">{formatNumber(marketPosition.TAM_usd.value)}</p>
+                    <p className="text-sm font-bold">{formatNumber(marketPosition.TAM_usd?.value)}</p>
                   </div>
                 )}
                 {marketPosition?.market_share_pct?.value !== null && (
                   <div className="p-3 border rounded-lg bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20">
                     <p className="text-xs text-muted-foreground font-medium mb-1">Market Share</p>
-                    <p className="text-sm font-bold">{marketPosition.market_share_pct.value}%</p>
+                    <p className="text-sm font-bold">{marketPosition.market_share_pct?.value}%</p>
                   </div>
                 )}
                 {marketPosition?.market_ranking?.rank !== null && (
                   <div className="p-3 border rounded-lg bg-muted/30">
                     <p className="text-xs text-muted-foreground font-medium mb-1">Ranking</p>
-                    <p className="text-sm font-bold">#{marketPosition.market_ranking.rank}</p>
-                    {marketPosition.market_ranking.basis && (
-                      <p className="text-xs text-muted-foreground">{marketPosition.market_ranking.basis}</p>
+                    <p className="text-sm font-bold">#{marketPosition.market_ranking?.rank}</p>
+                    {marketPosition.market_ranking?.basis && (
+                      <p className="text-xs text-muted-foreground">{marketPosition.market_ranking?.basis}</p>
                     )}
                   </div>
                 )}
@@ -1121,23 +1147,31 @@ export function PublicDataSection({
                   </div>
                 </>
               )}
-            </CardContent>
-          </details>
-        </Card>
-      )}
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <Globe className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                <p className="text-sm text-muted-foreground">No market position data available</p>
+                <p className="text-xs text-muted-foreground mt-1">Market analysis information has not been collected yet</p>
+              </div>
+            )}
+          </CardContent>
+        </details>
+      </Card>
 
       {/* Competitor Analysis */}
-      {competitorAnalysis && competitorAnalysis.top_competitors && competitorAnalysis.top_competitors.length > 0 && (
-        <Card>
-          <details className="group">
-            <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
-              <div className="flex items-center gap-2">
-                <PieChartIcon className="h-5 w-5" />
-                <span className="font-semibold">Competitive Analysis</span>
-              </div>
-              <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
-            </summary>
-            <CardContent className="space-y-4 pt-4">
+      <Card>
+        <details className="group">
+          <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
+            <div className="flex items-center gap-2">
+              <PieChartIcon className="h-5 w-5" />
+              <span className="font-semibold">Competitive Analysis</span>
+            </div>
+            <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+          </summary>
+          <CardContent className="space-y-4 pt-4">
+            {competitorAnalysis && competitorAnalysis.top_competitors && competitorAnalysis.top_competitors.length > 0 ? (
+              <>
               <div>
                 <p className="text-sm font-semibold mb-3">Top Competitors</p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -1195,10 +1229,17 @@ export function PublicDataSection({
                   </div>
                 </>
               )}
-            </CardContent>
-          </details>
-        </Card>
-      )}
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <PieChartIcon className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                <p className="text-sm text-muted-foreground">No competitor analysis available</p>
+                <p className="text-xs text-muted-foreground mt-1">Competitive landscape data has not been analyzed yet</p>
+              </div>
+            )}
+          </CardContent>
+        </details>
+      </Card>
 
       {/* Product Launches - Separate Section */}
       {recentDevelopments && !Array.isArray(recentDevelopments) && recentDevelopments.product_launches && recentDevelopments.product_launches.length > 0 && (
@@ -1209,7 +1250,7 @@ export function PublicDataSection({
                 <Zap className="h-5 w-5 text-blue-600" />
                 <span className="font-semibold">Product Launches</span>
                 <Badge variant="outline" className="text-xs ml-2 bg-blue-50 text-blue-600 border-blue-200">
-                  {recentDevelopments.product_launches.length} launches
+                  {recentDevelopments.product_launches?.length} launches
                 </Badge>
               </div>
               <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
@@ -1240,7 +1281,7 @@ export function PublicDataSection({
                 <Newspaper className="h-5 w-5" />
                 <span className="font-semibold">Recent News & Developments</span>
                 {Array.isArray(recentDevelopments) && (
-                  <Badge variant="outline" className="text-xs ml-2">{recentDevelopments.length} updates</Badge>
+                  <Badge variant="outline" className="text-xs ml-2">{recentDevelopments?.length} updates</Badge>
                 )}
               </div>
               <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
@@ -1249,7 +1290,7 @@ export function PublicDataSection({
               {/* All News (if array) or categorized news (if object) */}
               {Array.isArray(recentDevelopments) ? (
                 <div className="space-y-3">
-                  {recentDevelopments.slice(0, 10).map((dev: any, i: number) => (
+                  {recentDevelopments?.slice(0, 10).map((dev: any, i: number) => (
                     <div key={i} className="p-3 border rounded-lg hover:bg-muted/30 transition-colors">
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1">
@@ -1274,11 +1315,11 @@ export function PublicDataSection({
               ) : (
                 /* Categorized news (excluding product_launches and partnerships which have their own sections) */
                 <>
-                  {recentDevelopments.awards_recognition && recentDevelopments.awards_recognition.length > 0 && (
+                  {recentDevelopments.awards_recognition && recentDevelopments.awards_recognition?.length > 0 && (
                     <div>
                       <p className="text-sm font-semibold mb-2 text-yellow-600">🏆 Awards & Recognition</p>
                       <div className="space-y-2">
-                        {recentDevelopments.awards_recognition.map((item: any, i: number) => (
+                        {recentDevelopments.awards_recognition?.map((item: any, i: number) => (
                           <div key={i} className="p-2 border-l-4 border-yellow-500 pl-3 bg-yellow-50/50 dark:bg-yellow-900/10 rounded">
                             <p className="text-sm font-medium">{item.title}</p>
                             <p className="text-xs text-muted-foreground">{item.date}</p>
@@ -1288,11 +1329,11 @@ export function PublicDataSection({
                     </div>
                   )}
 
-                  {recentDevelopments.controversies && recentDevelopments.controversies.length > 0 && (
+                  {recentDevelopments.controversies && recentDevelopments.controversies?.length > 0 && (
                     <div>
                       <p className="text-sm font-semibold mb-2 text-red-600">⚠️ Controversies</p>
                       <div className="space-y-2">
-                        {recentDevelopments.controversies.map((item: any, i: number) => (
+                        {recentDevelopments.controversies?.map((item: any, i: number) => (
                           <div key={i} className="p-2 border-l-4 border-red-500 pl-3 bg-red-50/50 dark:bg-red-900/10 rounded">
                             <p className="text-sm font-medium">{item.title}</p>
                             <p className="text-xs text-muted-foreground">{item.date}</p>
@@ -1303,11 +1344,11 @@ export function PublicDataSection({
                     </div>
                   )}
 
-                  {recentDevelopments.funding_announcements && recentDevelopments.funding_announcements.length > 0 && (
+                  {recentDevelopments.funding_announcements && recentDevelopments.funding_announcements?.length > 0 && (
                     <div>
                       <p className="text-sm font-semibold mb-2 text-purple-600">💰 Funding Announcements</p>
                       <div className="space-y-2">
-                        {recentDevelopments.funding_announcements.map((item: any, i: number) => (
+                        {recentDevelopments.funding_announcements?.map((item: any, i: number) => (
                           <div key={i} className="p-2 border-l-4 border-purple-500 pl-3 bg-purple-50/50 dark:bg-purple-900/10 rounded">
                             <p className="text-sm font-medium">{item.title}</p>
                             <p className="text-xs text-muted-foreground">{item.date}</p>
@@ -1317,11 +1358,11 @@ export function PublicDataSection({
                     </div>
                   )}
 
-                  {recentDevelopments.leadership_changes && recentDevelopments.leadership_changes.length > 0 && (
+                  {recentDevelopments.leadership_changes && recentDevelopments.leadership_changes?.length > 0 && (
                     <div>
                       <p className="text-sm font-semibold mb-2 text-orange-600">👔 Leadership Changes</p>
                       <div className="space-y-2">
-                        {recentDevelopments.leadership_changes.map((item: any, i: number) => (
+                        {recentDevelopments.leadership_changes?.map((item: any, i: number) => (
                           <div key={i} className="p-2 border-l-4 border-orange-500 pl-3 bg-orange-50/50 dark:bg-orange-900/10 rounded">
                             <p className="text-sm font-medium">{item.title}</p>
                             <p className="text-xs text-muted-foreground">{item.date}</p>
@@ -1331,11 +1372,11 @@ export function PublicDataSection({
                     </div>
                   )}
 
-                  {recentDevelopments.market_expansion && recentDevelopments.market_expansion.length > 0 && (
+                  {recentDevelopments.market_expansion && recentDevelopments.market_expansion?.length > 0 && (
                     <div>
                       <p className="text-sm font-semibold mb-2 text-cyan-600">🌍 Market Expansion</p>
                       <div className="space-y-2">
-                        {recentDevelopments.market_expansion.map((item: any, i: number) => (
+                        {recentDevelopments.market_expansion?.map((item: any, i: number) => (
                           <div key={i} className="p-2 border-l-4 border-cyan-500 pl-3 bg-cyan-50/50 dark:bg-cyan-900/10 rounded">
                             <p className="text-sm font-medium">{item.title}</p>
                             <p className="text-xs text-muted-foreground">{item.date}</p>
@@ -1345,11 +1386,11 @@ export function PublicDataSection({
                     </div>
                   )}
 
-                  {recentDevelopments.all_news && recentDevelopments.all_news.length > 0 && (
+                  {recentDevelopments.all_news && recentDevelopments.all_news?.length > 0 && (
                     <div>
                       <p className="text-sm font-semibold mb-2">📰 All Recent News</p>
                       <div className="space-y-2">
-                        {recentDevelopments.all_news.slice(0, 5).map((item: any, i: number) => (
+                        {recentDevelopments.all_news?.slice(0, 5).map((item: any, i: number) => (
                           <div key={i} className="p-3 border rounded-lg hover:bg-muted/30 transition-colors">
                             <div className="flex items-start justify-between">
                               <div className="flex-1">
@@ -1394,21 +1435,21 @@ export function PublicDataSection({
       )}
 
       {/* Risk Analysis */}
-      {riskRationale && riskRationale.risk_level && (
+      {riskRationale && riskRationale?.risk_level && (
         <Card>
           <details className="group">
             <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
               <div className="flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5" />
                 <span className="font-semibold">Risk Assessment</span>
-                <Badge variant="outline" className="text-xs ml-2">{riskRationale.risk_level.level}</Badge>
+                <Badge variant="outline" className="text-xs ml-2">{riskRationale?.risk_level?.level}</Badge>
               </div>
               <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
             </summary>
             <CardContent className="space-y-4 pt-4">
               <div className="p-4 border rounded-lg bg-muted/30">
-                <p className="text-sm font-semibold mb-2">Risk Level: {riskRationale.risk_level.level}</p>
-                <p className="text-sm text-muted-foreground">{riskRationale.risk_level.explanation}</p>
+                <p className="text-sm font-semibold mb-2">Risk Level: {riskRationale?.risk_level?.level}</p>
+                <p className="text-sm text-muted-foreground">{riskRationale?.risk_level?.explanation}</p>
               </div>
             </CardContent>
           </details>
@@ -1416,48 +1457,48 @@ export function PublicDataSection({
       )}
 
       {/* IPO Analysis */}
-      {ipoAnalysis && (ipoAnalysis.ipo_likelihood || ipoAnalysis.estimated_ipo_timeline) && (
+      {ipoAnalysis && (ipoAnalysis?.ipo_likelihood || ipoAnalysis?.estimated_ipo_timeline) && (
         <Card>
           <details className="group">
             <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
               <div className="flex items-center gap-2">
-                <LineChartIcon className="h-5 w-5" />
+               <TrendingUpDown className="h-5 w-5" />
                 <span className="font-semibold">IPO Analysis</span>
               </div>
               <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
             </summary>
             <CardContent className="space-y-4 pt-4">
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {ipoAnalysis.ipo_likelihood && (
+                {ipoAnalysis?.ipo_likelihood && (
                   <div className="p-3 border rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
                     <p className="text-xs text-muted-foreground font-medium mb-1">IPO Likelihood</p>
-                    <p className="text-sm font-bold">{ipoAnalysis.ipo_likelihood}</p>
+                    <p className="text-sm font-bold">{ipoAnalysis?.ipo_likelihood}</p>
                   </div>
                 )}
-                {ipoAnalysis.estimated_ipo_timeline && (
+                {ipoAnalysis?.estimated_ipo_timeline && (
                   <div className="p-3 border rounded-lg bg-muted/30">
                     <p className="text-xs text-muted-foreground font-medium mb-1">Timeline</p>
-                    <p className="text-sm font-bold">{ipoAnalysis.estimated_ipo_timeline}</p>
+                    <p className="text-sm font-bold">{ipoAnalysis?.estimated_ipo_timeline}</p>
                   </div>
                 )}
-                {ipoAnalysis.estimated_ipo_valuation_usd && (
+                {ipoAnalysis?.estimated_ipo_valuation_usd && (
                   <div className="p-3 border rounded-lg bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
                     <p className="text-xs text-muted-foreground font-medium mb-1">Est. Valuation</p>
-                    <p className="text-sm font-bold">${(ipoAnalysis.estimated_ipo_valuation_usd / 1000000000).toFixed(1)}B</p>
+                    <p className="text-sm font-bold">${(ipoAnalysis?.estimated_ipo_valuation_usd / 1000000000).toFixed(1)}B</p>
                   </div>
                 )}
               </div>
 
-              {ipoAnalysis.comparable_ipos && ipoAnalysis.comparable_ipos.length > 0 && (
+              {ipoAnalysis?.comparable_ipos && ipoAnalysis?.comparable_ipos?.length > 0 && (
                 <>
                   <Separator />
                   <div>
                     <p className="text-sm font-semibold mb-3">Comparable IPOs</p>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                      {ipoAnalysis.comparable_ipos.map((ipo: any, i: number) => (
+                      {ipoAnalysis?.comparable_ipos?.map((ipo: any, i: number) => (
                         <div key={i} className="p-3 border rounded-lg">
-                          <p className="text-sm font-semibold">{ipo.company}</p>
-                          <p className="text-xs text-muted-foreground">${(ipo.valuation_usd / 1000000000).toFixed(1)}B • {ipo.year}</p>
+                          <p className="text-sm font-semibold">{ipo?.company}</p>
+                          <p className="text-xs text-muted-foreground">${(ipo?.valuation_usd / 1000000000).toFixed(1)}B • {ipo?.year}</p>
                     </div>
                       ))}
                     </div>
@@ -1470,34 +1511,34 @@ export function PublicDataSection({
       )}
 
       {/* Employee Satisfaction */}
-      {employeeSatisfaction && Object.keys(employeeSatisfaction).length > 0 && (
+      {employeeSatisfaction && Object.keys(employeeSatisfaction)?.length > 0 && (
         <Card>
           <details className="group">
             <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
               <div className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
                 <span className="font-semibold">Employee Satisfaction</span>
-                {(employeeSatisfaction.glassdoor_rating?.value || typeof employeeSatisfaction.glassdoor_rating === 'number') && (
+                {(employeeSatisfaction?.glassdoor_rating?.value || typeof employeeSatisfaction?.glassdoor_rating === 'number') && (
                   <Badge variant="outline" className="text-xs ml-2">
-                    ⭐ {employeeSatisfaction.glassdoor_rating?.value || employeeSatisfaction.glassdoor_rating}/5
+                    ⭐ {employeeSatisfaction?.glassdoor_rating?.value || employeeSatisfaction?.glassdoor_rating}/5
                   </Badge>
                 )}
               </div>
               <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
             </summary>
             <CardContent className="space-y-4 pt-4">
-              {employeeSatisfaction.reviews_summary && (
+              {employeeSatisfaction?.reviews_summary && (
                 <div className="p-3 border rounded-lg bg-muted/30">
-                  <p className="text-sm">{employeeSatisfaction.reviews_summary}</p>
+                  <p className="text-sm">{employeeSatisfaction?.reviews_summary}</p>
                 </div>
               )}
 
               <div className="grid md:grid-cols-2 gap-4">
-                {employeeSatisfaction.top_pros && employeeSatisfaction.top_pros.length > 0 && (
+                {employeeSatisfaction?.top_pros && employeeSatisfaction?.top_pros?.length > 0 && (
                   <div>
                     <p className="text-sm font-semibold mb-2 text-green-600">Top Pros</p>
                     <ul className="space-y-1">
-                      {employeeSatisfaction.top_pros.map((pro: string, i: number) => (
+                      {employeeSatisfaction?.top_pros?.map((pro: string, i: number) => (
                         <li key={i} className="text-sm flex items-start gap-2">
                           <CheckCircle2 className="h-4 w-4 text-green-600 shrink-0 mt-0.5" />
                           <span>{pro}</span>
@@ -1506,11 +1547,11 @@ export function PublicDataSection({
                     </ul>
                   </div>
                 )}
-                {employeeSatisfaction.top_cons && employeeSatisfaction.top_cons.length > 0 && (
+                {employeeSatisfaction?.top_cons && employeeSatisfaction?.top_cons?.length > 0 && (
                   <div>
                     <p className="text-sm font-semibold mb-2 text-red-600">Top Cons</p>
                     <ul className="space-y-1">
-                      {employeeSatisfaction.top_cons.map((con: string, i: number) => (
+                      {employeeSatisfaction?.top_cons?.map((con: string, i: number) => (
                         <li key={i} className="text-sm flex items-start gap-2">
                           <XCircle className="h-4 w-4 text-red-600 shrink-0 mt-0.5" />
                           <span>{con}</span>
@@ -1526,51 +1567,51 @@ export function PublicDataSection({
       )}
 
       {/* Customer Feedback */}
-      {customerFeedback && Object.keys(customerFeedback).length > 0 && (
+      {customerFeedback && Object.keys(customerFeedback)?.length > 0 && (
         <Card>
           <details className="group">
             <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
               <div className="flex items-center gap-2">
                 <Star className="h-5 w-5" />
                 <span className="font-semibold">Customer Feedback</span>
-                {(customerFeedback.g2_rating?.value || typeof customerFeedback.g2_rating === 'number') && (
+                {(customerFeedback?.g2_rating?.value || typeof customerFeedback?.g2_rating === 'number') && (
                   <Badge variant="outline" className="text-xs ml-2">
-                    G2: {customerFeedback.g2_rating?.value || customerFeedback.g2_rating}/5
+                    G2: {customerFeedback?.g2_rating?.value || customerFeedback?.g2_rating}/5
                   </Badge>
                 )}
               </div>
               <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
             </summary>
             <CardContent className="space-y-4 pt-4">
-              {(customerFeedback.nps_score || customerFeedback.g2_rating || customerFeedback.trustpilot_rating) && (
+              {(customerFeedback?.nps_score || customerFeedback?.g2_rating || customerFeedback?.trustpilot_rating) && (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {(customerFeedback.nps_score?.value || typeof customerFeedback.nps_score === 'number') && (
+                  {(customerFeedback?.nps_score?.value || typeof customerFeedback?.nps_score === 'number') && (
                     <div className="p-3 border rounded-lg bg-muted/30">
                       <p className="text-xs text-muted-foreground font-medium mb-1">NPS Score</p>
-                      <p className="text-sm font-bold">{customerFeedback.nps_score?.value || customerFeedback.nps_score}</p>
+                      <p className="text-sm font-bold">{customerFeedback?.nps_score?.value || customerFeedback?.nps_score}</p>
                     </div>
                   )}
-                  {(customerFeedback.g2_rating?.value || typeof customerFeedback.g2_rating === 'number') && (
+                  {(customerFeedback?.g2_rating?.value || typeof customerFeedback?.g2_rating === 'number') && (
                     <div className="p-3 border rounded-lg bg-muted/30">
                       <p className="text-xs text-muted-foreground font-medium mb-1">G2 Rating</p>
-                      <p className="text-sm font-bold">{customerFeedback.g2_rating?.value || customerFeedback.g2_rating}/5</p>
+                      <p className="text-sm font-bold">{customerFeedback?.g2_rating?.value || customerFeedback?.g2_rating}/5</p>
                     </div>
                   )}
-                  {(customerFeedback.trustpilot_rating?.value || typeof customerFeedback.trustpilot_rating === 'number') && (
+                  {(customerFeedback?.trustpilot_rating?.value || typeof customerFeedback?.trustpilot_rating === 'number') && (
                     <div className="p-3 border rounded-lg bg-muted/30">
                       <p className="text-xs text-muted-foreground font-medium mb-1">Trustpilot</p>
-                      <p className="text-sm font-bold">{customerFeedback.trustpilot_rating?.value || customerFeedback.trustpilot_rating}/5</p>
+                      <p className="text-sm font-bold">{customerFeedback?.trustpilot_rating?.value || customerFeedback?.trustpilot_rating}/5</p>
                     </div>
                   )}
                 </div>
               )}
 
               <div className="grid md:grid-cols-2 gap-4">
-                {customerFeedback.positive_themes && customerFeedback.positive_themes.length > 0 && (
+                {customerFeedback?.positive_themes && customerFeedback?.positive_themes?.length > 0 && (
                   <div>
                     <p className="text-sm font-semibold mb-2 text-green-600">Positive Feedback</p>
                     <ul className="space-y-1">
-                      {customerFeedback.positive_themes.map((theme: string, i: number) => (
+                      {customerFeedback?.positive_themes?.map((theme: string, i: number) => (
                         <li key={i} className="text-sm flex items-start gap-2">
                           <CheckCircle2 className="h-4 w-4 text-green-600 shrink-0 mt-0.5" />
                           <span>{theme}</span>
@@ -1579,11 +1620,11 @@ export function PublicDataSection({
                     </ul>
                   </div>
                 )}
-                {customerFeedback.negative_themes && customerFeedback.negative_themes.length > 0 && (
+                {customerFeedback?.negative_themes && customerFeedback?.negative_themes?.length > 0 && (
                   <div>
                     <p className="text-sm font-semibold mb-2 text-red-600">Negative Feedback</p>
                     <ul className="space-y-1">
-                      {customerFeedback.negative_themes.map((theme: string, i: number) => (
+                      {customerFeedback?.negative_themes?.map((theme: string, i: number) => (
                         <li key={i} className="text-sm flex items-start gap-2">
                           <XCircle className="h-4 w-4 text-red-600 shrink-0 mt-0.5" />
                           <span>{theme}</span>
@@ -1599,7 +1640,7 @@ export function PublicDataSection({
       )}
 
       {/* Investment Rationale */}
-      {riskRationale && (riskRationale.why_invest || riskRationale.why_not_invest) && (
+      {riskRationale && (riskRationale?.why_invest || riskRationale?.why_not_invest) && (
         <div className="grid md:grid-cols-2 gap-6">
           <Card>
             <details className="group">
@@ -1612,8 +1653,8 @@ export function PublicDataSection({
               </summary>
               <CardContent className="pt-4">
                 <ul className="space-y-2">
-                  {riskRationale.why_invest && riskRationale.why_invest.length > 0 ? (
-                    riskRationale.why_invest.map((reason: string, i: number) => (
+                  {riskRationale?.why_invest && riskRationale?.why_invest?.length > 0 ? (
+                    riskRationale?.why_invest?.map((reason: string, i: number) => (
                       <li key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="h-4 w-4 text-green-600 shrink-0 mt-0.5" />
                         <span className="text-sm text-muted-foreground">{reason}</span>
@@ -1638,8 +1679,8 @@ export function PublicDataSection({
               </summary>
               <CardContent className="pt-4">
                 <ul className="space-y-2">
-                  {riskRationale.why_not_invest && riskRationale.why_not_invest.length > 0 ? (
-                    riskRationale.why_not_invest.map((reason: string, i: number) => (
+                  {riskRationale?.why_not_invest && riskRationale?.why_not_invest?.length > 0 ? (
+                    riskRationale?.why_not_invest?.map((reason: string, i: number) => (
                       <li key={i} className="flex items-start gap-2">
                         <XCircle className="h-4 w-4 text-red-600 shrink-0 mt-0.5" />
                         <span className="text-sm text-muted-foreground">{reason}</span>
@@ -1656,7 +1697,7 @@ export function PublicDataSection({
       )}
       
       {/* Data Sources - Compact Design */}
-      {sources && sources.length > 0 && (
+      {sources && sources?.length > 0 && (
         <Card className="border-2">
           <details className="group">
             <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors list-none">
@@ -1664,13 +1705,13 @@ export function PublicDataSection({
                 <Database className="h-5 w-5 text-primary flex-shrink-0" />
                 <span className="text-base font-semibold">Data Sources</span>
                 <Badge variant="outline" className="text-xs flex-shrink-0">
-                  {sources.length} sources
+                  {sources?.length} sources
                 </Badge>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0 ml-4">
                 {/* Show first 3 source icons */}
                 <div className="flex -space-x-2">
-                  {sources.slice(0, 3).map((source: any, i: number) => (
+                  {sources?.slice(0, 3).map((source: any, i: number) => (
                     <div 
                       key={i} 
                       className="w-8 h-8 rounded-full bg-primary/10 border-2 border-background flex items-center justify-center"
@@ -1687,27 +1728,27 @@ export function PublicDataSection({
             {/* Expandable source list */}
             <CardContent className="pt-0 pb-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 overflow-hidden">
-                {sources.map((source: any, i: number) => (
+                {sources?.map((source: any, i: number) => (
                   <a
                     key={i}
-                    href={source.url}
+                    href={source?.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 p-2.5 border rounded-lg hover:bg-muted/50 transition-colors group/item overflow-hidden"
                   >
                     <ExternalLink className="h-3.5 w-3.5 text-muted-foreground group-hover/item:text-primary shrink-0" />
                     <div className="flex-1 min-w-0 overflow-hidden">
-                      <p className="text-xs font-medium truncate group-hover/item:text-primary" title={source.url}>
-                        {source.title && source.title !== source.url ? source.title : 
-                          (source.url.length > 40 ? `${source.url.substring(0, 40)}...` : source.url)}
+                      <p className="text-xs font-medium truncate group-hover/item:text-primary" title={source?.url}>
+                        {source?.title && source?.title !== source?.url ? source?.title : 
+                          (source?.url?.length > 40 ? `${source?.url?.substring(0, 40)}...` : source?.url)}
                       </p>
                     </div>
-                    {source.relevance && (
+                    {source?.relevance && (
                       <Badge
-                        variant={source.relevance === "high" ? "default" : "secondary"}
+                        variant={source?.relevance === "high" ? "default" : "secondary"}
                         className="text-[10px] h-5 px-1.5 shrink-0 whitespace-nowrap"
                       >
-                        {source.relevance}
+                        {source?.relevance}
                       </Badge>
                     )}
                   </a>

@@ -1,4 +1,4 @@
-import { BarChart3, FileUp, Home, TrendingUp, AlertTriangle, Target, Zap, LogOut, User } from "lucide-react"
+import { BarChart3, FileUp, Home, Target, LogOut, User } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
