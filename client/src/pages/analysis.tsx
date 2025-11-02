@@ -190,7 +190,7 @@ export default function Analysis({ params }: AnalysisProps) {
   const { data, isLoading, error, refetch } = useQuery<AnalysisData>({
     queryKey: ['/api/analysis', id],
     queryFn: async () => {
-      const response = await fetch(getApiUrl(`/api/analysis/${id}`))
+      const response = await authenticatedFetch(getApiUrl(`/api/analysis/${id}`))
       if (!response.ok) {
         throw new Error('Failed to fetch analysis data')
       }
@@ -254,7 +254,7 @@ export default function Analysis({ params }: AnalysisProps) {
     setHasSuccessfulRetry(false); // Reset the flag
     
     try {
-      const response = await fetch(getApiUrl(`/api/public-data-analysis/${id}`), {
+      const response = await authenticatedFetch(getApiUrl(`/api/public-data-analysis/${id}`), {
         method: 'POST',
       });
       
@@ -344,7 +344,7 @@ export default function Analysis({ params }: AnalysisProps) {
   // Enhanced Analysis Mutation
   const enhancedAnalysisMutation = useMutation({
     mutationFn: async ({ startupId, websites }: { startupId: string, websites: string[] }) => {
-      const response = await fetch(getApiUrl('/api/enhanced-analysis'), {
+      const response = await authenticatedFetch(getApiUrl('/api/enhanced-analysis'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
