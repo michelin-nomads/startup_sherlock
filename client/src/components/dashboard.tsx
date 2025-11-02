@@ -1,3 +1,4 @@
+import { authenticatedFetch } from "@/lib/api"
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -179,7 +180,7 @@ export function Dashboard() {
   const { data: startups, isLoading } = useQuery({
     queryKey: ['/api/startups'],
     queryFn: async () => {
-      const response = await fetch(getApiUrl('/api/startups'))
+      const response = await authenticatedFetch(getApiUrl('/api/startups'))
       if (!response.ok) {
         throw new Error('Failed to fetch startups')
       }
