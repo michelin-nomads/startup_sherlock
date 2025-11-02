@@ -4,6 +4,7 @@ import multer from "multer";
 import { z } from "zod";
 import { initDatabaseStorage } from "./storage.database";
 import { DocumentProcessor } from "./documentProcessor";
+import { authenticate, optionalAuthenticate } from "./authMiddleware"; // Authentication middleware
 
 // Initialize database connection
 const storage = initDatabaseStorage(
@@ -53,79 +54,111 @@ const upload = multer({
 const documentProcessor = new DocumentProcessor();
 
 export async function registerRoutes(app: Express): Promise<Server> {
+// Health check (public)
 app.get("/api/health", (req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
-  // Get all startups
-  app.get("/api/startups", async (req: Request, res: Response) => {
+  
+  // Get all startups (REQUIRES AUTH - returns only user's startups)
+  app.get("/api/startups", authenticate, async (req: Request, res: Response) => {
     try {
-      const startups = await storage.getAllStartups();
-      res.json(startups);
+      // SECURITY: Only return startups owned by the authenticated user
+      const userStartups = await storage.getStartupsByUser(req.user!.id);
+      res.json(userStartups);
     } catch (error) {
+      console.error("Failed to fetch user startups:", error);
       res.status(500).json({ error: "Failed to fetch startups" });
     }
   });
 
-  // Get single startup
-  app.get("/api/startups/:id", async (req: Request, res: Response) => {
+  // Get single startup (REQUIRES AUTH + ownership check)
+  app.get("/api/startups/:id", authenticate, async (req: Request, res: Response) => {
     try {
       const startup = await storage.getStartup(req.params.id);
       if (!startup) {
         return res.status(404).json({ error: "Startup not found" });
       }
+      
+      // SECURITY: Verify ownership
+      if (startup.userId !== req.user!.id) {
+        return res.status(403).json({ error: "Access denied - you don't own this startup" });
+      }
+      
       res.json(startup);
     } catch (error) {
+      console.error("Failed to fetch startup:", error);
       res.status(500).json({ error: "Failed to fetch startup" });
     }
   });
 
-  // Create new startup
-  app.post("/api/startups", async (req: Request, res: Response) => {
+  // Create new startup (REQUIRES AUTH - automatically links to user)
+  app.post("/api/startups", authenticate, async (req: Request, res: Response) => {
     try {
       const validatedData = insertStartupSchema.parse(req.body);
+      // SECURITY: Always link to authenticated user, ignore any userId in request
+      validatedData.userId = req.user!.id;
       const startup = await storage.createStartup(validatedData);
       res.status(201).json(startup);
     } catch (error) {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ error: "Invalid data", details: error.errors });
       }
+      console.error("Failed to create startup:", error);
       res.status(500).json({ error: "Failed to create startup" });
     }
   });
 
-  // Update startup
-  app.patch("/api/startups/:id", async (req: Request, res: Response) => {
+  // Update startup (REQUIRES AUTH + ownership check)
+  app.patch("/api/startups/:id", authenticate, async (req: Request, res: Response) => {
     try {
-      const updates = insertStartupSchema.partial().parse(req.body);
-      const startup = await storage.updateStartup(req.params.id, updates);
-      if (!startup) {
+      // SECURITY: First check ownership
+      const existing = await storage.getStartup(req.params.id);
+      if (!existing) {
         return res.status(404).json({ error: "Startup not found" });
       }
+      if (existing.userId !== req.user!.id) {
+        return res.status(403).json({ error: "Access denied - you don't own this startup" });
+      }
+      
+      const updates = insertStartupSchema.partial().parse(req.body);
+      // SECURITY: Prevent userId modification
+      delete (updates as any).userId;
+      
+      const startup = await storage.updateStartup(req.params.id, updates);
       res.json(startup);
     } catch (error) {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ error: "Invalid data", details: error.errors });
       }
+      console.error("Failed to update startup:", error);
       res.status(500).json({ error: "Failed to update startup" });
     }
   });
 
-  // Delete startup
-  app.delete("/api/startups/:id", async (req: Request, res: Response) => {
+  // Delete startup (REQUIRES AUTH + ownership check)
+  app.delete("/api/startups/:id", authenticate, async (req: Request, res: Response) => {
     try {
-      const success = await storage.deleteStartup(req.params.id);
-      if (!success) {
+      // SECURITY: First check ownership
+      const existing = await storage.getStartup(req.params.id);
+      if (!existing) {
         return res.status(404).json({ error: "Startup not found" });
       }
+      if (existing.userId !== req.user!.id) {
+        return res.status(403).json({ error: "Access denied - you don't own this startup" });
+      }
+      
+      const success = await storage.deleteStartup(req.params.id);
       res.status(204).send();
     } catch (error) {
+      console.error("Failed to delete startup:", error);
       res.status(500).json({ error: "Failed to delete startup" });
     }
   });
 
-  // Upload documents for analysis
+  // Upload documents for analysis (REQUIRES AUTH)
   app.post(
     "/api/upload/:startupId?",
+    authenticate,
     upload.array('documents', 10) as any,
     async (req, res) => {
       try {
@@ -137,9 +170,19 @@ app.get("/api/health", (req: Request, res: Response) => {
       const { startupName, description, industry } = req.body;
       let startupId = req.params.startupId;
 
-      // Create startup if not provided
-      if (!startupId) {
-        // Create a temporary startup with a generated name if no name provided
+      // If startupId provided, verify ownership
+      if (startupId) {
+        const existing = await storage.getStartup(startupId);
+        if (!existing) {
+          return res.status(404).json({ error: "Startup not found" });
+        }
+        // SECURITY: Verify ownership
+        if (existing.userId !== req.user!.id) {
+          return res.status(403).json({ error: "Access denied - you don't own this startup" });
+        }
+      } else {
+        // Create startup if not provided
+        // SECURITY: Always link to authenticated user
         const tempName = startupName || `Startup_${Date.now()}`;
         const newStartup = await storage.createStartup({
           name: tempName,
@@ -152,7 +195,8 @@ app.get("/api/health", (req: Request, res: Response) => {
           overallScore: null,
           riskLevel: null,
           recommendation: null,
-          analysisData: null
+          analysisData: null,
+          userId: req.user!.id, // Always link to authenticated user
         });
         startupId = newStartup.id;
       }
@@ -212,7 +256,8 @@ app.get("/api/health", (req: Request, res: Response) => {
   });
 
   // Analyze startup documents (ONLY document analysis)
-  app.post("/api/analyze/:startupId", async (req: Request, res: Response) => {
+  // Analyze startup documents (REQUIRES AUTH + ownership check)
+  app.post("/api/analyze/:startupId", authenticate, async (req: Request, res: Response) => {
     try {
       const { startupId } = req.params;
       const { startupName, description, industry, useDeepAnalysis = false } = req.body;
@@ -223,6 +268,11 @@ app.get("/api/health", (req: Request, res: Response) => {
       const startup = await storage.getStartup(startupId);
       if (!startup) {
         return res.status(404).json({ error: "Startup not found" });
+      }
+      
+      // SECURITY: Verify ownership
+      if (startup.userId !== req.user!.id) {
+        return res.status(403).json({ error: "Access denied - you don't own this startup" });
       }
 
       // Update startup name, description, and industry if provided
@@ -343,7 +393,8 @@ app.get("/api/health", (req: Request, res: Response) => {
   });
 
   // NEW: Separate endpoint for public data analysis
-  app.post("/api/public-data-analysis/:startupId", async (req: Request, res: Response) => {
+  // Public data analysis (REQUIRES AUTH + ownership check)
+  app.post("/api/public-data-analysis/:startupId", authenticate, async (req: Request, res: Response) => {
     try {
       const { startupId } = req.params;
       
@@ -353,6 +404,11 @@ app.get("/api/health", (req: Request, res: Response) => {
       let startup = await storage.getStartup(startupId);
       if (!startup) {
         return res.status(404).json({ error: "Startup not found" });
+      }
+      
+      // SECURITY: Verify ownership
+      if (startup.userId !== req.user!.id) {
+        return res.status(403).json({ error: "Access denied - you don't own this startup" });
       }
 
       if (!startup.name) {
@@ -760,21 +816,25 @@ app.get("/api/industry-risks/:industry", async (req: Request, res: Response) => 
   }
 });
 
-// Enhanced Analysis with Manual Source Input
-app.post("/api/enhanced-analysis", async (req: Request, res: Response) => {
+// Enhanced Analysis with Manual Source Input (REQUIRES AUTH + ownership check)
+app.post("/api/enhanced-analysis", authenticate, async (req: Request, res: Response) => {
   try {
     const { startupId, websites } = req.body;
+    
+    // SECURITY: Verify ownership of the startup
+    const startup = await storage.getStartup(startupId);
+    if (!startup) {
+      return res.status(404).json({ error: "Startup not found" });
+    }
+    if (startup.userId !== req.user!.id) {
+      return res.status(403).json({ error: "Access denied - you don't own this startup" });
+    }
     
     if (!startupId) {
       return res.status(400).json({ error: "Startup ID is required" });
     }
 
-    // Get startup and documents
-    const startup = await storage.getStartup(startupId);
-    if (!startup) {
-      return res.status(404).json({ error: "Startup not found" });
-    }
-
+    // Get documents (startup already fetched and verified above)
     const documents = await storage.getDocumentsByStartup(startupId);
     if (!documents || documents.length === 0) {
       return res.status(400).json({ error: "No documents found for analysis" });
@@ -861,13 +921,18 @@ app.post("/api/enhanced-analysis", async (req: Request, res: Response) => {
     }
 
     // Store enhanced analysis result
-    await storage.updateStartup(startupId, {
+    const updateData: any = {
       ...startup,
       analysisData: mergedAnalysisData,
       overallScore: mergedAnalysisData.overallAssessment.overallScore,
       riskLevel: mergedAnalysisData.overallAssessment.riskLevel,
       recommendation: mergedAnalysisData.overallAssessment.recommendation
-    });
+    };
+    // Remove null userId to avoid type errors
+    if (updateData.userId === null) {
+      delete updateData.userId;
+    }
+    await storage.updateStartup(startupId, updateData);
 
     res.json(mergedAnalysisData);
   } catch (error) {
@@ -876,8 +941,8 @@ app.post("/api/enhanced-analysis", async (req: Request, res: Response) => {
   }
 });
 
-  // NEW: Public Source Due Diligence - Extract data from public sources
-  app.post("/api/due-diligence/:startupId", async (req: Request, res: Response) => {
+  // NEW: Public Source Due Diligence - Extract data from public sources (REQUIRES AUTH + ownership check)
+  app.post("/api/due-diligence/:startupId", authenticate, async (req: Request, res: Response) => {
     try {
       const { startupId } = req.params;
       
@@ -886,6 +951,11 @@ app.post("/api/enhanced-analysis", async (req: Request, res: Response) => {
       const startup = await storage.getStartup(startupId);
       if (!startup) {
         return res.status(404).json({ error: "Startup not found" });
+      }
+      
+      // SECURITY: Verify ownership
+      if (startup.userId !== req.user!.id) {
+        return res.status(403).json({ error: "Access denied - you don't own this startup" });
       }
       
       // Conduct comprehensive due diligence
@@ -921,14 +991,19 @@ app.post("/api/enhanced-analysis", async (req: Request, res: Response) => {
     }
   });
 
-  // Get due diligence results
-  app.get("/api/due-diligence/:startupId", async (req: Request, res: Response) => {
+  // Get due diligence results (REQUIRES AUTH + ownership check)
+  app.get("/api/due-diligence/:startupId", authenticate, async (req: Request, res: Response) => {
     try {
       const { startupId } = req.params;
       
       const startup = await storage.getStartup(startupId);
       if (!startup) {
         return res.status(404).json({ error: "Startup not found" });
+      }
+      
+      // SECURITY: Verify ownership
+      if (startup.userId !== req.user!.id) {
+        return res.status(403).json({ error: "Access denied - you don't own this startup" });
       }
       
       const analysisData = startup.analysisData as any;
