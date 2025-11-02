@@ -93,13 +93,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const handleSignUpWithEmail = async (email: string, password: string, displayName?: string) => {
     try {
       setLoading(true);
-      const newUser = await signUpWithEmail(email, password);
+      const newUser = await signUpWithEmail(email, password, displayName);
       
-      // Update display name if provided
-      if (displayName && newUser) {
-        // Firebase will update this automatically
-        console.log('User created:', newUser.email);
-      }
+      console.log('✅ User created with displayName:', newUser.displayName);
       
       toast({
         title: "Account created!",
