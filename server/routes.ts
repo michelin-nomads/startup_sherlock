@@ -133,7 +133,7 @@ app.get("/api/health", (req: Request, res: Response) => {
         if (nameExists) {
           return res.status(400).json({ 
             error: "Duplicate startup name", 
-            message: `You already have a startup named "${validatedData.name}". Please use a different name.` 
+            message: `You already have a startup named "${validatedData.name} (case-insensitive)". Please use a different name.`
           });
         }
       }
@@ -179,7 +179,7 @@ app.get("/api/health", (req: Request, res: Response) => {
           if (nameExists) {
             return res.status(400).json({ 
               error: "Duplicate startup name", 
-              message: `You already have a startup named "${updates.name}". Please use a different name.` 
+              message: `You already have a startup named "${updates.name} (case-insensitive)". Please use a different name.`
             });
           }
         }
@@ -259,7 +259,7 @@ app.get("/api/health", (req: Request, res: Response) => {
         if (nameExists) {
           return res.status(400).json({ 
             error: "Duplicate startup name", 
-            message: `You already have a startup named "${tempName}". Please use a different name.` 
+            message: `You already have a startup named "${tempName} (case-insensitive)". Please use a different name.`
           });
         }
         

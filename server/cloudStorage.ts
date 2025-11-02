@@ -34,9 +34,36 @@ export class CloudStorageService {
       projectId: config.projectId,
     };
 
-    // Use service account key if provided, otherwise use Application Default Credentials
-    if (config.keyFilename) {
+    // Try to load credentials from environment variables first
+    let credentials = null;
+    
+    // Option 1: JSON string in environment variable
+    if (process.env.GCS_SERVICE_ACCOUNT_JSON) {
+      try {
+        credentials = JSON.parse(process.env.GCS_SERVICE_ACCOUNT_JSON);
+        storageOptions.credentials = credentials;
+        console.log('✅ Loaded GCS credentials from GCS_SERVICE_ACCOUNT_JSON env var');
+      } catch (error) {
+        console.error('❌ Failed to parse GCS_SERVICE_ACCOUNT_JSON:', error);
+      }
+    }
+    
+    // Option 2: Base64 encoded JSON in environment variable
+    if (!credentials && process.env.GCS_SERVICE_ACCOUNT_BASE64) {
+      try {
+        const decoded = Buffer.from(process.env.GCS_SERVICE_ACCOUNT_BASE64, 'base64').toString('utf8');
+        credentials = JSON.parse(decoded);
+        storageOptions.credentials = credentials;
+        console.log('✅ Loaded GCS credentials from GCS_SERVICE_ACCOUNT_BASE64 env var');
+      } catch (error) {
+        console.error('❌ Failed to parse GCS_SERVICE_ACCOUNT_BASE64:', error);
+      }
+    }
+    
+    // Option 3: Use service account key file if provided (local development)
+    if (!credentials && config.keyFilename) {
       storageOptions.keyFilename = config.keyFilename;
+      console.log('✅ Using GCS credentials from file:', config.keyFilename);
     }
 
     this.storage = new Storage(storageOptions);
