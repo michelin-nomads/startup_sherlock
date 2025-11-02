@@ -71,11 +71,7 @@ export default function Comparison({ params }: ComparisonProps) {
     const { data: analysisData, isLoading: analysisLoading, error: analysisError } = useQuery<AnalysisData>({
         queryKey: ['/api/analysis', startupId],
         queryFn: async () => {
-            const response = await authenticatedFetch(getApiUrl(`/api/analysis/${startupId}`))
-            if (!response.ok) {
-                throw new Error('Failed to fetch analysis data')
-            }
-            return response.json()
+            return await authenticatedFetchJSON(getApiUrl(`/api/analysis/${startupId}`))
         },
         enabled: !!startupId
     })
@@ -84,11 +80,7 @@ export default function Comparison({ params }: ComparisonProps) {
     const { data: benchmarkMetrics, isLoading: metricsLoading, error: metricsError } = useQuery<BenchmarkMetrics>({
         queryKey: ['/api/benchmark-metrics'],
         queryFn: async () => {
-            const response = await authenticatedFetch(getApiUrl('/api/benchmark-metrics'))
-            if (!response.ok) {
-                throw new Error('Failed to fetch benchmark metrics')
-            }
-            return response.json()
+            return await authenticatedFetchJSON(getApiUrl('/api/benchmark-metrics'))
         },
         staleTime: 5 * 60 * 1000, // 5 minutes
     })
