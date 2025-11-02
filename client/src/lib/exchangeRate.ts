@@ -70,8 +70,7 @@ class ExchangeRateManager {
    */
   public async fetchAndCache(): Promise<number> {
     try {
-      const apiUrl = getApiUrl('');
-      const response = await fetch(`${apiUrl}/api/exchange-rate`);
+      const response = await fetch(getApiUrl('/api/exchange-rate'));
       
       if (!response.ok) {
         throw new Error(`API returned status ${response.status}`);

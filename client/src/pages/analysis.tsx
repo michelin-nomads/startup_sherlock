@@ -1061,12 +1061,6 @@ export default function Analysis({ params }: AnalysisProps) {
                             {doc.fileType} • Document {index + 1}
                           </p>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {flag.description}
-                        </p>
-                        <p className="text-sm font-medium">
-                          Impact: {flag.impact}
-                        </p>
                       </div>
                       <Badge
                         variant="outline"
