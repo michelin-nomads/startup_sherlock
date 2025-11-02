@@ -67,6 +67,18 @@ app.get("/api/health", (req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
+// Exchange rate endpoint (public) - returns USD to INR rate
+app.get("/api/exchange-rate", (req: Request, res: Response) => {
+  // Using a static rate for now - can be enhanced to fetch from external API
+  const rate = 83.5; // 1 USD = 83.5 INR (approximate)
+  res.json({ 
+    rate, 
+    lastUpdated: new Date().toISOString(),
+    source: 'api',
+    message: 'Static rate - update regularly for accuracy'
+  });
+});
+
   // Update user profile (REQUIRES AUTH)
   app.patch("/api/user/profile", authenticate, async (req: Request, res: Response) => {
     try {
