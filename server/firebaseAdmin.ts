@@ -1,7 +1,7 @@
 // Firebase Admin SDK Configuration for Server
 import { initializeApp, cert, getApps, App } from 'firebase-admin/app';
 import { getAuth, Auth } from 'firebase-admin/auth';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
 let adminApp: App | null = null;
@@ -32,8 +32,7 @@ export function initializeFirebaseAdmin(): Auth {
                                  join(process.cwd(), 'firebase-service-account-key.json');
     
     // Check if service account file exists
-    const fs = require('fs');
-    if (fs.existsSync(serviceAccountPath)) {
+    if (existsSync(serviceAccountPath)) {
       const serviceAccount = JSON.parse(readFileSync(serviceAccountPath, 'utf8'));
       
       adminApp = initializeApp({
