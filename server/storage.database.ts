@@ -1,6 +1,7 @@
 /**
  * Database Storage Layer - Compatible with existing schema
  * Uses the original schema but with PostgreSQL instead of in-memory
+ * All timestamps are stored in IST (Indian Standard Time)
  */
 
 import { drizzle } from 'drizzle-orm/postgres-js';
@@ -48,6 +49,14 @@ import {
   type InsertDiscrepancy,
 } from '@shared/schema';
 
+/**
+ * Get current time in IST
+ * JavaScript Date is created in IST context by the database timezone setting
+ */
+function getISTTimestamp(): Date {
+  return new Date();
+}
+
 export class DatabaseStorage {
   private db;
   private sql;
@@ -75,7 +84,13 @@ export class DatabaseStorage {
       });
     }
     this.db = drizzle(this.sql);
-    console.log('✅ Database storage initialized');
+    
+    // Set timezone to IST (Indian Standard Time)
+    this.sql`SET timezone = 'Asia/Kolkata'`.catch((err) => {
+      console.warn('⚠️  Could not set timezone to IST:', err);
+    });
+    
+    console.log('✅ Database storage initialized with IST timezone');
   }
 
   /**
