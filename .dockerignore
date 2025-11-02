@@ -1,0 +1,47 @@
+# Node modules (will be installed in container)
+node_modules/
+npm-debug.log
+
+# Development files
+.env
+.env.local
+.env.*.local
+
+# Frontend files (not needed in backend container)
+client/
+dist/
+postcss.config.js
+tailwind.config.ts
+components.json
+# vite.config.ts is needed even in production because server/vite.ts imports it
+
+# Git files
+.git/
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# IDE files
+.vscode/
+.idea/
+
+# Test files
+test-resilient.ts
+
+# Firebase deployment files
+firebase.json
+firestore.rules
+firestore.indexes.json
+.firebase/
+
+# Service account keys (will use env vars)
+*service-account*.json
+firebase-service-account-key.json
+gcloud-service-account-key.json
+
+# Build artifacts
+uploads/
+.vite/
+
