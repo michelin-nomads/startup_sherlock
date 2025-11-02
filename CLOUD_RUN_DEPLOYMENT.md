@@ -106,10 +106,23 @@ Or use the script:
 ```
 
 ### Frontend (Firebase Hosting)
+
+**Easy way (recommended):**
 ```bash
+./build-and-deploy-frontend.sh
+```
+
+**Manual way:**
+```bash
+# Export all VITE_* variables from .env
+export $(grep -v '^#' .env | grep 'VITE_' | xargs)
+
+# Build and deploy
 npm run build
 firebase deploy --only hosting
 ```
+
+**Note:** Vite needs VITE_* environment variables at BUILD TIME, not runtime. The build script ensures they're loaded from .env file.
 
 ---
 
