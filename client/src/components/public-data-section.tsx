@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { 
   TrendingUp, DollarSign, Users, AlertTriangle, Globe, 
   CheckCircle2, XCircle, Building2, Target, Briefcase, Search, Database, ExternalLink, FileText, Clock, RefreshCcw, ChevronDown, ChevronUp,
-  BarChart3, Activity, Zap, Calendar, Newspaper, LineChart as LineChartIcon, PieChart as PieChartIcon, Star, Info, AlertCircle 
+  BarChart3, Activity, Zap, Calendar, Newspaper, LineChart as LineChartIcon, PieChart as PieChartIcon, Star, Info, AlertCircle, Loader2
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
@@ -21,6 +21,8 @@ interface PublicDataSectionProps {
   status?: 'loading' | 'failed' | 'success';
   onRefresh?: () => void;
   isRefreshing?: boolean;
+  sectionLoadingStates?: Record<string, boolean>;
+  onLoadSection?: (sectionKey: string) => void;
 }
 
 export function PublicDataSection({ 
@@ -28,7 +30,9 @@ export function PublicDataSection({
   documentData, 
   status = 'loading',
   onRefresh,
-  isRefreshing 
+  isRefreshing,
+  sectionLoadingStates = {},
+  onLoadSection
 }: PublicDataSectionProps) {
   
   // Custom Tooltip Component
@@ -130,23 +134,26 @@ export function PublicDataSection({
   }
 
   // Extract data from synthesizedInsights.data
-  const data = publicData.synthesizedInsights?.data || publicData.synthesizedInsights || {};
-  const companyOverview = data.company_overview || {};
-  const corporateStructure = data.corporate_structure || {};
-  const employeeMetrics = data.employee_metrics || {};
-  const fundingHistory = data.funding_history || {};
-  const financialHealth = data.financial_health || {};
-  const marketPosition = data.market_position || {};
-  const competitorAnalysis = data.competitor_analysis || {};
-  const recentDevelopments = data.recent_news_developments || [];
-  const growthTrajectory = data.growth_trajectory || {};
-  const riskRationale = data.risk_and_investment_rationale || {};
-  const ipoAnalysis = data.ipo_potential || {};
-  const employeeSatisfaction = data.employee_satisfaction || {};
-  const customerFeedback = data.customer_feedback || {};
-  const informationGaps = data.information_gaps || [];
-  const sources = publicData.sources || [];
-  const metadata = publicData.metadata || data.metadata || {};
+  // Handle both nested structure (synthesizedInsights.data) and flat structure (direct keys)
+  const data = publicData?.synthesizedInsights?.data || publicData?.synthesizedInsights || {};
+  
+  // Extract each section with proper fallback
+  const companyOverview = data?.company_overview || {};
+  const corporateStructure = data?.corporate_structure || {};
+  const employeeMetrics = data?.employee_metrics || {};
+  const fundingHistory = data?.funding_history || {};
+  const financialHealth = data?.financial_health || {};
+  const marketPosition = data?.market_position || {};
+  const competitorAnalysis = data?.competitor_analysis || {};
+  const recentDevelopments = data?.recent_news_developments || [];
+  const growthTrajectory = data?.growth_trajectory || {};
+  const riskRationale = data?.risk_and_investment_rationale || {};
+  const ipoAnalysis = data?.ipo_potential || {};
+  const employeeSatisfaction = data?.employee_satisfaction || {};
+  const customerFeedback = data?.customer_feedback || {};
+  const informationGaps = data?.information_gaps || [];
+  const sources = publicData?.sources || [];
+  const metadata = publicData?.metadata || data?.metadata || {};
 
   // Chart colors
   const CHART_COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
@@ -174,7 +181,21 @@ export function PublicDataSection({
   // Team and Leadership data
   const teamData = data.team_and_leadership || {};
   const currentFounders = companyOverview.current_cofounders || companyOverview.founders || [];
-  const companySize = employeeMetrics.current_employees?.value || teamData.team_size || 'N/A';
+  // Fix: Ensure we check employee_metrics first, then fall back to teamData
+  const companySize = (employeeMetrics?.current_employees?.value != null) 
+    ? employeeMetrics.current_employees.value 
+    : (teamData?.team_size != null ? teamData.team_size : 'N/A');
+
+  // Helper to check if a section has data
+  const hasSectionData = (sectionKey: string) => {
+    const data = publicData.synthesizedInsights?.data || publicData.synthesizedInsights || {};
+    return data[sectionKey] && Object.keys(data[sectionKey]).length > 0;
+  };
+
+  // Helper to check if a section is loading
+  const isSectionLoading = (sectionKey: string) => {
+    return sectionLoadingStates[sectionKey] || false;
+  };
 
   return (
     <div className="space-y-6">
@@ -185,6 +206,22 @@ export function PublicDataSection({
             <div className="flex items-center gap-2">
               <Building2 className="h-5 w-5" />
               <span className="font-semibold">Company Overview</span>
+              {isSectionLoading('company_overview') && (
+                <Loader2 className="h-4 w-4 animate-spin text-primary" />
+              )}
+              {!hasSectionData('company_overview') && !isSectionLoading('company_overview') && onLoadSection && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onLoadSection('company_overview');
+                  }}
+                  className="h-6 text-xs"
+                >
+                  Load
+                </Button>
+              )}
             </div>
             <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
           </summary>
@@ -267,6 +304,22 @@ export function PublicDataSection({
             <div className="flex items-center gap-2">
               <Briefcase className="h-5 w-5" />
               <span className="font-semibold">Corporate Structure</span>
+              {isSectionLoading('corporate_structure') && (
+                <Loader2 className="h-4 w-4 animate-spin text-primary" />
+              )}
+              {!hasSectionData('corporate_structure') && !isSectionLoading('corporate_structure') && onLoadSection && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onLoadSection('corporate_structure');
+                  }}
+                  className="h-6 text-xs"
+                >
+                  Load
+                </Button>
+              )}
             </div>
             <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
           </summary>
@@ -386,6 +439,22 @@ export function PublicDataSection({
             <div className="flex items-center gap-2">
               <Users className="h-5 w-5" />
               <span className="font-semibold">Team & Leadership</span>
+              {isSectionLoading('employee_metrics') && (
+                <Loader2 className="h-4 w-4 animate-spin text-primary" />
+              )}
+              {!hasSectionData('employee_metrics') && !isSectionLoading('employee_metrics') && onLoadSection && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onLoadSection('employee_metrics');
+                  }}
+                  className="h-6 text-xs"
+                >
+                  Load
+                </Button>
+              )}
             </div>
             <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
           </summary>
@@ -1192,22 +1261,22 @@ export function PublicDataSection({
             <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
           </summary>
           <CardContent className="space-y-4 pt-4">
-            {marketPosition && (marketPosition.TAM_usd || marketPosition.market_share_pct || marketPosition.market_ranking) ? (
+            {marketPosition && (marketPosition.TAM_usd?.value != null || marketPosition.market_share_pct?.value != null || marketPosition.market_ranking?.rank != null || marketPosition.competitive_positioning || marketPosition.competitive_advantages?.length > 0 || marketPosition.market_trends?.length > 0) ? (
               <>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {marketPosition.TAM_usd?.value !== null && (
+                {marketPosition.TAM_usd?.value != null && (
                   <div className="p-3 border rounded-lg bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20">
                     <p className="text-xs text-muted-foreground font-medium mb-1">TAM</p>
                     <p className="text-sm font-bold">{formatNumber(marketPosition.TAM_usd.value)}</p>
                   </div>
                 )}
-                {marketPosition?.market_share_pct?.value !== null && (
+                {marketPosition?.market_share_pct?.value != null && (
                   <div className="p-3 border rounded-lg bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20">
                     <p className="text-xs text-muted-foreground font-medium mb-1">Market Share</p>
                     <p className="text-sm font-bold">{marketPosition.market_share_pct.value}%</p>
                   </div>
                 )}
-                {marketPosition?.market_ranking?.rank !== null && (
+                {marketPosition?.market_ranking?.rank != null && (
                   <div className="p-3 border rounded-lg bg-muted/30">
                     <p className="text-xs text-muted-foreground font-medium mb-1">Ranking</p>
                     <p className="text-sm font-bold">#{marketPosition.market_ranking.rank}</p>

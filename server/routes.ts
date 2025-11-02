@@ -8,6 +8,7 @@ import { analyzeStartupDocuments, generateIndustryBenchmarks, generateBenchmarkM
 import { enhancedAnalysisService } from "./enhancedAnalysis";
 import { registerHybridResearchRoutes } from "./hybridResearchRoutes"; // NEW: Hybrid research routes
 import { startupDueDiligenceService } from "./startupDueDiligence"; // NEW: Public source due diligence
+import { startupDueDiligenceParallelService } from "./startupDueDiligenceParallel"; // Optimized parallel service
 import { insertStartupSchema } from "@shared/schema";
 
 // Configure multer for file uploads
@@ -298,12 +299,13 @@ app.get("/api/health", (req: Request, res: Response) => {
     }
   });
 
-  // NEW: Separate endpoint for public data analysis
+  // NEW: Optimized parallel endpoint for public data analysis
   app.post("/api/public-data-analysis/:startupId", async (req: Request, res: Response) => {
     try {
       const { startupId } = req.params;
+      const { useParallel = true } = req.body; // Default to parallel for better performance
       
-      console.log('🌐 Starting public source research for startup:', startupId);
+      console.log(`🌐 Starting ${useParallel ? 'PARALLEL' : 'standard'} public source research for startup:`, startupId);
       
       // Get startup
       let startup = await storage.getStartup(startupId);
@@ -315,8 +317,10 @@ app.get("/api/health", (req: Request, res: Response) => {
         return res.status(400).json({ error: "Startup name is required for public data analysis" });
       }
 
-      // Conduct due diligence
-      const dueDiligenceResult = await startupDueDiligenceService.conductDueDiligence(startup.name);
+      // Use parallel service for better performance (13 sections in parallel)
+      const dueDiligenceResult = useParallel
+        ? await startupDueDiligenceParallelService.conductDueDiligenceParallel(startup.name)
+        : await startupDueDiligenceService.conductDueDiligence(startup.name);
       
       console.log('✅ Public source research completed');
 
@@ -343,12 +347,108 @@ app.get("/api/health", (req: Request, res: Response) => {
         startupName: startup.name,
         publicData: dueDiligenceResult,
         lastUpdated: new Date().toISOString(),
-        success: true
+        success: true,
+        method: useParallel ? 'parallel' : 'standard',
+        duration: (dueDiligenceResult as any).metadata?.total_duration || 
+                  (dueDiligenceResult as any).metadata?.timeTakenSeconds || 0
       });
     } catch (error: any) {
       console.error('⚠️ Public source research failed:', error.message);
       res.status(500).json({ 
         error: "Failed to conduct public data analysis",
+        message: error.message,
+        success: false
+      });
+    }
+  });
+
+  // NEW: Progressive loading endpoint - get a single section
+  app.post("/api/public-data-analysis/:startupId/section/:sectionKey", async (req: Request, res: Response) => {
+    try {
+      const { startupId, sectionKey } = req.params;
+      
+      // Get startup
+      const startup = await storage.getStartup(startupId);
+      if (!startup) {
+        return res.status(404).json({ error: "Startup not found" });
+      }
+
+      if (!startup.name) {
+        return res.status(400).json({ error: "Startup name is required" });
+      }
+
+      // Validate section key
+      const validSections = [
+        'company_overview', 'corporate_structure', 'employee_metrics', 'funding_history',
+        'financial_health', 'market_position', 'competitor_analysis', 'recent_news_developments',
+        'growth_trajectory', 'risk_and_investment_rationale', 'ipo_potential',
+        'employee_satisfaction', 'customer_feedback'
+      ];
+      
+      if (!validSections.includes(sectionKey)) {
+        return res.status(400).json({ error: `Invalid section key. Valid sections: ${validSections.join(', ')}` });
+      }
+
+      console.log(`🔍 Researching section ${sectionKey} for ${startup.name}`);
+      
+      // Research single section
+      const sectionResult = await startupDueDiligenceParallelService.researchSingleSection(
+        startup.name,
+        sectionKey as any
+      );
+
+      // Update startup with partial data (merge with existing)
+      // Ensure data is stored in the same structure as full parallel endpoint
+      const existingAnalysisData = startup.analysisData as any || {};
+      const existingPublicData = existingAnalysisData.publicSourceDueDiligence || {};
+      
+      // Get or create synthesizedInsights structure
+      const existingSynthesizedInsights = existingPublicData.synthesizedInsights || {};
+      const existingData = existingSynthesizedInsights.data || {};
+      
+      // Merge new section data into synthesizedInsights.data structure
+      const updatedPublicData = {
+        ...existingPublicData,
+        synthesizedInsights: {
+          ...existingSynthesizedInsights,
+          data: {
+            ...existingData,
+            [sectionKey]: sectionResult.data
+          }
+        },
+        // Also keep flat structure for backward compatibility
+        [sectionKey]: sectionResult.data,
+        sources: [...(existingPublicData.sources || []), ...sectionResult.sources],
+        metadata: {
+          ...existingPublicData.metadata,
+          [`last${sectionKey}Update`]: new Date().toISOString()
+        }
+      };
+      
+      const updatedAnalysisData = {
+        ...existingAnalysisData,
+        publicSourceDueDiligence: updatedPublicData
+      };
+
+      await storage.updateStartup(startupId, {
+        analysisData: updatedAnalysisData
+      });
+
+      res.json({
+        startupId,
+        startupName: startup.name,
+        section: sectionKey,
+        data: sectionResult.data,
+        sources: sectionResult.sources,
+        confidence: sectionResult.confidence,
+        duration: sectionResult.duration,
+        completedAt: sectionResult.completedAt,
+        success: true
+      });
+    } catch (error: any) {
+      console.error(`⚠️ Section ${req.params.sectionKey} research failed:`, error.message);
+      res.status(500).json({ 
+        error: `Failed to research section ${req.params.sectionKey}`,
         message: error.message,
         success: false
       });
@@ -376,6 +476,27 @@ app.get("/api/health", (req: Request, res: Response) => {
         
         // Use the document analysis fields for the main analysis
         analysisData = documentAnalysis;
+      }
+
+      // Ensure analysis data has overallScore, riskLevel, and recommendation
+      // Fallback to startup-level values if not in analysisData
+      if (analysisData && typeof analysisData === "object") {
+        const analysis = analysisData as any;
+        if (!analysis.overallScore && startup.overallScore != null) {
+          analysis.overallScore = startup.overallScore;
+        }
+        if (!analysis.riskLevel && startup.riskLevel) {
+          analysis.riskLevel = startup.riskLevel;
+        }
+        // recommendation is an object in analysisData, but a string at startup level
+        // So we only use analysisData.recommendation if it exists
+      } else {
+        // If analysisData is empty/null, create it with startup-level values
+        analysisData = {
+          overallScore: startup.overallScore ?? null,
+          riskLevel: startup.riskLevel ?? null,
+          recommendation: startup.recommendation ? { decision: startup.recommendation } : null
+        };
       }
 
       const response: any = {

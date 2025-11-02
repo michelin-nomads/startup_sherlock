@@ -338,17 +338,50 @@ export function Upload() {
         })
       })
 
-      const publicDataPromise = fetch(getApiUrl(`/api/public-data-analysis/${startupId}`), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+      // Define critical sections that must complete before closing main loader
+      const criticalSections = [
+        'company_overview',
+        'corporate_structure',
+        'employee_metrics'
+      ];
+      
+      // Other sections can load in the background after main loader closes
+      const backgroundSections = [
+        'funding_history',
+        'financial_health',
+        'market_position',
+        'competitor_analysis',
+        'recent_news_developments',
+        'growth_trajectory',
+        'risk_and_investment_rationale',
+        'ipo_potential',
+        'employee_satisfaction',
+        'customer_feedback'
+      ];
 
-      // Wait for BOTH to complete in parallel using Promise.allSettled
-      const [documentAnalysisResponse, publicDataResponse] = await Promise.allSettled([
+      // Load critical sections - these determine when to close main loader
+      const criticalPromises = criticalSections.map(section => 
+        fetch(getApiUrl(`/api/public-data-analysis/${startupId}/section/${section}`), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(async (response) => {
+          if (response.ok) {
+            const result = await response.json();
+            return { section, success: true, data: result };
+          }
+          return { section, success: false };
+        }).catch((error) => {
+          console.error(`Error loading section ${section}:`, error);
+          return { section, success: false };
+        })
+      );
+
+      // Wait for document analysis AND critical sections to complete
+      const [documentAnalysisResponse, ...criticalResponses] = await Promise.allSettled([
         documentAnalysisPromise,
-        publicDataPromise
+        ...criticalPromises
       ])
 
       // Check document analysis response (critical - must succeed)
@@ -359,29 +392,55 @@ export function Upload() {
       const documentResult = await documentAnalysisResponse.value.json()
       console.log('✅ Document analysis completed:', documentResult)
       
-      // Check public data analysis (non-critical - can fail)
-      let publicDataResult = null
-      if (publicDataResponse.status === 'fulfilled' && publicDataResponse.value.ok) {
-        publicDataResult = await publicDataResponse.value.json()
-        console.log('✅ Public data analysis completed:', publicDataResult)
-      } else {
-        console.warn('⚠️ Public data analysis failed (non-critical), but continuing...')
-      }
+      // Check critical sections
+      const criticalSuccessful = criticalResponses.filter(
+        response => response.status === 'fulfilled' && response.value.success
+      ).length;
       
-      toast({
-        title: "Analysis complete",
-        description: publicDataResult?.success 
-          ? "Document and public data analysis completed successfully" 
-          : "Document analysis completed (public data unavailable)"
-      })
-
-      // Navigate to results page
+      console.log(`✅ Critical sections completed: ${criticalSuccessful}/${criticalSections.length}`)
+      
+      // Close main loader - critical sections and document analysis are done
+      setIsAnalyzing(false)
+      
+      // Navigate to results page immediately after main loader closes
       navigate(`/analysis/${startupId}`)
       
       // Clear the form for next use
       setStartupName("")
       setDescription("")
       setFiles([])
+      
+      // Load remaining sections in the background (after navigation)
+      // These will show individual loaders in the analysis page
+      const backgroundPromises = backgroundSections.map(section => 
+        fetch(getApiUrl(`/api/public-data-analysis/${startupId}/section/${section}`), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(async (response) => {
+          if (response.ok) {
+            const result = await response.json();
+            console.log(`✅ Background section ${section} completed`);
+            return { section, success: true, data: result };
+          }
+          return { section, success: false };
+        }).catch((error) => {
+          console.error(`Error loading background section ${section}:`, error);
+          return { section, success: false };
+        })
+      );
+      
+      // Wait for background sections (don't block UI)
+      Promise.allSettled(backgroundPromises).then((results) => {
+        const successful = results.filter(r => r.status === 'fulfilled' && r.value.success).length;
+        console.log(`✅ Background sections completed: ${successful}/${backgroundSections.length}`);
+      });
+      
+      toast({
+        title: "Analysis in progress",
+        description: `Document analysis complete. Critical sections loaded. Loading ${backgroundSections.length} additional sections in the background.`
+      })
     } catch (error) {
       console.error('❌ Analysis error:', error)
       toast({
@@ -389,7 +448,6 @@ export function Upload() {
         description: "Failed to complete AI analysis",
         variant: "destructive"
       })
-    } finally {
       setIsAnalyzing(false)
     }
   }

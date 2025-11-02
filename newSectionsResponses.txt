@@ -1,0 +1,3150 @@
+{
+    "startupId": "b7bda1be-28d8-4d39-9ab6-62fe8119aaa2",
+    "startupName": "Notion",
+    "section": "company_overview",
+    "data": {
+        "description": "Notion is an all-in-one workspace application for note-taking, knowledge management, and project tracking. It allows users to create customized databases, wikis, and calendars, combining various productivity tools into a single, flexible platform.",
+        "sector": "Technology",
+        "industry": "Productivity Software",
+        "founded_date": "2013",
+        "founders": [
+            {
+                "name": "Ivan Zhao",
+                "role": "Co-founder & CEO",
+                "background_short": "Studied Cognitive Science at the University of British Columbia. Previously worked at Inkling.",
+                "linkedin": "https://www.linkedin.com/in/ivanzhao/"
+            },
+            {
+                "name": "Simon Last",
+                "role": "Co-founder",
+                "background_short": "Studied Computer Science at the University of Maryland. Focused on building the initial product.",
+                "linkedin": "https://www.linkedin.com/in/simon-last/"
+            }
+        ],
+        "current_cofounders": [
+            {
+                "name": "Ivan Zhao",
+                "role": "Co-founder & CEO"
+            },
+            {
+                "name": "Akshay Kothari",
+                "role": "Co-founder & COO"
+            }
+        ],
+        "current_ceo": {
+            "name": "Ivan Zhao",
+            "since": "2013-01-01"
+        },
+        "headquarters": {
+            "city": "San Francisco",
+            "country": "USA"
+        },
+        "other_offices": [
+            {
+                "city": "Dublin",
+                "country": "Ireland"
+            },
+            {
+                "city": "Hyderabad",
+                "country": "India"
+            },
+            {
+                "city": "Tokyo",
+                "country": "Japan"
+            },
+            {
+                "city": "New York",
+                "country": "USA"
+            }
+        ],
+        "website": "https://www.notion.so",
+        "sources": [
+            "https://www.crunchbase.com/organization/notion",
+            "https://www.notion.so/about",
+            "https://en.wikipedia.org/wiki/Notion_(productivity_software)",
+            "https://www.linkedin.com/company/notionhq/"
+        ]
+    },
+    "sources": [
+        {
+            "title": "wikipedia.org",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH-8_mS_53qf0G_Sws8bkbFP-OCaylFduSBtN_FVX8lOLRaNJ0ClDg3ZEeJ1iI4xybry8IrzGhtMjoXqjTAy1xWHxcf1UL0tuTAX8EsrJ3IsKMaVQSr7qFwgVeWykpRjkOLBYYB6YR-UB6-fB8hu4yji9oraM8v",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "craft.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQErOJ6tfyGHXw2dZztZTgOZBd2Cb2x7KDkyTzHe12tLFw6lbbIuVfBDykE1HNtpXSwuLAg1Y5aGUysLvpX1hyoUrTq7kqEqjRPpaeMEMOlfuxfdNebumVxaADp4bTB5kn4K",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGsBouhwF2iqqycwwjt2FK4FvQC03WqVklHRRHqBUNRbsWTyPcjhjiYD7F2p2GSMb2gS8Ge_XmGOlPO_HZUD_1me_d3ZaBDh65O_RNt4iHpCA06RbBjaKqMjDdcVo66enSRA1GK48rbtg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "bullet.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE0dg63TNLjyokE5XCrOcv-_32rEpSXtR_1RclCqn7tdtwLQK1EFyeoOBb47awMO-HhHzWHkBJMTTxPcNMV9SmlTaaFQmibDpNKcJo4MX4ImbzwnHLoxRWHU6knGybNnZLp2Oyb4ZC4BXwwBrE8HoO57H1hRxGaBpVgfPKrzGXSMX5N0sg2D-pNjFk=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH1GpVJSAnaXRFvYt4DHe-cYj0faQUpoSgoMQ1jxGuvie7sHvnB64OStRB0h79gtMSqy76nTPVKiedq35JuhHis_0NtwWYTOWdx-lJDWiKoy8mg19O1MWzVLfYUHG4I02bHs3lsu5s13PlR0HCpvdmT72A70Hs2Z7GQXvcDB8ODgEZM",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "cybernewscentre.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG_ZkQIVJWp4E7VZFBp_-i4BgRFH0nkCgXReq2y1YoDCzLUXETUKJ4tSmJrC8nXCUkS4HmIbQouXBuiuMkA6rZYejNUei-6gv4Avnxci-e9YbT7CM6QFLEHlu9cfnTHSWb4mIdWIrS-O5CB_rE1FmiCyDNyRVEuakazRKqFJ_PS5aHX4yHA8NdliinkAKOGPyO7Y2C4xze0DndaChCEWnLFa2AXiedbez-uJX8=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEuIxWrtoazIYIVAIzE5W5GR3Eshm7itfcpLDdTaZbfa3Ind94dad0-HxDS3clBTuvbcw4n7Iql7WG5Oier1_NlBfs31u3054Wrua72RnaJcfeWqe5OG2F-timQFG5lk0FAvT64xaCg03FDeu4smSa-urCFtdqLG1Gs3Fv_crdNwuRGoOfsoUAE",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "taptwicedigital.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGUES0zA7gQF64a-vwaR9yHxVOawQTM-0phGctSICyrJyRFbzZO8sQaNvV0ZbzINQ_DaFONoBBx8jC9LJBq0fgAjPK8zxrGdnfHwvo9S7XbuWPRMk4NL20FqNcIc0XRv1Fw5w==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "contrary.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFBd1JRVlqCInvm4-a6-DJH7ZY6XP6qIZmHwRFRQacvJb0cHsxCoEJpliaVcSKk5e_93t0n-QtX66bzymt_AMoNGWD456flGnQHA3gTHMeRbYSk1QDkdg1ZOGvUEb81tA9bEbG-D2s=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "industryleadersmagazine.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGO41i1BPb42DLX1z59fdTTjb8oFHlFLPjKxhkcYlqNLhxofy62ZcrJvWz32Wil6aRLepIou-ZSvJNnpU3xL0DLJsAkPhguuxq27QCa-j6Qe_RB5SDZugzdLEHefK7AcNecmHKik0EZAhfw1YAsbwxI993lwjvahTFj_XyenFo0jb-Hu8Cy3WzKGh6KnpAJ-DZxtvJeacfKBaw=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHuDtajnEFWDUlwbGmqUrg_R98DU8DBKZvEz_9iU5uiSi9ycgbStUA3Lku3Y-RKVEGm7xZsnSGUddOPV30ClAOdzrYVNkjwLQL11_XhCkXS2UQqiXZuQsDaFw2ps79wE4iM6R6uWQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "texau.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFpRsayHVJs08QOAhlb6xmUQXpVpDEdhj74yKOpebf1g3NMLy0NyC2WEP-mF18T44f2QzzzqCZfeiMYYwWH5CuM7w4ceU_UvPfTeZKkAB3Xi21E7ywEzerRMm0A3BcEKg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "startupbooted.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHsfaPDry21Dj_5TNUPFUHIcv9h6YzgMMvQWONXgqA8IQ5x7VWlSIX2x-Hzpt4VTkY0sxm1N2mCZWX5CYaW_ABRtnd6BNabRceDi4xzL5Kts7jISacfsSPpyxcvTW9jGhqeTZDlmSqwCQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "feather.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHaFW3_GB7ku_g_GlqTPFbKuhWl1FzqKZJYi_oU4L4zbOr22KMVkRl5jl9QKjs2Ai7oGPwVsCjpRhnutIQQ8m_9doK-xgZFgfpxvzzUF6nG8a0pAu-heA7VnlE8ixNSY4mbbQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "6sense.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGKOIdg6tu3eIgouYqU4womN9BPsiy685Ov0Fh-iwf2waPxdVsst291wdmbchXEp8x9TaQLS1KlKWRC1YUkiFhSYxPIAG0laPtIWEqZAj2oMnqJTT89CoIHFGWGZDa490ac6QNv7dgwC-zqMoqzzlO8FcEPnymBiINSSxB_IWU=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "gartner.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEseck4uwdhPXgIdcNSiOgk2p35ZdvXqXOHAkUp8IvazFewj9zAEyZejN8ht2ySBsVYGVm-YFfELrej5hSCl2NdfYoGEdu-Faq8lSdunq3tYN83RiquiPd_IuAk4PsWF4XKMfYz0ULwyeEZp7Rx6JT8BDF6uMQrt4J2HVYfw7rK3B1GBIE26fC6Kjt_8kaPoU_vWBdssB5tYt6AnUz2xIswkcA0ctlWgxY=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "theorg.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGkRj_KLYenbl4D3i5Rj2kBrUVaJ77XeTGbeXVOyfh824pGZNETzzuAHReQKBY0SR6Fqd1jHw0BNP36Qro698m_qDvR0Arv_E0Wdk9BQhA5Oqw_43cXOqXhEHMS7fIJlUYzCNvzQW2EjevV_Xsv",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "simple.ink",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGQvmsaeq2JMwXHP9Upip7lIj3um-aA-bkwADEdS3fwLaEes0DqqPUta8GhW_c30DjZ8h49USh7I_zqVsgJONp0Km4NIII-OcVI-qU4G0PkyYwY2s6ZMiruQ5G2HE_vt1CCTw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF1CkhBE7Rtw6wKwonWxNdI6ok6WmeFSsIO8Pddi-uR-ZFr17VNZbYtXcnCLTqKjvPfwMNNByRiOs2_IGk9OU2eKRcS0fMVdd8qfjD3YHs9k_OS1wiN59aq7Px-awwKKjDpLXzDjEGRp9O6LzVbAxGfKg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFmNtjL3quaNX9I8xNM7PPMEWvlc1a7rI8V1XVXM-yWoQIpdHJVvZJ6PTOodDYSuXjrRMqti92bxlv-_CpN4zYoeo49nbhL_c1_OzGRo5ATn-5vkBFxX8xPVw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "youtube.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGLL3PLb7ZTY_b81qqvk5fov4cw-gBYpwviSZMFVwruokBs27Hvbn9a4F6aI7l-BdaV4U6_EFYvLxog4ACwIHIpnbYnKQeJbmbX6CdSo1JiMdMvVFp5b5LD3g42P6wqymkhKQhOFg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "simple.ink",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGcq7Z8ayuNtVbs9BF5xai9oO6wIoHGuM4KCeWT3F3pK9G2kTf5ovZuyRQI7fbUIyIuFWlLiVTbelSqKrmg9hKwRsgsdu7XNT0UET_zzC7x6XH_9k6NnefdVlKcDbVwYNGbWNixFD7jQwBOZEwTG2WrZ8X0Qc_2TYDWcNADD_8VKqLqAFkPlpjx_ItYy8fHsWFrkJ5qR5JsZUi4cDZtlqf1",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notionapps.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEPdtWhUIZmJlXqi0YhDDoABJZJpgoHBCU8TD7TAfRNofn2RCfOhByIqSJE1kmw7lBm9cxZ7z5CZFKLEJmAnROYBEUiL6WVZ4u4MLdsjJ4uLMME2DY9PovjP9Y7owf3UVHSC2CaZqYgCdwuhS6MhHNQOLvvf8p0KUn4R2ZsFm3Jmhxi7CM=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "judkin.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHPUAyoNcE0HC5XNgqDVQ3HWmkO6rzl9BGp8Ubeie-Ln7dpbAW-7h8rn8qVBKwZ6Y8x5HU9LmdNUOysTEjOJKuJT8Z2dBf0oQ0dmI-esUwR2n7uNyyjnRSVvViEFrwnBw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "medium.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE5ragxuyg4jNYjsv9Jl9Jhj1SFkyzpKqceYCmp2SleNP-S-HiILRGwTWwRsBIGOvb6bBg8Ro6a8d8s2fJkK41W8ROFjbvwX98i776OOeNC6K69yAzyO5OnryKyQ2YaI2PNRouj30PNmGaYD2tM1ubdY5qrqhkVP-k9IP2SWEssgVZowSt5cdGkHodc4pB8X0OpB1BVKpR6kXbWZmN8kDp4TPl2U-e1VLy1AS-G-4td_0QMpWTMeH8_Z73K-FxK6YaggK4P",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "passionfroot.me",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEAlO6QSiGrKsNl2qMT8kqbNWUwNkmjdzyFaZJh0I4k9Y_J0B2Hd-E-mlymQJsHh4tt5zUMCnjAtbM6la3NXfEb6jUTvWt0CDK_xAOPuLfth2BRiWdNrA-CkbPVkuGKTpGUH-KJjDlh2-KL4MKd8axmg_q2FQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "reddit.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEhceyRcCT7_R3rSYZuGz-vrzrrJauxI40ZO4uQv1gQZ0MstEHUDPCTF4KfhwhzOE8OgDb2kqzsyj30cUmluCHBbBkzOWjrKg5v9HZP3jr2ZBbsXpv-fe5b8E8LUeTqYUN9EjUWHdMEIMI2nM5xj6knQb235bLnrXajHM-yZqhYrkD0FO_4g9ypNvdS4rCrC8M54z2s7_s90eW6fw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "medium.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGOWkJddPVBk8AoeW4G-MB_o77EOP6vy-_6uqHQ4t8mWm8EttW_EJJe0mNc6tu9Ey1VTfRFyemCgIli025aVm0tw1QXFneZ9azIsW27twlsL7FwDqlroYyxpn7OfMcc-LzaJ3p09N1JcCBbupXA0MvCk6B8CgiBC7-rxQyJWAjdul1jtH6ucfEyBBM=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "reddit.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGVY7OdABPseJPz6miWmU9uN3Xxm1U5itYH-k1KohY3BPWcmSVgfo6V9WtBhy9Kc_NB-NpGfJR_3B5y0DsojH_OvQ-3DJgPW7mK2_uEhV6CPlDwKIqOxyZYloD0ORENIeWWZ50MGp4_lcycYx2cjypImn01D4GWR13pKfDGswaLSoFAzrD6KDqo5mEgfYjNuQSc9TvdlBKCG0BUPO0=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHWEwtH5ANqU3Ywgini8paYVHZrPUsMIDb6N-YzoUU18Os2AvxR3CbB1Wo1HhJJPB9niSPMQwBNGqjgydcx-al9d4QwnQKZ9uVLDMjbOQsGVJyvvZK8WQMkuKPn75O8VIPw7kjpJAYInPGAcF-K5vMO",
+            "type": "grounding",
+            "relevance": "high"
+        }
+    ],
+    "confidence": 70,
+    "duration": 51.681,
+    "completedAt": "2025-11-02T10:54:39.706Z",
+    "success": true
+}
+
+{
+    "startupId": "b7bda1be-28d8-4d39-9ab6-62fe8119aaa2",
+    "startupName": "Notion",
+    "section": "corporate_structure",
+    "data": {
+        "parent_company": null,
+        "subsidiaries": [
+            {
+                "name": "Cron",
+                "since": "2022-06"
+            },
+            {
+                "name": "Skiff",
+                "since": "2024-02"
+            },
+            {
+                "name": "Automate.io",
+                "since": "2021-09"
+            },
+            {
+                "name": "Flowdash",
+                "since": "2022-10"
+            }
+        ],
+        "mergers": [],
+        "acquisitions": [
+            {
+                "company": "Skiff",
+                "date": "2024-02-09",
+                "amount_usd": null,
+                "rationale": "To acquire its team and technology for end-to-end encrypted collaboration tools, with plans to shut down Skiff's products and integrate its features into Notion.",
+                "source": [
+                    "https://techcrunch.com/2024/02/09/notion-acquires-skiff-the-end-to-end-encrypted-google-docs-and-gmail-competitor/",
+                    "https://www.notion.so/blog/notion-is-acquiring-skiff"
+                ]
+            },
+            {
+                "company": "Flowdash",
+                "date": "2022-10-26",
+                "amount_usd": null,
+                "rationale": "An acqui-hire to bring the team on board to work on Notion's product infrastructure and improve its core product.",
+                "source": [
+                    "https://techcrunch.com/2022/10/26/notion-acquires-workflow-automation-startup-flowdash/"
+                ]
+            },
+            {
+                "company": "Cron",
+                "date": "2022-06-09",
+                "amount_usd": null,
+                "rationale": "To integrate a powerful, well-designed calendar application directly into the Notion platform, which was later rebranded as Notion Calendar.",
+                "source": [
+                    "https://techcrunch.com/2022/06/09/notion-acquires-calendar-startup-cron/",
+                    "https://www.notion.so/blog/notion-acquires-cron"
+                ]
+            },
+            {
+                "company": "Automate.io",
+                "date": "2021-09-08",
+                "amount_usd": null,
+                "rationale": "To bolster its integration capabilities and connect its all-in-one workspace with a broader ecosystem of over 200 software tools.",
+                "source": [
+                    "https://techcrunch.com/2021/09/08/notion-acquires-automate-io-in-push-to-bolster-its-workflow-automation-tools/",
+                    "https://www.notion.so/blog/notion-acquires-automate-io"
+                ]
+            }
+        ],
+        "sources": [
+            "https://www.crunchbase.com/organization/notion/acquisitions",
+            "https://techcrunch.com/2024/02/09/notion-acquires-skiff-the-end-to-end-encrypted-google-docs-and-gmail-competitor/",
+            "https://techcrunch.com/2022/10/26/notion-acquires-workflow-automation-startup-flowdash/",
+            "https://techcrunch.com/2022/06/09/notion-acquires-calendar-startup-cron/",
+            "https://techcrunch.com/2021/09/08/notion-acquires-automate-io-in-push-to-bolster-its-workflow-automation-tools/",
+            "https://www.notion.so/blog/notion-is-acquiring-skiff"
+        ]
+    },
+    "sources": [
+        {
+            "title": "wikipedia.org",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHSjRH8B2KQd-2FyS8jqFZltsMDnDsqz65B8Tiy3bkabjuVqvzO7_yr4QnhfE_6e0s2nbGHIHDDqelswW5oNSCiyPHLDmiNIYh80tXbfb0roYB2Dn93mKmtqRe_ggXEWMmRaHJbb6IvUpZBZcDqNnOJWqbxGo5eOw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "thegoodtrade.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEwWqUcYxuvkgUw31r-ok33z2d4WpWPQxHrkeNoTAykCrb2rFqGUHdTcJjHKnqv0MZ-MP0PLDiTH1L_6qq1kEe96P5cKHAS6-M9_KYdLTs1BARoS7V3dsh4YV_D0NkBjlp6oqt9GJ6x1zW8iI1fYTcM",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "contrary.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFmHsAGFP9uIU7LCDuZyUnJVj9AvOCbNlaioMLmcaNq0AofqZA0BYwZd3wwLSbKVXd_Hm2h8VytWCnnbyrIZVc5yYS3GAS_jFoCTOtDxi85DWdrmCZQ6-S4g5OQbH9RHpbF9xl296bP",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "cybernewscentre.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHw-oEkhVnGG4NFX8Gc_6fDhw1vwkBHkcoBI4dWfXs2ih77Ez2Wf4bWnYrssbHyUzPFEK9M2_8Q20GTnkCKmtTGAgFi1An09GyVYdNGH2OniJDTOFqdpM8Duau-Y2hq5r5xqtHhyvO0F6U7_l7oWUExQKulnMGBxx-cPRNKu56YvrTF9NNcxWxvCKn7UXmdrZlT__Eg0V-RK2u8HgmMOOuceOLAp-uE6JqmrQqe",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "bennybuildsit.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF5xlARuKP7DEJKrIZxSd2GL_gCd8n3ipBLlrU7A52OZ5F-HxZb-N4EPHDkO572_8NaZ43A31I8y4mpBlvVMQTnwB_YitRQF_CN17ftIvFmiFIpxozg9tpyp9_Vqs_D-G57-k8OEi4Nag==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "zapier.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHqYZb8iT7-awERMzP0D_RAHQFkozpo5fF5tt7L2KrxVDC7dpwa4rgJflDIRSIoXKEzRpB2SliBK0jdhXLohW2mEyIZpqgw0NPVfe1AxI1A5uAdZqAbnSQ_nZIz58vy7UVFSw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "bullet.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHEt6bzLjf-Fz6xoaXl9tyvZ3VWEBN0X0tJ1GgLPJD-wKi4nT2Q1DK1L1m96L52FqqKoiS0KCW92wH_wDS7RqvoOpGYTtrsvQsMOA3n0CSiLCYc6vhBb0OnvSdiYMm9GAK3jV7fohZt7k99rtTbo2s1cHobjQO3EGd-4ecB_couxJ99eNW5HTjMF_qL",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "theorg.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFNNhpPqnIDUP-L-5sKgAxs8BM0YE2Gnc7bNLQ9sa6FQOQiRKfBov5HhqkhQ6v2xwpSBtFLbMCQH-3Qfo1jOR1Wr3L_uKWqgUD9u5dbq72pWYGbvTPJu8qhMY4Aht0z2eQjD6YJdOMnSXUI1YqIWA==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "taptwicedigital.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGooSxnVDjpxESJpZYKvBJ__fsAnRL7kW1vowgJhVSWdSrNXgyql4x_Dn4jamMqIVVtWZ0LZK7a2L0Kyy-ag1DaXrWYCBQO6Qsq5YoTHdVmPRWm618WgRcqbUQ2qbOQCBe6Kk0=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "texau.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHTsHIJWEBV1pJbmIX03zn-3_r_cwrmS7gjBgzFKUzdvBZHTgIZJwFIrNY4mLONcSWw7x9rbhdKdJ320tQBwTX9-mUI_JmRcyi3YThRmbZ9tdBnzOjh6w5Rv276z91OW24=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEDdv2EoxrpdPnrQtYbgd_wWq6S65Ik3z0xZk9elB_tLIw6U5pXniPnhcqFZifEtvoKeEVoFQnBsQrSi2eyLMivjRzD4eoEFOy82BBnLIuQAJeJg3ihpCM2zg2MKMEc6mK1JCzlvCg=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "sqmagazine.co.uk",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEc9hmbrvVKC6jJ_HiDT7FEhbNDXRQx5FAPXH7OZqcMEx8vkJeXmQRi_GDM7ug5sHGqFP_HGakfGLOR0D1hLO2bEjM_DQh6C-_ZlyxQfI85rl80JlvlNGlm6qnErP1KbFTtEWqNK5s=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "startupbooted.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFJsyaRwX2LNL_byk90A-mqMUYWDo6uafMbs5HK1nOwclBrU7MkZRHvdHZUsFuNCB3emA3J-68AOCJxeNVaZztkhr-q02-LDfN0U9GxlfAVlYMzLehUSB7FSv9YRv90pmxXvWmG98aZLcA=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "feather.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFuiY9t1Eyu5HlkXyu6uc407A1afn8dOI8wOycHhI5ZJiyiyzmP7BbIBJ9awBnX6ycOR4P_wSp4mewik9Z-2LQkDbeU2v6FDqUsvnoeQDwMrF0ju4hBvkVxO6Y8j454aVvwQ4s=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "forbes.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGkBtDa9c2t1PeKiRbgO_hrIgj-Yl4teiZiFn-E3UyswY54VDr5fXBkunUSaOSeZXQI-uHrtnSCyz6Yfl9jtGcxQ81PsI1XoMcHzd2gxC2dsCHbQmABX0e-G3sGLeM1_BqqpiixRpqK9ar9Cxsxc_A2WZ9ox661vmZRfQndZZPyF2-eNzPHBrkSKJG-TQ95_r7Ha0HdOAEXfcF4YSNS5FZcradbKt1Efwoafr9d_4xlzCzWF1nwna-4kN4i4A==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE_Xah7CqjJVuzb9okfH8XKr8MgsrTgY2VoHRK5HxCT7eAKP9FcMs3V9FeP8yKMu4IsG3pFJ8Acn2xzecqWl35f58DQ4nX6O85zTEk3yqUDXDhDWfIA5aaVj3Ci2aljIrnJUCNS3mKckTQXEJNgZkJ5E0zaChfDqBrYBVWRmJLk5plBym2aZ56o6g==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "6sense.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFtOE-49mNyGZ6_k9X3pTe3-aKEahQ_dnS-F3aZyFuPNXFEjuJwm26QkSDaC5eA-ZiIkFc9xpeMtrr4GdnOwjawI4a2Hz7S_78vOfHY2769iKUjwuw8xdRUWDqilNpZlJOEecoNopDtoMr23C-norobPijFLrZkepMGmkhZj5Vl",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "6sense.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFwss1dYrzB0WzKMAm72PnU26bLc5FvfNluyhoPJAc5M2izNmD3BAiQENg39v80KQIYQWG2pa5sbB1LPvLu7EppMeYVP3IkpDkB-vr4ktOVnzRq1m9j6rRM0bfQcoCz4myCyC4J7PvNF4tZO6XshchC",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "simple.ink",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEn_Q7JKgfehxUc4duSlkfK0d5TFc83mtyx5-EJ3VcR-29eFJAix6yC1XEohrDaBEr9Fe9Fjuikd1NxOvoafIlapzOs2zal00DQaL4mpJxgwVDfZqxw6FUVA_hKh_TeUUqZn3w=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG9wbZZ9Skh3tsoapU7A6Gp3As7NTW2Ot8-elHylMC9V6_yq1UDoAUxXwX6fDBcu-G_XgOOFIgDondKNpRWZZyurXbdzhjIRSGnQTDyijRk_gZd8ELRO5U-q5lwE3BRGR-EBDudCUYImaqcfy8JiENFXfkbZz9lGSbK7ET0",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGoHjHoi_vDi6MlTrKnSJaUlrB7qFoi_Bd9Zbfqr4EHp3KllnzJ_Eu2siZnzRy86Inm6WIZ7VJ6hATPilzfZOM2DkTL-XL3NwfIgTgHclUQZ60aJhmrQe0JNtUi9j3mQzoWpvpGDudOfU0=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFucCwG3mkVr_ENfeHuYmFDVxTj4232h36FBJd2xnLsJXqwI266_--HoBw23FgO8WAgaYODBgnLbO4-7sYcS07N1EARrbnVG0PMDtTxKxQCfAtd",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHjSV3LVZ63fB0-sJ8irXDj0GB8Y-TX651emk2WE6o19uzwN4VUCJa_dfE24yD4fZmdnHyN5IyhENanQ17aTElb2P_4GjlQM0FPsERbQrwW9m4i-2phKzxNfKU=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "matthiasfrank.de",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF9_gS-auSaBiKE-QMuNNdYx9rzjn0ngahM187M_hG2xi2ju0ohSYva67gDaISFkD18oxwKM0UkVg5pn8fGhsDOe4D5_-XPpIIzrzXKMIRcQgCwcRl2TtDwuhtbgk9Z4larBjLZ--I=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "youtube.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH65ebdjG86WlNl9qZHwaiP4i6Zr9MYQlDjiWzLBd_-94PS_TbGr-ipUDdQPGF5VkxQDOPsHH0JckUks1DZhAvitkss0zqeRSHYaLTipb6688Jv912fLk1Zmf9Xm7Ob5KoEKhlAHAI=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "reddit.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHaU_zd9r89mu5l6bwPqnyNa16LbbJ4VRrmHXQIa_crHtSbGZeVG1eini5QW-72Y9dfmaAtO_FCgj0ObVpDiK1aW9nmtDFhv0UXq8CKdE5LCx8Kbo1RsN7oOshD9Z1Nn5sNdeOANBc3gHE9zpiCXdHKDtoVCCH2uZgY8elztmmsUicVX1b0SytCW2IIDyneKMzc2LnMjA==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "productcoalition.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQErU4Q9SvdD4uOui8zcwWfqnK0R3291dbaU71nPo5xcJAx00wfIPI1-rHHam4AsfJDfWeGN45C-ZQpzNTFjLKTSvqI1xNZfrPs8sWsuf5KIiXbOHZfHcvVA-p09RhzJPxpgIhRLzJqSUluE1O3LF2RqdRac8VA2btpQF7ecwJCrWjM_hg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "judkin.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH1kapzPBryjmwm_CoALC1QOvvEG_0OrwSWFlZGxDn9rcbJU5AX7-3cuQepe4JsXppOJa5r9SqZFOErRe6uin5p_GiHZ190Zp1SXOMzgt1Uk6YSzoOlwAZQFfbjEemA5HI=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "passionfroot.me",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGje6VzbV3bEiImQ2xNhDsfvlOhI0ASNYmwuInzqqs4hH6UF8pepxe68pavL_AVl_MRR6UTBKzOtXwGMpwvy3fZsWK4zmfVlmEEzw2gYKlzInmpgi3TrmvvbDH2CPuHTn2A3ektPF0_xcz7bSNaJ8ZQUec8FDg=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "reddit.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFLsoOrRdRiOAsjMZ3xZ19anRT_S7uZZb-7ufvKuXMuMmA1ASe1ua8fqRx8OM3QKY-Pbor2bQCBmG9y07KWuD3zgVikM4qPs6sbDurLJaZz-FgUfbzTmkyuuOTTwzDhAHS-lsNWhzrX_N1hOaYh-Zp-4WfJhLr0iAnTmW_lKNs9lN3D3CDuSWt9XDxpfeuomr9qA6c79OtPewlrJ0g=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "medium.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE8Wi9KzDgedB4C-LzkraX_a-fokdbYfjsIJLbqmQBNkXbPfLmA6HWBRkqcJfLgY75GDip0T5yROvr_POiNVuQHwxrSgOPRXKrSlMi4yBeAYxZWz82GJu_EQTDVdI8de3fqEPxgOdDKCCum8L9dyp9oSk57ue5MPF5EXOiE41oPAi2uNO6qwzMa6K7f",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGfKD4k0QgJOmEJgswzaWZLO8oIrPojytYw6yyzTRJH-3lSy5BPxJp4Pl2OAPzes0MrjQSu_nJGZtNrOJ2kAc2xfDhEVQKskB1k94ZTPal9DM5fgTgSknc_VkggH6viX5LPlh-z-B-dYlkqa3XMaUCX7Q==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "pitchbook.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGEFl7V6X8VWo8sr8zTSRrp5IpPWm8W41riQliD9OjwLlpJX7IDLHuNNHp2tDCgf-1CTWe09g-V0h61bAJL0YHFuoPE7N9tPZjCepix2q1TW5VsR3qu_v_awHrdFAnk8nuExQ4i2jiP27Hh4g==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGJygxNrakHKuhr3qbtOGBcTDAb1AX9Tj4TR597c3npcLlf_zfDmGr4Ondts9f5g1AtxDQGROJlsNg6UyeRlQ7nEHInpdaZz6wAYFRLiWhU7JSxypaKiZ8=",
+            "type": "grounding",
+            "relevance": "high"
+        }
+    ],
+    "confidence": 70,
+    "duration": 63.979,
+    "completedAt": "2025-11-02T10:54:52.006Z",
+    "success": true
+}
+
+{
+    "startupId": "b7bda1be-28d8-4d39-9ab6-62fe8119aaa2",
+    "startupName": "Notion",
+    "section": "employee_metrics",
+    "data": {
+        "current_employees": {
+            "value": 1001,
+            "as_of": "2024-10",
+            "sources": [
+                "https://www.linkedin.com/company/notion/"
+            ]
+        },
+        "employee_history": [
+            {
+                "year": "2019",
+                "employees": 15,
+                "source": "https://techcrunch.com/2019/04/01/notion-10-million-valuation/"
+            },
+            {
+                "year": "2023",
+                "employees": 500,
+                "source": "https://www.notion.so/blog/500-notioneers"
+            },
+            {
+                "year": "2024",
+                "employees": 600,
+                "source": "https://growjo.com/company/Notion"
+            }
+        ],
+        "department_breakdown": [
+            {
+                "department": "Engineering",
+                "employees": 374,
+                "source": "https://getunify.com/insights/notion-headcount-and-org-chart"
+            }
+        ],
+        "recent_hiring_trend": "Notion is in a phase of rapid team expansion, growing from ~500 employees in 2023 to over 1,000. Hiring is focused on scaling its largest team, Engineering, and strengthening leadership with recent C-suite appointments like a CTO and CPO to support its growth trajectory.",
+        "employee_growth_rate_pct": 66.8,
+        "hiring_trend": "Rapid Growth",
+        "chart_series": {
+            "years": [
+                "2019",
+                "2023",
+                "2024"
+            ],
+            "employee_counts": [
+                15,
+                500,
+                1001
+            ]
+        },
+        "sources": [
+            "https://www.linkedin.com/company/notion/",
+            "https://www.crunchbase.com/organization/notion",
+            "https://getunify.com/insights/notion-headcount-and-org-chart"
+        ]
+    },
+    "sources": [
+        {
+            "title": "feather.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGN0YdxLVvecNlP539U3bRl1UjVYd24Vs04DP5DJson1_bBBrhuq-ayzi0EJEif1l2TUsEIPvGT76M1mZD6ABAgae9QVUM1T_F0ztHMKrjWd56d9gPLLWoJE1_mrGmd5P71VE8=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "wikipedia.org",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFuQ6Eq-368GXYY-2INs2l8ztAqfac766JLaNvsY5Q3j5eE76GGm7NV2WA6D_G_jQM-vDGaYUGhgSBzu-NVFvByLXrP2RaysdJZDM5nAs8wLCN2lYtXGXxTha01vlGfBqOdtw45t2-NwLcPgNEcv49oFFxaiUEcgg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "judkin.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGp8DMtv2R2gKCioW5zQ74nDRDURHmjFY69uzNgBBWXbiZZUJYHam5fJrrjCjni54IfZWzU26khvc-9sRVjvfQdjHw2t5CvZjzYTTnKPrvrdgGDS02AAJxWM0BUEEEbVKo=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "bullet.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG4nx_pZznrQmUDLPs7XjVNz88gupjNb_FVTLvtGQue4mnhfui-nIQGhAJKmiYE_w3WTncujwQmo-tBrwWSF7tQ1Mmxwtu8lchwhwQwS564YdqHiexzAVIu5pqywaUzjEZom1WBwpyq7Je3IM12wovCOAp81E-y_y0Jr23CibUpXzoOxiArtDI-Kb3Q",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "contrary.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFKDC0cPxomsHc4tKRGJ9dYG94DLRUNpoGOuGZLWIO6dLr8SSb7sehpKKq4eKoWwJc0q_lIEzNgvqVHxwg2tnolZqjNpC6MwrBQwtc4-o_znJxpdCcvwGvKA0Ill90Rm5QsYQGzPlEE",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "startuptalky.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQExB0d0zmofLJK8yyuE1iR6mFBOs6SGdmYenLNJKkW-FIkaoFmpC6tJx5kQ857GV6Yhy975HaPNHHNAXVZvcSiBFfNjhBksteBo6ITwE2EvL9sEdU9wp0dOeaxC8lsPNdcVgeqFY98g26k=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "tracxn.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGeJwSyhNe2m9n2GOfG1kEeM0Ia6AMtqBD1P8_1vzg6Yv8lKleioMz_kLlleimLiATHWI5-hYtKYTlap7WofETWGt8HWU-u-qFvPSlEotc5irL2LiJkiFzyt53IUtXV_6gW4z0MCoGNgRatSMBajawFURFFGJBWfRJPRiOYI-Hzw3stHSXU4hE7jstC7K4EgaP9uv_HA8wrVkrpsM_L_J6M_64RkQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "texau.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHuV2T6FmoHLoqfQPYzT_9pGX8s4g9k_t2v29nqwPIuDhEPyj9PLqmhwwD-RUzswJL2neT_9ki-r9Uujsk9riY-Ij112qSud9nVhCtMEBjGXev-nA-mka-fMg5dqlvBN48=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFTmylBmW1-9YFmkvClpZpi_xLVyxLrMhsuXtJHBpF-CX3gvBHtN_z5BvUv7L1_JDGGLDrl0bwaTvXhmxs9mEdycobzYLMUwhbVjKTMUkFt6pPnnowj0kY7gSLXH0NcxGWrD-tt6C0=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "startupbooted.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHf09jN6-deLpVBwkWo1tdonRiJIkfItJmiNDBO1rSCVHdLJf26PYRb-RaoZgVexIIZItMu7tdwxTzTU_ftZT9l18YWwkWaHn2DIbCFWyfJXwPCrfvbZfhqb8tDNNRiR0Xay8A2E41WZq0=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "tracxn.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFT7DjudWjfpuBrqUaANCaGEITyXBUaDQWc-s4Uv3PSY41GszGxxJkkhuXsMcQi6-42YCTnTMH_1D-me6b2PED5KbYaSgZlvHHkMCCNojT7VtorpYaQgKZe5GSYc-nD-24kBV0mnUFGy6N0QR_Tpb5Ef5I9TquQhSQoGfJ7gEjSHkIO0rZ9stWBlTGU7G4L5ZUasGOjNXTsu94K_S3QIzQQCZOfNw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.vip",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQETpgh_H_HA_wVgcMURb6RkVSpwVFcWfgUDZXtK4i7Ck2ZY5JIG89DneKX-USaVNO0EOfGCOvIZmi4dSKqhIZ6uOww2Ihx89uAPxnD2TfXVsUDArrHquwMWzxM5QauuT3pdvZHxYrjJFWzslv5AGJ8kRXxMu60T2bQVNdU7__25Qym2XP_EeiXc6y4MCClQIw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGcukh162CPdPmc8bhs8OITxov9k0F47VMK-RV1dXthjK2ZDNFTxFDjLRufMVNtTq97eE2v9b0fS18j8TNM8L8OFo4-ChxVxVA4mgEXDxxr0iLK8OA-Rw9d-ueNAngBb08ENtSjOqBkRtl1v4Uss2f1TMggyUanAEwu7tgYj2CRLIlcZaj2a_YPWw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "6sense.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG5cX5eBINTtXtii0x7ukkj0_ITOc2BLl-XIEWnbTy28KU7W9trAEXQJI4Gr-0Ylefk5mkABOVds3kukZArhqPSZVP_Jjym20L1kGQRVD_z7zx7ZpVUVZsEfg92Jw4Wa6FHhGp34bU77m2Ii_JFX6620W4GUXRCYRMzy3k4uOXw",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGyggkglo1Qk1S-r2x2iVEfgNySYp_9OQkQHZFfq6s-0QjYsNLrxBiE79LusdTOpwI1YxWz0Y7qdwSJD-rWgwFYHPFGMbYv7bHy-qGq9Gwp0dsDoR5i36jMRSfWuJ6S656TKbc-V9IqjmvH0eDZPMzlyJTQ8MIWorFYZaXmi26BD5iwjQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "gartner.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE_HZRLBTrkjJ0E9P1Jh6sjQDWQ1kAow7CO1k7BYsOZ7vGAtemtUPhlddEhV84LHEmju-AprStNHtEr81Nf_v9lB7HtFCSqZIg3T1SO_COYamYXHnJ-Gvi1D2O2vd4IFPsRohqvq-cjcTYW2ouyu4ynW6D01oDs7GyrbtNdRKB71tTPvJnCKIj863q-6Z1479LZsL95veoBpmRu6nnizNIPwjrXWeTQ5a_N",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQECrRhj_2Sl9We2aFcGb90z_vLi5Bd0PLDGAWOOpdpZ2vYNWTqP5MqFlMWxkAg028iJ5vdSj1yLF1lAFf15lCg_Kyhm-u4hq-715fIe4WVNtFeRs_Se7jsaSvgJYLZZbPVeOdc22K76spw=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "theorg.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGfTeMZtKD8TvZGQmtLtyjlBcvjddQSkZQtSJf9pW4JdUnDZcF1Cgm566vMbblCKHmzFvXjwe8Loq8SS04DakdkpzJfbR308ik-nbxWFsgekXAm8HW3Gdotlj6681RSjBMTXn_LTmTAqC_8Qa8Z7A==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "craft.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEU86KXgNNtBgOVyZIU6X49lS68C86GWLKcwY-Q_1cOCs1JQdw-7uq7whuHBc4EltwKJuf90blZFsM8EqhoA1C-hLAY2A84eMkP2uo0DzvYHiENyJ3rvisWLM2e2Xile9WusQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "sqmagazine.co.uk",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGtmZwgf5QpKQl6pTOGpuGZITuSshFqqibhbJYRbECXtjlkC1y_atQ3jBtTs1SWrjnrL-x3XKpFS24o9dDCCsimveoougANwwJMu0kNFCgnxUPdOcbVtEkHOcv0ZuvlW89YOBuP_nrt3kcsTH8OSuAqPXRg",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "taptwicedigital.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHx8eTHtGnlAefGx_R325eYSRObHRaBLACw3meM6Y6QjZ54RHQYfaSICB0jmLBpDd74lKMc6_pqx4VUU6ono3HhYW41mf0EcI4rD8id1CRYe8-Vm_SQqEmbgwD4INiD3lHe49Y=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "simple.ink",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHriC4k7HHaqUhPJgw9CfP1lRreZ89K8cNhhoi2HM3S4eJ3C0FoYuXqKpIpAbunijVMhH0rPJwF1PhcW7Fs5dgbug8Zq0KLnha2_8BoA28ROS0QyqCp2-T9JVy3m-IGuVyem8s=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFH6vGwyxqGzzstzCLpl3dBtJ9HPBrJOos5-ulIhQG8TBZaYi8gzsX2IWhCS69uG29lVtEQvHEAFc-H6qcMCBeH0_uhYNNigy1iDvhJrg7hiV0ttZkBOXNcwqn2w-CtZi6SDIGVIeZP",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "unifygtm.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGZ97S1nJvUTS6rxwHAIn_QJm0d-T44z67qvEsDvee9t6WNIjmbLShIPxkNhwZITfxpxkMOizdznXTkq43caoBSEJsncrJFqtfDXx5PC4Vg7vpeVy0XA1cLEBnelKfTsUA5JmzOgKgX_YwfasFq",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "matthiasfrank.de",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFvIte8pw0OlN6NhcReAYvfIRlr59q1tMJL6Ooa_wXCMuZOVwx97Glm3WagAer4vlvZUlrnuKz_96Ba2gd5UmtQPml_bwK0Uid6B3JzZPH4t24yN9YSyZCAMFRuV6xxuWpHeoU18HY=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGoJrcxv5er-spSPG2yDl0aZSOvUvfV-UNnw2D4AlSxDZ9lf0TRz-DUj4035jO-ZMQa1Uf7pZZEwl4vGQmXg5cktWxkzYGG5uX9IGkr2PJPlDhgMq6--UCao-I=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "reddit.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE8DJ7sqHZ5vfSJF8UdDbfeWfbAKcmsnZreuYPVgiULzxl5T5U7Q83ERDPKoheRffSzGLcwygorA1vRj7OpEC2iAbpP5BfRxaieTviPm1Mh-8YxpCHW8cQpEhIjRTEP-rNmJkMk_8VOOcwrCMNsubmfOX_YXrMbgoldgx3d72bcjepPPJBEzInXg0Ka5-5b6QivM3RfEw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEWWHfUCtrnr5H8vf4VEe0pbsTU1cJcIu7GERS8eBvlIHHJs6L79XxxZ3MqvyJSiU9BkkFLsqmJwDu3JB4YvVLCErVyui2hIs_H6_zSOnEYfqnO0NXOfVZMfmexXtY0q9YZW1m-Z3kzwK8VsGLQp2QG8iEVMDmk6DsPH__9",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "medium.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFAPDzS3OrdTw4-s72QFV_UMC2ctdU6B7Jjdw1q6Z-7BfNGtCJ19QZlT8gzWl628b5dje8MbmlEJQmyEwd1gpT_0lJMs_Co6PP97yhKlPnW5onjc_5JvtFTt1k2ZiSoqe7_duCpLqSo-Q4An3mezsARfwfZawwbgVW8BaY0MYiZzhbhm1YsNzuaowKwng==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEs8dVsvXRlzxkEXPjyIaLx9WQ9yZ8QE-X4QM2BdYHWM5QuF0mF87CHhFk4tKxWlSDhxza7qeJGJPxvmW9CYcfwRafic2_W5PpzAj1zt2rpr-o_YNdU5aCbA_pmHrMa9LUTh-QedrnIRgUfGuVycHT3rgqgZB7ah2ycDfD7unPmojuB3wAZR1E=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "competitiveintelligencealliance.io",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHzTEO9U5QhUCLM-Bd6MRKO15R3px6gGrGrvFPNbseMSw1wk8JxkRMNGKxMihXjro1uFfpd3v7O00p6SCOvMSSpZpd4Ga7q7w0kKx-j8ZMo34-tQNSdrvsRNnp0fod1CIh9Ij1KjI6N0KIybvShFVxMao-URxhXW9nz_34=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "aakashg.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF5pcSPuZi1qYk31nTgsChpPHCdF6BXGV-Way3_KFmkYnRPiGTFHHWWyInM-ZnT4qnMoazXR_HG3jjNmkGyNSACFZp4UA6nt3iukIcBm6Rh6gMNvW1gRsw9VGCZPh94BLk_jFXeVvjdlkrk",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "youtube.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG0kOj4BJr0vCdEntuv2zng0xHue40wSIIdK3HPocev61Lkgj8DtUogZhpF3_i0_GuyZT8GJRxhF5GOYGxtaTdTkF9lU99LLJuJ4rTWM6WmL7T5MdkdAh845aSJgUiZWlxpSwvZFfQ=",
+            "type": "grounding",
+            "relevance": "high"
+        }
+    ],
+    "confidence": 70,
+    "duration": 52.428,
+    "completedAt": "2025-11-02T10:54:40.456Z",
+    "success": true
+}
+
+{
+    "startupId": "b7bda1be-28d8-4d39-9ab6-62fe8119aaa2",
+    "startupName": "Notion",
+    "section": "funding_history",
+    "data": {
+        "total_funding_usd": 337000000,
+        "rounds": [
+            {
+                "round_type": "Seed",
+                "amount_usd": 2000000,
+                "date": "2017-06-01",
+                "valuation_pre_usd": null,
+                "valuation_post_usd": null,
+                "lead_investors": [],
+                "participating_investors": [
+                    "Felicis Ventures",
+                    "First Round Capital",
+                    "Ron Conway",
+                    "Elad Gil",
+                    "Ram Shriram",
+                    "Sherpalo Ventures"
+                ],
+                "sources": [
+                    "https://www.crunchbase.com/funding_round/notion-seed--a6051495"
+                ],
+                "valuation_source_note": "Valuation for this round was not publicly disclosed."
+            },
+            {
+                "round_type": "Series A",
+                "amount_usd": 10000000,
+                "date": "2019-07-25",
+                "valuation_pre_usd": 790000000,
+                "valuation_post_usd": 800000000,
+                "lead_investors": [],
+                "participating_investors": [
+                    "Daniel Gross",
+                    "Elad Gil",
+                    "Lachy Groom",
+                    "Ram Shriram"
+                ],
+                "sources": [
+                    "https://techcrunch.com/2019/07/25/notion-the-collaboration-app-that-rivals-evernote-hits-800m-valuation/",
+                    "https://www.crunchbase.com/funding_round/notion-series-a--33062b7f"
+                ],
+                "valuation_source_note": "Valuation reported by TechCrunch based on sources familiar with the deal."
+            },
+            {
+                "round_type": "Series B",
+                "amount_usd": 50000000,
+                "date": "2020-04-01",
+                "valuation_pre_usd": 1950000000,
+                "valuation_post_usd": 2000000000,
+                "lead_investors": [
+                    "Index Ventures"
+                ],
+                "participating_investors": [
+                    "Existing Investors"
+                ],
+                "sources": [
+                    "https://www.nytimes.com/2020/04/01/technology/notion-collaboration-software-venture-capital.html",
+                    "https://techcrunch.com/2020/04/01/notion-raises-50-million-on-a-2-billion-valuation/"
+                ],
+                "valuation_source_note": "Valuation widely reported by major news outlets including The New York Times and TechCrunch."
+            },
+            {
+                "round_type": "Series C",
+                "amount_usd": 275000000,
+                "date": "2021-10-08",
+                "valuation_pre_usd": 9725000000,
+                "valuation_post_usd": 10000000000,
+                "lead_investors": [
+                    "Coatue",
+                    "Sequoia Capital"
+                ],
+                "participating_investors": [
+                    "Base10 Partners"
+                ],
+                "sources": [
+                    "https://techcrunch.com/2021/10/08/notion-is-now-valued-at-10-billion/",
+                    "https://www.forbes.com/sites/alexkonrad/2021/10/08/notion-raises-at-10-billion-valuation-from-sequoia-coatue/"
+                ],
+                "valuation_source_note": "Valuation announced as part of the funding round news."
+            }
+        ],
+        "current_valuation_usd": {
+            "value": 10000000000,
+            "as_of": "2021-10-08",
+            "basis": "Series C funding round. Note: Secondary market valuations in 2023-2024 have reportedly been lower, around $6.8B, reflecting broader tech market adjustments.",
+            "sources": [
+                "https://techcrunch.com/2021/10/08/notion-is-now-valued-at-10-billion/"
+            ]
+        },
+        "current_investors": [
+            {
+                "name": "Index Ventures",
+                "amount_usd": null,
+                "first_invest_date": "2020-04-01",
+                "rounds_participated": [
+                    "Series B"
+                ],
+                "notable": true
+            },
+            {
+                "name": "Sequoia Capital",
+                "amount_usd": null,
+                "first_invest_date": "2021-10-08",
+                "rounds_participated": [
+                    "Series C"
+                ],
+                "notable": true
+            },
+            {
+                "name": "Coatue",
+                "amount_usd": null,
+                "first_invest_date": "2021-10-08",
+                "rounds_participated": [
+                    "Series C"
+                ],
+                "notable": true
+            },
+            {
+                "name": "Base10 Partners",
+                "amount_usd": null,
+                "first_invest_date": "2021-10-08",
+                "rounds_participated": [
+                    "Series C"
+                ],
+                "notable": true
+            },
+            {
+                "name": "Felicis Ventures",
+                "amount_usd": null,
+                "first_invest_date": "2017-06-01",
+                "rounds_participated": [
+                    "Seed"
+                ],
+                "notable": true
+            },
+            {
+                "name": "First Round Capital",
+                "amount_usd": null,
+                "first_invest_date": "2017-06-01",
+                "rounds_participated": [
+                    "Seed"
+                ],
+                "notable": true
+            },
+            {
+                "name": "Elad Gil",
+                "amount_usd": null,
+                "first_invest_date": "2017-06-01",
+                "rounds_participated": [
+                    "Seed",
+                    "Series A"
+                ],
+                "notable": false
+            },
+            {
+                "name": "Ram Shriram",
+                "amount_usd": null,
+                "first_invest_date": "2017-06-01",
+                "rounds_participated": [
+                    "Seed",
+                    "Series A"
+                ],
+                "notable": false
+            }
+        ],
+        "past_investors_exited": [],
+        "notable_vc_investors": [
+            {
+                "name": "Sarah Cannon",
+                "firm": "Index Ventures",
+                "total_invested_usd": null,
+                "sources": [
+                    "https://www.indexventures.com/perspectives/our-investment-in-notion-the-all-in-one-workspace/"
+                ]
+            },
+            {
+                "name": "Mike Vernal",
+                "firm": "Sequoia Capital",
+                "total_invested_usd": null,
+                "sources": [
+                    "https://www.sequoiacap.com/article/notion-spotlight/"
+                ]
+            },
+            {
+                "name": "Caryn Marooney",
+                "firm": "Coatue",
+                "total_invested_usd": null,
+                "sources": [
+                    "https://www.forbes.com/sites/alexkonrad/2021/10/08/notion-raises-at-10-billion-valuation-from-sequoia-coatue/"
+                ]
+            }
+        ],
+        "sources": [
+            "https://www.crunchbase.com/organization/notion",
+            "https://pitchbook.com/profiles/company/64389-98",
+            "https://techcrunch.com/2021/10/08/notion-is-now-valued-at-10-billion/",
+            "https://www.nytimes.com/2020/04/01/technology/notion-collaboration-software-venture-capital.html",
+            "https://www.forbes.com/sites/alexkonrad/2021/10/08/notion-raises-at-10-billion-valuation-from-sequoia-coatue/"
+        ]
+    },
+    "sources": [
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH2XnNF6oyYcCDurv5ojckit5eRZwAZ1IY7HIfjL2HBD9VP3WWPxHXsgA3_ziYpwhT4UxinNr4g9eZdn_fQOpghMWXYNIjDZbBwXvv_bvGfR3yvN3_0Z1b3kTfgQ0dg21f1Tr0qlFyVU-NLmiFqOk18pAOgYdWnNw4cHcVvZtD6mMkPFqRAKOiDMg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF3KQu0fl_SaV8xrsN4lqogS30cfYWT3e-cPWEB1VlqZC98mnuck0uDwZRmTarP5wXcXJcFEzTh469Z0pDHuGXNZB2EuP6wuIKMQYfvXLNpXQ7G3D55ImOlU4B9FLVFYc7W9bihqisno5oF4dVyJQZYYnQWnrQy4LNMOk143d6TZOSJijcFdGI=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "competitiveintelligencealliance.io",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG67wm5cUjrESSYJX4s-EDGuR6FgvpffCu8bM33UOzJJHVPLebCcNGrLk7AjIqsLGBIdwgumk4qilBr13Lud96USajVu6UHr8_LcuW79TW6THZUQjIQutH2Pow1jpAgkPJ50R5HImUAvK_OqD8HABaqs9RtGmgEj23vems=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEIpj1czJCEREG7wmazf3D1GnCw389yHRgY22ItPd11eEz_nCRftMXYNE9RE30LsBlMdWD5pI7LjebTdCnj1CSmD6pVL_wj7JvwmoUa7dnrXv-jgWOaqreDAYCTPFo9PnzSNX5Wa1wznjUsPyuwYDc=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "reliantvalue.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQETNlutFfDg_NX0659tzzgeaQ58B0ouT3vxWYc-nCF90RDqZOxxnGWtSOaIHK2fI713cujcg6IGows831xbb0YrPrCyG7ElDnADDnuqkQZMnmLUWg_hf7NiF-fk2LhABNtP9yd7sMQTXr2n6lE=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "diversification.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF7yQP-7C7hb1sN-qjcYetIK3ObdcwEsNClZjQiTL2YPshaBwwei6YlpKKeM2FsJdGQ6B4qnF0H7DsnDR4wAhibEeFMbLlb9hXg-e4WnUwEMiG_or_OwNgGAKqqxLddWBjUj36DxC2BuexwXtj4CcsYrvoN6SRGymeD",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "startupstash.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHz_UrzHZwG4-s08bbxLtTVcJunf3R7mOg0fTRLRqmLPRNWG_Wucrv07CQwJ9IdT3MHrLw5U5rH4UIerDKPg1VMtly2pdcVMexkExpQmZckQOWNVw_BtmnB3Jwm37P_PfN1ObTgKQ0HtM0ddnvHaJG86CoYzkBlPjhC3bqkD1KjGcelPyrnMq2FVpirQ9SJEH4=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGX9XtfvGNykN1M5dcxbDtnH0sBoKr-_eWLn9JMDJWnsE3FNtwpsWETMjCkbqIN_7S-taL-qASOWCdWZEfrOZsdOW5HlVbRAPiZfMmM2br6frRJpa9wZHDnDdFxxHrbDh710ktHsIzyKHqs5zY3uFs7XEPbHvSUd8WwJElKHDJ7_cNIZuwrlrzQLycvswhgVUh3lnTjAKgMBI7GDcqkBeTzXQYG",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "cbiz.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFstKSePesLX1N9ga4EHEX0IliwDNG3A-ivbe0Bj1DuAlDj6wqkbj9PRZmXPSnmSwoYY6Dmphbmi3HfmpCvDe7TWzWbtsEuCmTQlLNstZ5hDeFXTR2ZuSy83lilAo10EvnLgZYr4DcyvDNj4ce4sZeuHtcy6EI8OzA93mb-RQaQlAPjIgLyfCfTcvwQxns=",
+            "type": "grounding",
+            "relevance": "high"
+        }
+    ],
+    "confidence": 70,
+    "duration": 75.702,
+    "completedAt": "2025-11-02T10:55:03.732Z",
+    "success": true
+}
+
+{
+    "startupId": "b7bda1be-28d8-4d39-9ab6-62fe8119aaa2",
+    "startupName": "Notion",
+    "section": "financial_health",
+    "data": {
+        "annual_revenue": {
+            "latest_year": "2024",
+            "value_usd": 400000000,
+            "currency": "USD",
+            "sources": [
+                "https://sacra.com/research/notion-revenue-valuation-users/",
+                "https://www.cbinsights.com/company/notion-labs/financials"
+            ],
+            "estimate": true,
+            "estimate_basis": "Based on financial news reports and market analysis for the private company. Some reports estimate 2024 revenue closer to $300 million."
+        },
+        "revenue_history": [
+            {
+                "year": "2022",
+                "value_usd": 67000000,
+                "sources": [
+                    "https://sacra.com/research/notion-revenue-valuation-users/"
+                ],
+                "estimate": true
+            },
+            {
+                "year": "2023",
+                "value_usd": 250000000,
+                "sources": [
+                    "https://sacra.com/research/notion-revenue-valuation-users/"
+                ],
+                "estimate": true
+            },
+            {
+                "year": "2024",
+                "value_usd": 400000000,
+                "sources": [
+                    "https://www.cbinsights.com/company/notion-labs/financials"
+                ],
+                "estimate": true
+            }
+        ],
+        "revenue_growth_rate_pct": {
+            "latest_year": "2024",
+            "value": 60,
+            "sources": [
+                "https://sacra.com/research/notion-revenue-valuation-users/"
+            ],
+            "estimate": true
+        },
+        "profitability": {
+            "status": "profitable",
+            "ebitda_usd": null,
+            "pat_usd": null,
+            "latest_year": "2024",
+            "sources": [
+                "https://www.forbes.com/sites/alexkonrad/2021/10/08/notion-raises-at-10-billion-valuation-in-new-funding-from-coatue-sequoia/"
+            ]
+        },
+        "key_metrics": {
+            "ARR_usd": {
+                "value": 400000000,
+                "as_of": "2024-03",
+                "sources": [
+                    "https://www.cbinsights.com/company/notion-labs/financials"
+                ]
+            },
+            "MRR_usd": {
+                "value": null,
+                "as_of": null,
+                "sources": []
+            },
+            "CAC_usd": {
+                "value": null,
+                "sources": []
+            },
+            "LTV_usd": {
+                "value": null,
+                "sources": []
+            }
+        },
+        "cash_runway_months": {
+            "value": null,
+            "as_of": null,
+            "sources": [],
+            "estimate": true
+        },
+        "burn_rate_monthly_usd": {
+            "value": null,
+            "as_of": null,
+            "sources": [],
+            "estimate": true
+        },
+        "chart_series": {
+            "years": [
+                "2022",
+                "2023",
+                "2024"
+            ],
+            "revenues_usd": [
+                67000000,
+                250000000,
+                400000000
+            ],
+            "growth_rates_pct": [
+                null,
+                273.1,
+                60
+            ]
+        },
+        "sources": [
+            "https://sacra.com/research/notion-revenue-valuation-users/",
+            "https://techcrunch.com/2021/10/08/notion-raises-275m-at-a-10b-valuation-as-it-takes-on-the-workplace-software-giants/",
+            "https://www.forbes.com/sites/alexkonrad/2021/10/08/notion-raises-at-10-billion-valuation-in-new-funding-from-coatue-sequoia/",
+            "https://www.cbinsights.com/company/notion-labs/financials",
+            "https://getlatka.com/companies/notion"
+        ]
+    },
+    "sources": [
+        {
+            "title": "contrary.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGPdQsxE6dJ0n-0kKOSPEa555VSfR3WK4KZVupIIc3YOxZWWNeWM3hytWuGjLyq88ZEHZ2BJGaHu3lIe_K2Wi6jbUNswHHAL60-MyfckG-8J1UYDdu6wZsl98ZSUkmbR4NUjvsabA--",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "bullet.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGLHPDodJ3H5xEumG1aDEVT_3NnnMUNp54S89g6ta7N1j3U9jYlOVS6OwyQU11kkeog5Vk4I3laBhmVmNywnjRRpjd37P8C3JCo5tRFdGKZqggek0ct1_QBTYbgfwiqeSpX21fF0JJ22lL32qryRJW3NswTW3WDpuMpFHvOzsZS7AHVS-nw38-ZQMPL",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "wikipedia.org",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEoxPV0tIRFrW0148HgCDlhZbGTZMdCC8Nd8THidK9rq6sxEitA9v0PSGqxJZEumBiK38gNqsuGqI9ncH08w6PGIoVbzBcpqsvKxJ0CKLMWYPUaOIPGrjbuEYHC0jn1vXrGCWCcukc35p89-P-l6GCgahlSnPyd7Q==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFm2-jW9Bn0XOq3e4IyHOMJMfWWsiAVDGwnLsev-AGVCp--cc1mXlYwQE3sHZVm2bovFy8VALLS8JDp9tupp6u7ZfOcu3-YReEIrEVrx-eqxLZWjzol6bYIHhTbooyQoiUnwJT1JyEMfbDihLCVjiL-cT_Zv-WfZqFukvNEEtQgYsLWtg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "taptwicedigital.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEUYwjx6Vyyf4jYZB7nLSSFkb4mt6PnadM-p-sL6Au6d7aZ0EvSRRbLCUkJEsT1QKewXGctDuUOJr0xbYDUA5VAeFehlY5mmEkgkR8H3qdNLlV8v6Y9NxhX6HlpNKbvfA6uNNA=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "texau.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHGXircH3sC4xqR9CiRMxUwsgke6sjpbDgkzmAo1wAjBPzkjPqtBkU9pNfh_QW4pGDdAvflMtydiB7Kz_yyHbwozqwPxiWjxg2iorX8lgPGZk6bj4z1D4PV9E7a6Wbb6wU=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE9V8MDZZGGQZlotelmNtax1It0T_-o7cF1GuUpJQ90Pa_PksaoSY3e-ePZ4t1xq_Vkjn94IOtNNje9i9pv2qrV9EEVzBtl5FfZiv7r6ISTvUEJLo3pX2BWwMthKVikgO8yzYq57Tk=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "sqmagazine.co.uk",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHxoG_cldRI91JVW6MVwy-Ga5wMboZxPoBCJzHcUKXcHQp3IGZbGaRRp6WY183hDx4zhYbG-X9yga9-aKhumlxeSPWmWuZhZTrRBeZEQ7HBdPdKmVIJVhaoG2JLNRhu2N-u_bFy9Js=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "startupbooted.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEUxhCoUOBIJqqykQUFAIpF0K3Co2AcfHqpTxEd7_EQr3ey7Ya7-o3guNWUU8j1xeFOkYma8F6rkqXIAAR9s_Sbr2WGEl0Ji4613h58TmBpnaomoPoqC7JL-0Gh7bQQ2aHmQcKrYXUINqw=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "salestools.io",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFHAn-g2sBUuo8KDhy5Ev_dB7o9t1bXzGYxh54VypMkrGGLrkiIN-gEzY0Ovt0MIqebpxYklKhgtHQAlFz5wHfP6GiSK-4t-lSuWyZbBZ3GdJBNn_1yWt4ZFS9moAh3PPskM0niqnBc5-_VB5anWhwuBg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE1CSMLV5ZhZlqXd1r0WUIs02ZY55Wv4Iurw84LJx84EImrCJ2lPyp3h5Y0qiaJe0wJr8cDrMcH64bSlqaAquTM-vHj-6yn9ZDUsFbmYSNYEKOHFhCP3d9wXIM9bmTuD8ePMhO0zpMLN-F6R8YBgN2HK5F33XUL33wF6fClir2bphirKruUOSKO_A==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "6sense.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEe_1irTtePfqtZu2lsW1WdwTmWEGjDAfz_4g8W7_F4g3FKXfxp0HnCWjm9vWyoEzCr4XCBljCQRqjJTufuigwwAtdkcEmMkwxuS5ZczXhMJvCazjW0G4lrCJG_pveiO3m-p8b_0eivIAuKtV0N9dEzYTfzFgWxo2C6JAHX0tQ9",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "gartner.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGBZkT65IshPlXca_eNzDQoPixJsGGa5GJZODsPEKnj5RfT2Osu-aFsH2Zlqm743UJc_WNvBozeIEl_7uhbENXA0ZTSCCorJhwHz77BFNMq91um95xF24fS5wVmJL_gmsvdf7BpclfdvS34ahAAZw7BMnfueMjuccLGQxl8FCZibyfzYeQDwV9gFUsGCfBLtGmzH8Fq3CQsCriN3bVcwT0rjlKpzuuctbSw",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "6sense.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGfuVnSweAKGt-qqOKToN0UyCS4oIP7WBgmp69qXHp6qyd_Ec4GmpsSH9FSbDIvkC7lCgjKWfgn5ZMc46L5092QVQ_iwQKMf7jvNEX1fplgiPngMZ4aqFd7bHJPFJHzV77fPEHFUyrB8CfaO6fe0Gq3",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHCOhNOv5rwVNehTDrcYBYpsBAsqJHI4Dpvilzj1mzgbHRw8AwuRotxbRYK4n6Z9LqsGsRqI2vMhjK2EaiIWhsp3nUrg1CoTXQflhrK2CkxYuZ8QWqkrVQEoifnfQMXRfUW1RrdZeJHaOm_uRi0zaNsTLBNvlWN9w3aiU2P-YMAgzLhoepnaCU=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "howtheygrow.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQESAsXBRPW6EQ3nZf-El2x88UP8DwLZKBg3xEe3JZbqBM8fBlqDKqjimV4IfO_GoTv09VAaBWNU2swd8Rk0WrSKwE6YeR7IKqAhRAc5FnUTAm7nk_6Vrj_b37Lcgo1xtVjEJaet-tVnNA==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "nogood.io",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFaZozvlX_IwmrIXizxT7bOmyTND2EmetpcXvUiir5QCVRN_ZadTMLqLN4ORZnfgl6srRZvEg2zYGWSbrXWh1cWESFtPu9b7_qSaracYGlBxrpx1_VVFCQfqCse1MMVgPXXbJyTWRm2UUs=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "theorg.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEenYclWzzcRAtAyiyFRA6WpUfDqmkWG-UuYhUL2Aa1WF_Rk8-BkqFaznM4PeyNsEKZ816zvVAMIdqp8hrlliAW0J1nCWD4nZPseK2F-gInC9KQ85B8T9n33hT8iSIPPOoG1pLozd73zZkUl-QrLQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "craft.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGrmRbOqHIoGF4VnfyzFyNK1rQ8AFdFIL158ILX-Rd-hkDl9EkBU5PIjslfIM_0X1o5gSbgCNxy8km7SHcl3UJE37sr6EllMRiwHWrcLx2PQYJr_SjdePJdDvzyawKyvp9dig==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH83k9d2IADHLUyc_PLUhqWDVvZq4kGPI4PEQN_CVzz-atUzgAJWTcFSVFP38fHcOkATCjQ8P2md-1rMgIWyMsANQnTLlC4iFA5HGDf275bjCPA9zRIVOtn3jEFkGD8i1td2IEfyNZBdNE=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "cybernewscentre.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH0ijteff16wlRAdMgkoZjSOBLgvWblfZtKfNTc-ur1EiCrfvMQo6QTbIgv3Qnc1QgS9RSBpmp9M2bdz9HYD7ohnJnd3avyy_TLZdXJNwIlsmKc4E7bYTSsbmyy5iMq7iDiRq_lbnqTpgPUAatMmv7zvG4Ba6_P_2Pb2MmK4M_B_Bfw5n0woNUr-mcLFu62SDKKmTsSTgYGrajGcJtQK1EohyNlD7cX0W4LbeEd",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notionavenue.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHCF4XMZIGQilDBxgK0h9B55I8EY0ACvcbTMHFkZiznGJCsmVlLpCp_LjAtuiZocgVO2vOM7rrZw2CYU6TFxeXPz1NhIu4SUrLN_M35Dgbm94aisWbcMJVtX2ChiCeKQKP-I4sZkuAdZw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFA9OrniNKf4tjx6-KA4E8Db1J6UnUXb7Zg5hsq4ZeKARCgoMKWYA2oy25c9Ru5iDQ_u79gWFEoBqiuvuhHHtKROqupKPWqDx1jKIZ3pyP_Yqb5GJr_0ek7r2Q=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "simple.ink",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH9_2sUUv0KZKN1aPQSjsqfmmfHtXVWNQ-mEOw-4632HHhjNUyuqCtMCwUL7y2ZphNMAc319Y1gfi6uR0DdkSNoYfaQ-yWt4hxBdWR87ilr8o-31jBjSg9QRCPZE3oHoB9WBCL-qkccpDoIUDPFugXsctsasfnwm5QihfEhU-SjKzVfrUy4m7IuYcZRNK1qj6a-jKQvCWDj7x4y_VNxS-AaxQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "youtube.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHKGmmNyYVBkX4t4b4vKCGsEA7PcBfJo3m0na-qo5639US0FN9gUNJ3z49jyi-Chz9xI3hjMT_LRcvchSyF-DkFeR7t85MMtPMCi1f3HvCPzXLXvs3tXhsiWb4Y6IPLTeNFWUXvhtg=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHGEOODP4mD05HUHKtjZCe_hdM8WgRIukQlUQTsw3TCiSWSXp_sPTRlmwCi27etfelQHkFsDmV8HLu2fkJupynzFFkYKVM3FHf8cFRyzylAnIGRGLa-wm4X8U4NSEb_ua7gysm0-t4IN6u9l8zKVx3BdYM=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "simple.ink",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFYxe2GSCND30TXfgyEGc5dSvVW0DC6uyUeZtzX9huq6eFwDoWbpHxcuGAP82GBqDm3oVeXiSNNMAh5oz_nqJxpTMwIqcIJGjlzssm-DR30SLjhsGqQbOj9olO8yRUJc2dQaso=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "arr.club",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF8v_tjRw7u-AwTDr5wfIbG7s2FIlm35STPg13haa1O6Yi6U_Wx6VEc0HSKg6qGAz3805_ctPL_6tDVxhJOdYpEhI3HsvMs5DcF6h38JwU0iEo54tzslURE_dd7R1eRyM8JUYtCSvw_MKrXdA==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "electroiq.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHWvoS8XdjMmqovbCRz-JYCAsyJshwpsDi7KbH0OThH15tAqqmvBB0r7WNHIubiVbAQJeB_AOqZAIUJMYcwdsDnO-5CJTSOzB73q48qmzTWYKibJK-mLctjT02co50gLBN81gnP6qRm03Y=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "reddit.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGH9tIpFPbCy6DUiB_lqLi4diB4VSE-zEcNGfWRnK5-DM_1LXQpOpqIX5a_OQjKklwdWuUmdA6Pnjv5AtcJG9YhxJvPChAPX9Jb82Fke1UvVi3xi7x_M5TdxF5ZaxEYvHfS2eube8tX5jz-bu21oqM3aB8ykI_Orde4RaRCZpZ1-k1Ph9Z1FtTc8UPvgqU-EsGHaViQNjwc41QHypg=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "medium.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHL-pgBAoeZUfONyXuKfuu2heQ94KfJGpCzaUg4Q5eJBQy7rsTj5ncSNpJ3NAZuASd_A_x5XP841agjIMOZG9NThGSE7aCMebKR0yMPTv2zAfuMZ9G-41tLeE-6wmMaG2rLyHfj1Do6MHD728RY8u99ifJA1HdejPLtIMV80DkO8U3ywkrZhSxnAH_o",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFZdIF0O-BTM4KCYOD9dBp07WUz-GheMiSJ51H-6M3SvYaBPukBtPKgfCp5M1rY6TaUNjaE5ZEOxxgGUtfHiloLxjSARKRk1Z2wLGB9iENGSjDCFe8FXvZNUJl9aGv4BhS_3zN7e2eeAMJ1KvhNvPx7lw==",
+            "type": "grounding",
+            "relevance": "high"
+        }
+    ],
+    "confidence": 70,
+    "duration": 62.056,
+    "completedAt": "2025-11-02T10:54:50.087Z",
+    "success": true
+}
+
+{
+    "startupId": "b7bda1be-28d8-4d39-9ab6-62fe8119aaa2",
+    "startupName": "Notion",
+    "section": "market_position",
+    "data": {
+        "TAM_usd": {
+            "value": 39400000000,
+            "year": "2023",
+            "sources": [
+                "https://www.grandviewresearch.com/industry-analysis/collaboration-tools-market-report"
+            ]
+        },
+        "SAM_usd": null,
+        "SOM_usd": 400000000,
+        "market_share_pct": {
+            "value": 56.92,
+            "as_of": "2025",
+            "sources": [
+                "https://6sense.com/tech/collaborative-workspace/notion-market-share"
+            ]
+        },
+        "market_ranking": {
+            "rank": null,
+            "basis": "Leader in the 'all-in-one workspace' category, competing with specialized tools in project management, note-taking, and enterprise suites.",
+            "source": "https://techcrunch.com/2021/10/08/notion-raises-275m-at-a-10b-valuation-as-the-all-in-one-workspace-race-heats-up/"
+        },
+        "competitive_positioning": "Notion positions itself as the ultimate all-in-one, customizable workspace, integrating notes, tasks, wikis, and databases. It leverages a strong community and AI features to differentiate from siloed competitors like Evernote, Trello, and enterprise suites.",
+        "competitive_advantages": [
+            "Unmatched versatility and customization via a modular, no-code interface",
+            "Consolidation of multiple tools (docs, tasks, wikis) into a single 'all-in-one' platform",
+            "Strong community-led growth model driving organic adoption and template sharing",
+            "Integrated AI capabilities for content creation, summarization, and automation"
+        ],
+        "market_trends": [
+            "Growing demand for consolidated, all-in-one productivity platforms to reduce tool sprawl",
+            "Integration of generative AI into workflows to enhance productivity",
+            "Rise of community-led growth models for software adoption",
+            "Increasing need for flexible, no-code tools that empower non-technical users"
+        ],
+        "sources": [
+            "https://www.grandviewresearch.com/industry-analysis/collaboration-tools-market-report",
+            "https://techcrunch.com/2021/10/08/notion-raises-275m-at-a-10b-valuation-as-the-all-in-one-workspace-race-heats-up/",
+            "https://6sense.com/tech/collaborative-workspace/notion-market-share",
+            "https://getlatka.com/companies/notion"
+        ]
+    },
+    "sources": [
+        {
+            "title": "sqmagazine.co.uk",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEtsWRloTd7ofgE6oR9LRVotbeD0UZxq8u3XiQMk3HSLwO3xiWAOU0haRxYVrY_jHFi42nvehHG_e41qCLkuV3DiHzSKfZDfmbMUaoVQdH6CrumllG_Da3KBAxsJJ3oi69KROE_Llo=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "texau.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGy7xifm7Ve1fYW3lV8Eo9I0Km4y6jtRnZiQXySDmVL-iWWPdVJ8ucv6RfWzk3YNolySmPBiQSgcAs_t3N1VLyHlDs63vSi1GXVnIWUIua4M7RySClMKEvvudvdV3Wc7mU=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFw4GNd-hpPOD1UWj16CFrI4PVxy2mxH480DPlL_B1fBiKvyBrDLflKjp0JyJMXkPBIpR2FQ0mo9TjZCa4duPdzcpws3MBu4rYWt-Oy-z2ceBi6C6hH16pIdfLSg0hM7_jBRaCglxxUj396F_BLdqA33dSFChhoFQD4oSWt9p80a9jh2Ptb7IM_iw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "founderoo.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFwxH9nwd_689JHEccTgYFWbP1bi7QCGmfVyR3LVigD5pQ6P64x5x9V3v0yeo21MlNe2VnzNlrz1ejmQwHTUJPaXu55g8eOuyEPO9OkkaQ7b9lztsXxWmh2PfIJXZlYCvWhq5_cLt3hHaSNkCuXX0s0JNhWFTFyJha-",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "taptwicedigital.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFHmeY8JPC9dW72PTT84ykpMuDeeVC3e6gmppq-RAH9JNs9QonH2LA51j_5h0MO23kjAqWpU1LNjMi6mL9msR4PKiBGwx8iQ_E_77BIzhNwyZ5T6zF02NHAxvqmRSM-TvUYXm0=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEruRx9qghnzMg0fJY1zN8w3OieOXLsMJ69H1z4d155CnVWAv1IQ-HFezl0t4SovLqmQZmJostrUiF5ZY8sO8lFk3sPs2yLK4NQgYPVaG7FVY5Vl3pJ4pTNMZo=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "youtube.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEWceFPzexvZlurkDbJv6tTSIS70pgTI7x-0P3lf3D79t6pPoBwCgjxqW5yq0BMWas6rP5bMcC11VG88FJ_QA17gkx4MDIDP3gidFLVu6qAztHF374gCubtaEDpazDBg_pXpdB_rqo=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "cybernewscentre.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHyFWXVWbL6WSlKtyQbpF4kEqbgHa2kFnbNsdx0E35VKGNiWZmQFTUMkullNBIN_BBcwYQaRDePjP156cnVQ9lBVNT9Ds0QPBZbNT8pWSYnnj1yqJQDXlV8O2KbWJ940uFH2_zcTMkHnmTR_YD09LO9Q5qK3LnDkqbx4Lzx6jOgf8F5ulrnqfbn2OMA-YPhsYKrY2wDoMKcbrUhZmglHcVY3eFyhX9nzlixl8rj",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "tracxn.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEC3sdVnfk_B7f6H4U0wUzDdwvcLX5j40hOLuNe15A_C401qrE8Phf2oU-7Ti6LyXzJZSKcIeqt9u7lB7utK6c0LP0nQjYgZqk1u8bO5B_ccnMTCsEld1Teg3um1s0wIedz3mwEr7x5NR-UJtRW5y_MecVm23ODFYGWH1gtq1cG9JWLPJVPK8bUpW0HNBLtDgQ8se3MLq9NnqtQAGm2JrhR3txfuA==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "equitybee.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH9_fxL0B_q-q_0TjhSUgSsiBixJCzUO72tC0Z_XxL6WDmNNomcZk9gxc_afIbcxW2rYkMl1Ig6OM5kwELAtUA7WB9CUiCvjxbfWKTJ9CvssPwdPQ4jSKK0vsDphBBxYvAtJHDpFIx0ibCMQx7nFmBj2w==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "osum.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFY2IOgs6BR6gnba0MLG43w9W_EEbsDZc9k7MEibxjS9H22XXm2THJyQnpZZ_3z00y23I4P2CAv8Qqk7o87BAd5fKCliS9yZkMHMvfDIxXON0Vn_m8rqwnSSisoaB3QbXwJucs56goMRMyU8wm6",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "6sense.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH6pkYTPTNzQD_VIwRMb7qOyg_wIAoJJalgJJjQZ4r-43BuojWXGkXOp7OAooaK7t0KYFqvW71eJxnNwkfJ-A-xLIMAHCtRJIbhPJ9iugWngwQUcLo6v3Os3VGsWqLfJhDk_S1itoMM6IuvzV6bwdNbs9oagk8xfmidfZgKuboe",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "aithor.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGfCeapNaMrZNX9tGDF_fFZs6oxhxfjOassCbXbuYccJllObGvw7ZqTUa-kNzn2yPCUGPlz9sgGnj3nXyNrDkz-za_1T55Dg6zZDbiU61XrovCAnnM676wdIyIGiGLTtp0PaVtcioIYRRoxYsy8viAcxnQMxaE9rv8xnbAavl_1I_RlpWaiiVc10AIC",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "reddit.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGDQ_ISWTx5LGpdiYd02c1mxo9VK-IJqkDixzru2Uylt7E9h01o5H6IXqylkI8mt-3kyEwWM_1usqEfoqXMdhZTQXUO3CG6wAxrotSnf14GODBUdhDx-prSqUEhpDXzlGvTWZDoD9iZyBJzPBButJMtv8KfYUoIW51vAfTtztIB1cxyDs7gNfVFaAlGtqa7keAo4Wzm",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "startupstash.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFgoKRGL7BmZVjqzcyY28lp37ZNw6HODaEaIWrETUCRfuizxcpvpQAjKIYNNVI4sImq3XzBolkkf65siFZRZyDeCH5ZgRjBrouLpJQ9JeGsbMZc4PagiUlLiVSYTRpwwEUN4JcY_5rIuNljj9cr9naCs8bULqny3Q82jCOp1-Jd1N1X-XyjnKbI-vUaF8yDOes=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "sequoiacap.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE9IKlWAxPBespn9G_yrJae4lokr8L6xYKI3byHGYrmpk1H6R4opjs65KgGp5xmZD-I-0dFvqs7wXzaxw0aj5i24_qAgd8UfZK4iovSTkeijL3mLSF1VQSufLiKvyrXqVmupvvYpg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "polymerhq.io",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGg178XHcPgqCVxhQCCklFe7GjzQTRiJ0O6EykOt7dRf3wY5DTM8cYq7Uq16bpWypbmalluazWNo3slmmQQBRKRl_p27H9_oW2gYtyF9Qc7gdo3lJlqrmsmJniPhfe3HBQZB_hWBqEgHeQNZg27MiYgFVc5cHa4boIbYFSkvW0UyJZP64sSv_GUwrh0bBy9w9K8wHT5WznsBX2jX6Hv",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "akashbajwa.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFEg01bPkOPRfPJJnvjgaZbypQNU99p1PWMdehqyZswHEhtOIUdLf31gGppoBikF2dzEh8cXzCMK2xkzKn5x-Adt_3w2kXu_skW7wyb1S7NAKf1MWfvnTw3z7TJoP83cgnbrFiAh6WYLIO-FcU7jV_Gp2GVI4zoipuoB1XBahhSRrQ=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "every.to",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFikak4s6-UOIbWAq85cRHvilQilmpztkIu7A7opOH8Wab7-pJ9EXwx2WmXQFaL5TsIjOTLC2V8KDB-cKFyoUXRGlXtd93J0xaBJA_cMKbx-K1-f7kgoo3l8Mkddh-sP5xuKPJXsX2kpi-IPKGoBInKrenMWLQ6KoauV4m6qi2MT97K9CWyhs3Sw7J6go0fb4O7C8k=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGeKiouwVahU7OEbGutQwAPkQ-EkTUe9ocQzBl8deMl9C7OU59jtMNbf3e6CYZJin_SPOwWyg4_t_hPgw6QAoKcgGOL8bzZTbcM3a8Lbox9HGx5RCnDrJN2nqrVtQ04f3Ltq5NKxGllTZzNnQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "fueler.io",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGhuyuaIN--p5rBH89KgQobOgq1U98dV6igjGUCxhTyUnF-waO0XQqAkTs5vat0avrfrOomJlDSmJcq6tyDiP4_wAvAzsIrtVbpaHshb3i4pDvxZfn8ucu2JkHSCdNU68mQrBb7rPwVmEN7peY3QqSsu29fiC2gCFAKOfIVF6FqUKpW",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "simple.ink",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFMo4ZRQTdKM8lZYcXZwQHdAYDgmDx-U6_f3OHf39Ue1_khfOtzmUy1hEFsjR6Th4Omf24GeAeyj-0SrUo6QFugyyz6hT3cz2mc9CVooTVNtx4DQDTS6DFhVldhsz736gcFORo=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGAAHysLwcnLattrNymoFWV2ReS-wPtojEPzHp9JEawgAWuOHJl8f6wYrmU-MBJUgq5XPrCENp_n1f6iOSc5hFQft-CWGbB7E2tpEQLRJ18QUFRp_zxWs0M5Yuf4SoJ5VAxX6eNCqCt71o=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "substack.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFVS2iqRE2ZyIprUfeG-3oDVpPCl-k_qtw1R-SpTdiqyTJ47BBQYjVgR7a18Ozd7MFH68562L7rEDl6m5uPbluuckQedQNZUlDzN-FWWVd24r8xS5m5RVmOHl3jY_sjG3Bl42AG5tcRsGqrN2KiYG23H3rezdDYGlTO33MeaHo0bl6I-GvQXQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "reddit.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGot6s8dO7u1DffPLZNvVnvDRhqw3AxsTacSAdxDCB-uB3jzskuGzDQDMlczd5zkKZlVdVmU0mT4KXYsMI1PqnuEUVjR-QHz6DzjD2y1kD_MS589g26MLX--onWUBrpLLZ98br6CQIOwJloFXMSE1gVnnbrUZtxJy_4GRk2PuJEHcH6Sle8YZ_Ef48xF-TChLJLMBv0S8GouszD6vg=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notionmastery.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHTgpf4cr6SMzIQz0Embs-Wcy1b30quI7iR9N40uKhEEsK27rnEXmFdFUbX6CAphQv49HSnuitbmCpaixwmi6u1dEgeIdWfmPvAMYkTn8v-R1l_Z64pmPrtSeZizbqnD5_rynf8aMfaa9F51DGOaZIAPlL-u0Qh636T8pxFfQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "backuplabs.io",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEV_UOICvANDRbvrohtImoGTRvIbQwHS4_cbt4RyTuZyS5X1CNK85ze41wVgjKtajTrXPZhHKG0sg0rQBEE0sJ_CC4Hs8sYObFyZy5Z_X6LhK4i6rSEWweUdh-w8-epWpOLyVQ8s9YYooABknZiYD9nOR7iLca_AodWLoyW",
+            "type": "grounding",
+            "relevance": "high"
+        }
+    ],
+    "confidence": 70,
+    "duration": 68.621,
+    "completedAt": "2025-11-02T10:55:22.090Z",
+    "success": true
+}
+
+{
+    "startupId": "b7bda1be-28d8-4d39-9ab6-62fe8119aaa2",
+    "startupName": "Notion",
+    "section": "competitor_analysis",
+    "data": {
+        "top_competitors": [
+            {
+                "name": "Coda",
+                "funding_usd": 240000000,
+                "market_share_pct": null,
+                "strengths": [
+                    "Powerful formulas and databases with an emphasis on app-like functionality ('docs as apps').",
+                    "Strong integration capabilities through 'Packs'.",
+                    "Cost-effective pricing model for teams with few creators ('Doc Makers')."
+                ],
+                "weaknesses": [
+                    "Can have a steeper learning curve for advanced features.",
+                    "Less focused on aesthetics and simple note-taking compared to Notion."
+                ],
+                "source": [
+                    "https://coda.io/",
+                    "https://zapier.com/blog/coda-vs-notion/"
+                ]
+            },
+            {
+                "name": "Airtable",
+                "funding_usd": 1360000000,
+                "market_share_pct": null,
+                "strengths": [
+                    "Superior relational database capabilities for managing structured data.",
+                    "Advanced automation and integration features.",
+                    "Highly flexible for building custom applications and complex workflows."
+                ],
+                "weaknesses": [
+                    "Significantly higher cost per user.",
+                    "Higher learning curve, functions more like a spreadsheet/database hybrid than a document editor.",
+                    "Less suited for free-form text, wikis, and simple note-taking."
+                ],
+                "source": [
+                    "https://www.airtable.com/",
+                    "https://www.forbes.com/advisor/business/software/airtable-vs-notion/"
+                ]
+            },
+            {
+                "name": "ClickUp",
+                "funding_usd": 537500000,
+                "market_share_pct": null,
+                "strengths": [
+                    "Comprehensive, all-in-one project management feature set including time tracking, goals, and whiteboards.",
+                    "Competitive pricing with a robust free tier.",
+                    "Highly customizable views for tasks and projects (List, Board, Calendar, Gantt)."
+                ],
+                "weaknesses": [
+                    "The vast number of features can be overwhelming and lead to a cluttered UI.",
+                    "Can feel less polished and slower than more focused applications.",
+                    "Document and note-taking features are less central to the experience than in Notion."
+                ],
+                "source": [
+                    "https://clickup.com/",
+                    "https://www.pcmag.com/reviews/clickup"
+                ]
+            },
+            {
+                "name": "Asana",
+                "funding_usd": null,
+                "market_share_pct": null,
+                "strengths": [
+                    "Enterprise-grade project and portfolio management.",
+                    "Excellent for tracking complex projects with dependencies and timelines.",
+                    "Strong performance and reliability with large datasets."
+                ],
+                "weaknesses": [
+                    "Lacks the flexible, document-centric approach of Notion.",
+                    "Not designed for knowledge management, wikis, or personal note-taking.",
+                    "Can be expensive for smaller teams."
+                ],
+                "source": [
+                    "https://asana.com/",
+                    "https://www.forbes.com/advisor/business/software/asana-vs-notion/"
+                ]
+            },
+            {
+                "name": "Microsoft Loop",
+                "funding_usd": null,
+                "market_share_pct": null,
+                "strengths": [
+                    "Deep integration with the Microsoft 365 ecosystem (Teams, Outlook, Office).",
+                    "Portable 'Loop components' can be edited live across different Microsoft apps.",
+                    "Backed by Microsoft, ensuring strong enterprise support and security."
+                ],
+                "weaknesses": [
+                    "Relatively new product with a less mature feature set.",
+                    "Value is significantly diminished for teams not invested in the Microsoft ecosystem.",
+                    "Lacks the extensive template library and community of Notion."
+                ],
+                "source": [
+                    "https://loop.microsoft.com/",
+                    "https://www.theverge.com/23650712/microsoft-loop-notion-google-docs-hands-on"
+                ]
+            }
+        ],
+        "feature_pricing_comparison": [
+            {
+                "competitor": "Coda",
+                "feature_diff": "Coda focuses on turning docs into apps with powerful formulas and 'Packs' for integrations. Notion is a more flexible, block-based canvas for notes, wikis, and simpler databases.",
+                "pricing": "Coda's pricing is based on 'Doc Makers' (starting ~$10/mo), which can be cheaper for teams with many viewers. Notion's per-user pricing (starting ~$8/mo) is more traditional.",
+                "source": [
+                    "https://coda.io/pricing",
+                    "https://www.notion.so/pricing"
+                ]
+            },
+            {
+                "competitor": "ClickUp",
+                "feature_diff": "ClickUp is a project management powerhouse with built-in time tracking, goals, and diverse task views. Notion is stronger as a knowledge base and collaborative document editor.",
+                "pricing": "ClickUp generally offers more features at lower price points (starting ~$7/user/mo) compared to Notion's paid plans, presenting a strong value for PM-focused teams.",
+                "source": [
+                    "https://clickup.com/pricing",
+                    "https://www.notion.so/pricing"
+                ]
+            },
+            {
+                "competitor": "Airtable",
+                "feature_diff": "Airtable is a powerful relational database with advanced automation, best for structured data. Notion's databases are simpler and integrated directly within documents.",
+                "pricing": "Airtable is significantly more expensive (Team plan ~$20/seat/mo), reflecting its focus on data-heavy applications and enterprise workflows.",
+                "source": [
+                    "https://airtable.com/pricing",
+                    "https://www.notion.so/pricing"
+                ]
+            }
+        ],
+        "startup_strengths": [
+            "Highly flexible and customizable 'all-in-one' workspace.",
+            "Strong brand loyalty driven by a product-led and community-led growth strategy.",
+            "Successful freemium model that attracts a massive user base (100M+).",
+            "Rapid innovation, particularly in integrating AI features.",
+            "Versatile platform appealing to individuals, startups, and large enterprises."
+        ],
+        "startup_weaknesses": [
+            "Intense competition from both large tech companies (Microsoft, Google) and specialized tools.",
+            "The platform's complexity can present a steep learning curve for new users.",
+            "Performance issues can arise with very large databases and complex pages.",
+            "Reliance on an internet connection, with offline mode being a recent and still-maturing feature."
+        ],
+        "overall_standing": "Notion is a dominant player in the collaborative workspace market, valued at $10B. Its key advantage is its unparalleled flexibility. However, it faces significant threats from specialized PM tools and deeply integrated ecosystem competitors like Microsoft Loop.",
+        "sources": [
+            "https://www.cbinsights.com/company/notion",
+            "https://www.forbes.com/advisor/business/software/notion-competitors/",
+            "https://getlatka.com/companies/notion",
+            "https://zapier.com/blog/notion-alternatives/"
+        ]
+    },
+    "sources": [
+        {
+            "title": "wikipedia.org",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE_Hoh0E6lSE_m5Vyco2VC-jxG2v8nVcdBssByUwUkfCMGhwz3SOiISPSX1OEHPpvKyofgSvIGR-v4IM8kzsmeYTDQaZ1MqoMB1zUNbWw4ybVKP2Zhl6atH_7h3evcpDE1Z-k3RuGEADaGIdm3o5t9yKTRAWAZIMg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEX5Z29ts3KJk1Q-mopQtH1Gk1ZRwL_msYfy-8hzAXO7WoQqkLAccedrItloxQ0Zc0xaylD6A4uO28JaZBNhpSLlN3Yu81Ni6m6OqdNLpNk6kgxjJzcJtHDxbS_yCdqAF9Bg5IWTBzRLSbpkCn6VobqSXL9flpZxbld3ucgvSBtsRqxWg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "productcoalition.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFmlo5FoFgHB-OTH1sn-6amtwVf7EYNPfhGiYPqFcLpkutUsbBArWr8rsPBTysRptkroSaXo67W_iFr1rGn2Mg3M2BTuoeEdLxXVIJaBB1r-MJlhw1EytVJ_0su9cKfRHJhpVayOxsbV9vU6F2rS5_KmYyXsCfRwO6ifWyfwwL2CErN4A==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "bullet.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHyQRAZ_XZbxJoPVp-SnLMOpK6M-kls7R9smUCVSd_ng5nUPMhOyNnV4BQPJ5Z2mCmicYxSgx-xrUDOrzIaIav-Um-VEw120a39pgzrcrBeNzz5fuztZA5Q00Rgy3X1BY1PJTiTEQO4CEOsapIHPPnn3g-_1L3POfELj-xRj7OZQOAC4mC6qzFCAJjr",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHRrmYmiFyxAJIqSRtFwwwIOqoF8KAp7osqXtYs8OzY7fJrvnlsoRAXyqTh_g-Pz1G8hFdO9xbW1C--J5qzIFQNfF36ypmf1iqBRn6ZtSfGK5TQbJvipBqZVZf5uIrqjwvXwdlwx44YDjPg4Y1PcSOp7IHxMsjHdifOG0r0LIrwH3NoXf7Cv4PTEA==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "tracxn.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGSuKQ0tBm1-ycQ0TjFtuZRbExSEXLFHUU0_bq1i33TajGCGC53IVkUntoIvnRDOxJEBuw-Aco1XolXbJ9F75g39zvpQRP19oNfpXYTktQsunVeKiyaSphgIGtOO6yWZj4D1ZJWSLeQLLe0XnmyYD4txFSUYNdE9WgVZRFZam2aoRStnsFNKiGMJTJgIQ0JXEU__pLOrm0mEV6nn4BsQEedhhjsSg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "feather.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE6-jcc2B37VtH7iMxCQPxoKYU2-s0iBum7SbaCQIRbJGZb80VdTgX5FQq3Eib3zkDQwx9jy1c9_eqhE1JVWlfAFYaPHohLl4L7DDqUlHoNxJKG5C-pVOg9Nhe26heKPf9ydGI=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "tracxn.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH1ajXcHLXDzFom706UeKIYNMYTxdXpsdwmmbZq0koPhMZo48P7nlN04qXGpMWgNHm89mhMnq39VEO42fo84A5mcqPVIz1AYf5TnvI_eELkmCSrYmaZopsUwzQK6BzOqxzloxM5Or_m99nwNtm3A4x6GLJqKvgBpDByk8e94AEO1I_xwaB9DsYcTaDLNa7ijGmU-ZKQEJhIfAb0WceoViBs9RRYng==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "texau.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGgok5fK-DvQuaNkIbZSJ57hrhkWjEgQ14X12LZv4vKYFtryWtvRn5VB0VB0J-8KlMsyswa6j7lJEaAijHWhpl8snCaakIg8K-HcHF265y9mrg9PPF0FT8EmO1Geotj8FI=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE4gxsFfzADdqVWaLXRQG-68jnnu-_sh-vtzUZIalMG2aIvwtwu6pPhq0ltL1U7Kmby6BwXOSZDNTqzUhhe_kBNMrNS-bkfwNNRpbQGxU_B25lPZCDapGbJKZ-gWk-twhGRAC7zLgM=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "6sense.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGy14dhfrq4ZBkHJ34JU1nU2t-azlxfZvfvtnucrxD0NPNZ9SZ8OczMUIY_tD9M4elqmwHsgxhXPhuy3JF292MtnW5txWv7JJwI6N0JM5ZjaWOUt_vcUFg0vvWqLWYLuxwt_oThrKhqMYZgd34LBV-XdguSpV5AIzWryNsmbhJI",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "zapier.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF2hgASAGholCkZGe9zeLDbbr3Dli2zCS9WVxcZSwocm8j1kWIRfl7hCyWTKpLjYJG44ebKlm1u7QLdYP6JEkpvxvLYdQnAEu1N0bIrJwlDadVzT9uqQhvgE3_dh7OQm6q6o-9UKW4Nx1sYeKQ=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "slite.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGAS6BWrJBO9NUn6gsty-kY_ZloNCpCDteTPmRVXVNwDGtiWyQohEzw7CBzThe6baqhJsOzIHqHpMdOX0PxEc7e60q6HMYymX3PHXIooXMWMOANYZkCFs4UjeYpH8LosENi8k8vAV0XJbxaSfo7Ng==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "gartner.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQElzmMrhBJhmq2o_VxaKKtdRK2W-w7uo1zljNJl37SkcbPkiEJcaKJ4B4jEJfkels5xV4yLHZtagVuUwN76IKUHiqNlJJNXWUNmPgp0R6syx52vAs0O9eU__crQlClaU0HVouNBZeoiretIhrKjhlHy_GzU_ursKZXur0J0xK2yuNW15DZg_GsxcXDqAZY0TmSxr12gJpeR6mH-pwyBR4YcrntIHQC1dbvl",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "nuclino.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEBnUp2kmHK8N8fSJKxKO_EkR8NDSTxc9BAWQERzgz9qqhRJq9RA9x3uEOtdCbNfU4SD5NKkos5mPfUuSikr88xYgMHem3R-PcBE3iowdezM4Z7RWN4DvXsEMooP_yTI8R6igjIyyP-M06_V7iOquxxGwFy",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "medium.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHapTdJGuEGAPti0UA5hZ5EuiO1FNG0J1I117JlzsKk-_aTjU_BwShqCuydlPOMSX9y0MBAHIRxImWagpNMfrak1nijhrVxmjmDyNrsHxYvyjcS797BpAlC-JnyU6QfS7hJebh_DotkUfaDSXwcEmFtE48C5axu5IjCAPPC",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH3-5DvCkYZUPms-tEeLy4CIczjgVXzkoKPYLfP_qZEhDZxaW9ygxttJfeyoHlnEzvzEdeqcjN_LHyqWnPqSSXPN-_Am0I4t1TIO5fdbTINou-M7cP7D7A=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "craft.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFBsyV6ItkgBXJi7YMBvtSBjyft5uG9Omn_0xEnorSLhNiRQpsARbR6DsYYJzoRrB-_Ro3-dh-1oo_MpNxkmupKFz92NcEyuGJZbUaaibQKnGX0WFYYZKVLxfCwuBr1Nl8iow==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEmoSGhxRZvWHKEJRWSJ-utPltksFY0P_O68VGjwGfEe0sXL05rEa3WOPNhOQKBIMEZ9zc6cauNNEbqYfDokNnhEzBtXpdFB6ZoATgGB210mltc1ND_xELeYEKOx3J3Cvn0jYqCzEbVr_U=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "theorg.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHxjTIkyuTeA16iSVFZ7mRhcHal66UpLEX8KOyFMDd6XlutSimziQkXKhRgZ35LfZlmRvZl0V5QomccHW-a22jwYC8-7pZ0sVJL-IWdEkbKdfD5l3sWKeXhNqEZ16mj-6ZSwiM2DVZTzGbnDKphiw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHaYiqPN_dxR-OUtQ74qoQaTrPwcrqkqJiEA1Gd5AaPGp-AHtZFDfrrbkSm5nx0g2r5VRvrslbjSEW6F94Z46ak8ZGXSXv1zhz3LKL-8BLfAkkVlEo1SOQeRrM=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "reddit.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEDgUOnMxoILvbZfCsAGW794wqR70KffpU2mcxmUf-JJqCjjoW1cL9vL4VdLbNHTjqjd-LR1sALRquMKclOfKVEnl6laSMzkA6YWnomcvsvSCipLVm5wTwbHaEh-cg_ZE8PWr6MC0yPbHwcJM0vo9O5hPJLD67PfgCgMm9zzUuApbPuM9ayGCdVn7h5KfnXyETbxE52CQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "matthiasfrank.de",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHI6AoKFTsuhRoxHQ4EMJrZKR2Q6C0T4qkqd34zRYxVmvStvGRitedr3iNFtLh6t0fQw5RkycYn-i9CT-xGWIgnfMCa_SPbuPSWyncuDX7sJnuUNTl1nKnKVqgLpxjucP1OUZUH3SU=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "simple.ink",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF3dK9LRZNq8cFAbl05DpQDVcIotTQWpm8oz0l_0ptL4o2cZRlsseL6RcArAGTHPRDCqQKGuCAvxxYsiQ5DnMER19qMeFNlAWD0A0y5QIeC6hvfZaYp3wwdo9-oQjrx4Rg-zqI=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "judkin.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHwjkEFeRP746MS2CGyUXZvlgyATcHLcBPx9zaZ6CauvHDQGomLfZoMmEvQ1Hx3B61s6BYSViRWF8elqfCRWmduRyASz9hFhd2kDljX9bwMuPxgtquaRDvbslaY1d1ljDQ=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "howtheygrow.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE--3aYn8JAs_ZCYmeS9ehkOx_CwNX1XwyOyRTsjmscf6UZw6hk2IJSQVdaSHOMW2iJgdDRyoKq-uDcKTRGPdr01gNvJvJe2b56mO8FK439HvEImlNCZRrc15Qp3PVjnT1UY32qA9713w==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "passionfroot.me",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHkUHUFS8VtS67QNtWhDoxBVAN2tUh1bJitWKRLdKoR0HSTLvoasXPaG5rn92dwWkZ5R3ZIbAKutOKisuptY0ZRheXMiT9gNU2k_41-KHyjTLChotcUdXzAtg4trXhYhtXX9A2SgxS_sa7WGbTxClcS-lB-rO4=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "youtube.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGY5FjhD8C6M6DhOuy_dZz9DJuuvm6myCzlOsL4-cW4gkyguEchWd60ehz9j4uEgqAvrIeZS3dPVPl_vu8GBZLzwb6rivwoVqG7JcGvcw5U6fIXrM2i0lJvwheKb5viB8bY35NcuGU=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH8Fu6YWOMRhJnkaCbCn2rRK-ygrY-po3mT5hwbNH71OaQ9mu_vQyUcPP2n-k-fg7JsHcg1fQ6y9-9CC9pUK0b1LgqjGQTlg91NCmDqVUpWdGiwcCdILnYilTfTm_dh-7hIx7_d6TLrvM2TEnbtD7l3Jw==",
+            "type": "grounding",
+            "relevance": "high"
+        }
+    ],
+    "confidence": 70,
+    "duration": 57.76,
+    "completedAt": "2025-11-02T10:55:37.470Z",
+    "success": true
+}
+
+{
+    "startupId": "b7bda1be-28d8-4d39-9ab6-62fe8119aaa2",
+    "startupName": "Notion",
+    "section": "recent_news_developments",
+    "data": {
+        "all_news": [
+            {
+                "date": "2024-05-29",
+                "title": "Notion Launches Native Forms, Enhanced Databases, and New AI Connectors",
+                "summary": "Notion released a major update introducing native forms, allowing users to collect information directly into their databases. The update also included an improved database layout builder and new AI connectors with partners like Perplexity and Mistral to integrate external AI models.",
+                "source": "Notion Blog",
+                "url": "https://www.notion.so/releases/2024-05-29",
+                "sentiment": "positive"
+            },
+            {
+                "date": "2024-02-10",
+                "title": "Notion Acquires Privacy-First Collaboration Suite Skiff, Announces Service Shutdown",
+                "summary": "Notion acquired Skiff, a company known for its end-to-end encrypted email, calendar, and file storage. While a strategic move for Notion to bolster its privacy features and talent pool, the decision to shut down all of Skiff's services within six months caused backlash from Skiff's user base.",
+                "source": "TechCrunch",
+                "url": "https://techcrunch.com/2024/02/10/notion-is-acquiring-skiff-and-shutting-down-its-products/",
+                "sentiment": "neutral"
+            },
+            {
+                "date": "2024-01-17",
+                "title": "Notion Launches Notion Calendar, a Standalone App Integrating Time and Work",
+                "summary": "Following its acquisition of Cron in 2022, Notion officially launched Notion Calendar. The new standalone application integrates users' calendars directly with their Notion pages and databases, aiming to bridge the gap between time management and project work.",
+                "source": "TechCrunch",
+                "url": "https://techcrunch.com/2024/01/17/notion-launches-a-standalone-calendar-app/",
+                "sentiment": "positive"
+            },
+            {
+                "date": "2024-04-16",
+                "title": "Notion Reports Strong Revenue Growth, Reaching $400M ARR",
+                "summary": "Based on financial reports and company statements, Notion's Annual Recurring Revenue (ARR) was estimated to have reached $400 million in early 2024, a significant 60% increase from the previous year, highlighting its rapid growth in the enterprise and consumer markets.",
+                "source": "Forbes",
+                "url": "https://www.forbes.com/sites/alexkonrad/2024/04/16/notion-hits-10-billion-valuation-in-new-funding-from-sequoia-coatue/",
+                "sentiment": "positive"
+            }
+        ],
+        "product_launches": [
+            {
+                "date": "2024-05-29",
+                "title": "Notion Introduces Native Forms and Enhanced Database Layouts",
+                "summary": "Notion launched a native forms feature, enabling users to create and share forms that directly populate Notion databases. This update also included a new Database Layout Builder for more customized views and enhanced automation capabilities.",
+                "source": "Notion Blog",
+                "url": "https://www.notion.so/releases/2024-05-29"
+            },
+            {
+                "date": "2024-01-17",
+                "title": "Notion Calendar Officially Launches as a Standalone Application",
+                "summary": "Notion released Notion Calendar, a dedicated calendar app built from its acquisition of Cron. The app integrates with Notion workspaces, allowing users to link events to documents and project timelines, unifying their scheduling and work management.",
+                "source": "The Verge",
+                "url": "https://www.theverge.com/2024/1/17/24040902/notion-calendar-app-cron-google"
+            }
+        ],
+        "partnerships": [
+            {
+                "date": "2024-05-29",
+                "title": "Notion Expands AI Capabilities with New Connectors for Perplexity, Mistral, and HubSpot",
+                "summary": "As part of a product update, Notion announced new first-party AI connectors, enabling integrations with services like Perplexity, Mistral, and HubSpot. These partnerships allow Notion's AI to read and write context from connected applications, creating more powerful workflows.",
+                "source": "Notion Blog",
+                "url": "https://www.notion.so/releases/2024-05-29"
+            }
+        ],
+        "awards_recognition": [],
+        "controversies": [
+            {
+                "date": "2024-02-10",
+                "title": "User Backlash Follows Notion's Acquisition and Shutdown of Skiff's Services",
+                "summary": "After Notion acquired the privacy-focused suite Skiff, it announced that all of Skiff's products, including its encrypted email and cloud storage, would be discontinued in six months. The decision angered many Skiff users who had chosen the platform for its privacy commitments and were now forced to migrate their data.",
+                "source": "The Verge",
+                "url": "https://www.theverge.com/2024/2/10/24068771/notion-skiff-acquisition-shut-down-encrypted-email-docs",
+                "sentiment": "negative"
+            }
+        ],
+        "funding_announcements": [],
+        "leadership_changes": [],
+        "market_expansion": [],
+        "sources": [
+            "https://www.notion.so/releases/2024-05-29",
+            "https://techcrunch.com/2024/02/10/notion-is-acquiring-skiff-and-shutting-down-its-products/",
+            "https://techcrunch.com/2024/01/17/notion-launches-a-standalone-calendar-app/",
+            "https://www.theverge.com/2024/1/17/24040902/notion-calendar-app-cron-google",
+            "https://www.forbes.com/sites/alexkonrad/2024/04/16/notion-hits-10-billion-valuation-in-new-funding-from-sequoia-coatue/",
+            "https://www.theverge.com/2024/2/10/24068771/notion-skiff-acquisition-shut-down-encrypted-email-docs"
+        ]
+    },
+    "sources": [
+        {
+            "title": "wikipedia.org",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFP7qzV1i4Um1Z0TcoKB0MPF8ghJKPGa8UFExn1StuJr6dbLBG7-n3iPdAtVULnJZ7123-kMOhCmmX067nqeqkHSZ5OfONqkxQULo4vQUSYxi_Wwxh9pekDRVxAPIY7oR5sxuS36fKIQmgaXHUw4CE3bsigTv_Glw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF9tMSEaip0vg8YSpbvcp-dkqjk2O2Pjd7nl0PkKw6Cm-RxQzfFp0l5W8K5gjv08r7IhpRyXbtKoFaZENakgr3dEUtyDoMJk4WCLWueKProIGKEhhP1ivta3rVd5AOa-6vFXVw5c_bV1AdmiYw6BR-b1y3Saks_1Sz9f2DSyRomcYwe-g==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "bullet.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHSkwg3hLrSZPqD2M_g2jAYNUYAwhNhNt0_MkA4yxP7g5HTT3biX8HQ5HcoqTYIvPmG62OFF273m0mbgy9gz1symMSB-Ra2Nm9grpQW53LfzTECF46VmdmZlQ8umL8SKdav2HXNAAnEWMo6q6NyVlM_MBVVSi0jo5szrzANaRoOCnhtugi0rA7O0Hz5",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH3VL8vRyfK65y3Y8Wsa6TLbTOtzEPg9lEC0_eq9YE-7N3ecG7AKZe-yDgO9OOWeeh7apcnd4n5ag-UAs0kuQZFwI77F_g-xK27sQTe3vnCRTbN7XFeqfk=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "texau.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHZsyS9PBpdmx21et9h-RO8gsQVnbwEoI7cSq0PtllbjptgxAJw0gKmBPQ7onrxaybXB_LDvxRGSsPyDA4fxX37swuDkTb9ue9aikLioeZfgV9UalRwAVaaxd7qLtyPa8w=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "taptwicedigital.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEhiPTl3vfY6dnEPpkqmErw2fr06fcxSxT41a_lNNKCXPYljzQMNpF2BvCrgA5PU-e6egC2c1YabGD083UqIiBVq2EN7o6pVy-INFbrEobHN-ZBY_JCdTt9GPyzRYGc8nHXdTw=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "sqmagazine.co.uk",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHWpquAqSe_gipC_9z75T_ivNjanw9QXyjtsRCCBeo832Sn99uAZYUTJaGYzLaFyEpGqT4ClBsh7mv0_L4_8vNHNlGMmbWlda1LFjrFqidn40_pfqIHk_DvQUoFRCB6B3ZzUP6fbAU=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "feather.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFrQxsgj2ptgjCf-U8vTXV_lt_1A1PPo_XxQ2yjarRAIPPNPlRiQVVZ0F43j8qjf1Mk_TPfFsuch8m_vtOmPTm6-K0Hlq0hw8rqCZvLVsQ173IdDgEpbwrrCze06y8LWf_e3Xw=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "startupbooted.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH4UNQCMC0G-dx4NqiIGUdk1J7ZbkHwOWfzkTKqOmGf0nH9fPtNNWvV_aGJJeLQDhZpH43-06Q1QApda94j6Rh2EtmmwOXyEhI4Px4SjboMZZAyhkWG4GIf3QtHTfC4NX6BAtpeRD32VYI=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "contrary.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEofylShYxU2NDCmDCSSM4K3wb5Tru4dSOlJfEijT6jL0R-zFm1YYcmwT1_WrisgRMejnfFxx_KKnj_5nilCtZavdYpYS8UsRiw1TBAWoxWg6RBrz4WdWli-N8ea9B_98OLUFeFomiY",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEbNhGA-tz-m5coY0o26O-Esan1lfugHGfKty0cjIzRVjvLXKLCWKYT0KLuvIOse6VHd3v15czHExWPdD_IXQ_4KYZ7KBg5EG72SKbYyIGZVYoAYlkrVKKnQEmNnH9HS2k3bCqdO_-oKkQjxF9zZNalZmp5pW7lZMp7vQb1Pm1dBsWFhV3cIzE=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFEq8rr4IRSO-ks89XWMDlFBybxG8RiRdgFwP4gOqmoiDpi_U_t4vJ2Gy5h4qfpdACrqQCNoNzmLA-GFj2rcJGK62JbxH7OM4iW60iQjI3dBTY-gj9ZjkkXLZL2eb61RJtI88DBHSQ=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "electroiq.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEXZrHs6jhmKroBVggoqeZ_A8W4xywM-uoDkx0klBRFDIAR5_fzEUQL1ajYoonbwteTHcjpwCq4IcsPizbRVxL30fxkUZ5aazs2SN7PbGq9N1MFVCXjXjos7h-DSTZfupwf4VKGRBB837o=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "gartner.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEhDHTVk3X1w1yE-nSk_nXx9-RpEIJVHKB0_1XCZg9vRgaq1ZujPIpvhKCCiqkcOnXS3skOt6QJ0nmylC9rr3zMfnIhGkIWUgSFbgrxSdqM8d-mdwTJC__QIo4d6TtM7fVGlE4SuWtluVLdgMJCEWKxqT52EmiWS12aXtnTvQcUvQBBbsMPH1MeS6FV99KYY4C_lUoL2A3E-eZiXIDSwWByU8_TA-4VtCiK",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEUY__lHNhGd3UU5QTlS5baODRy7gGHXWeQP1AUIRuAc8geyOg3E--kYHvK7iPDEVELsxr86H-tw6ZAd0LH0249nrRHnnVEc1FjcMpCHezl5g_95EIpHKTxMMc=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "craft.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHSG1UJDHBNW74EGhjTBbT2MtwOjPKpw0tiVbk0swC-cBSxqF5nfMtcZWpSYW4vV6BBJnJ3olGKAkapxNK9LA6BglAYwhE_O80YhoF-jgcVh5D_odfBbCvMuSw1_tiPtz1s5A==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGOtKkb4qnP54upoXiFDh48eWDVEuxVDgYAX9QIcnRGPZFj645iobsLyAIMpOW12AiuZlptSpxX95C0iC8LX-JC419-MFBXak72sb0VxVvijpbPVoiw9OwyQRUm1PXWGsMUsdcz7g1oYts=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "theorg.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEvm0qDuQ3Ej0h3V0vAcl4LCKzhGQBsEz10MDWw3OteVEdveGAikK7ZV9vsUamog-HUMLj5lAfW1RWRkiex-VBo0hcxEuu-9lMM5ST36scW2_rDSRe8d84HWHHkPZtGPALgH9YaWheswOyyo_FBiQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEcdSY6pAicaAOQeyaTA48vxh2nToYgpRaZQymA3CgylryQiQrNKG0nupCEWuXWGmfqGaBUoO9U-J1kxVKajRYmcuRH6PWalMiDM4vWV_IYGCnIskgaGrWtBrg8PstLNqxej7wQ90POEot_9DhBLUIlmoCv_cz-t3oYGa8ZCUgSaRiBfG9h-dhQug==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHsrDEuPopfFve0sBHj3cKjbg-k2gUuSmv6hfV667xhit8Un9cywg7OJUa3897jw3loQwEaktzKdjJjXbXXUiwUXYAcMZjc795FTgseSZMTpgB_pCsjg1yfQxrKPThpJuAMfndN0HqR6c4Eoe_fyylYsuY=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "simple.ink",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGtgLekbukE8XSidLRGQ1pRgmNdbpiw3LTwILTVmnybHExR-musYaWxr2eXSZOOGBuApGjQtqkHWgpdxYs7vxOKNR1jl_YA3YLE84pjJM3WkqgoztAKyL4VxL-5rhxndpfNPOOuGcbr_VIKro8vN4iuoj7kiXC_G9SYWetAmZXBQ5ObtCPUvvtrWOPmMoI5QyYXrsVj42qjLUuCAP9VgwdarA==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "similarweb.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEBIyZjM7mlknthuDGSRfCYQUZHrrc-NtHwi6xmmZxLS6Cy3E9nUhCo66ABljEOCfH8sRC87LD-w21oMwxx2oTU6KppOR5WslD2hrUbUFX4_tB9aOS7ubeH6rcGEfWNQAcLULim7a1Y9A==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "judkin.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGggAWB7w9UdIHaJF8ZqkOOUis-Bw54p0kMnx8bqeppFOqWwc9wC5JDf1Gitfi5B-PHn-u9L13hOaurugAIpm-3L2P-sidcSV5SAH-fRVfLPT93OOAVWeaS9u0l8XN7qI0=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "simple.ink",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEpwnA4msKPGUQuMbCmwZtfFUesWDQ-rDrc-wdto1V_0OkSXyc7e1df4fkWmd3yG9wOo2-x7EjZkgIkP7SE5B35KinwInaK4kkWjFHxagSBRGh9l6wnWlDfNgwhMbY8ENOIeeI=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "sparkvation.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHf62E4TsFEMQ4CvgTYYlm8bo3h9tv3sA99stOQqHTlNZvZAgcA9wgWlD1pVFLlJzFaWZMYfBs9vnpK5Trtc0YbafqrKyJEf9Q8jGT9JlyWssi1S-rDu_Kf2UUzzfGLZSMNTiOWnke2L8jPLUccHH4KWCN8V7gl351J-pObkriOV9duhIg=",
+            "type": "grounding",
+            "relevance": "high"
+        }
+    ],
+    "confidence": 70,
+    "duration": 58.721,
+    "completedAt": "2025-11-02T10:55:39.183Z",
+    "success": true
+}
+
+{
+    "startupId": "b7bda1be-28d8-4d39-9ab6-62fe8119aaa2",
+    "startupName": "Notion",
+    "section": "growth_trajectory",
+    "data": {
+        "historical_growth": [
+            {
+                "period": "2018",
+                "metric": "employees",
+                "value": 10,
+                "unit": "count",
+                "source": "Grounded Analysis",
+                "estimate": false
+            },
+            {
+                "period": "2019",
+                "metric": "users",
+                "value": 1000000,
+                "unit": "users",
+                "source": "Grounded Analysis",
+                "estimate": false
+            },
+            {
+                "period": "2022",
+                "metric": "users",
+                "value": 20000000,
+                "unit": "users",
+                "source": "Grounded Analysis",
+                "estimate": false
+            },
+            {
+                "period": "2023",
+                "metric": "users",
+                "value": 30000000,
+                "unit": "users",
+                "source": "Grounded Analysis",
+                "estimate": false
+            },
+            {
+                "period": "2023",
+                "metric": "revenue",
+                "value": 200000000,
+                "unit": "USD",
+                "source": "Grounded Analysis",
+                "estimate": true
+            },
+            {
+                "period": "2024",
+                "metric": "users",
+                "value": 100000000,
+                "unit": "users",
+                "source": "Grounded Analysis",
+                "estimate": false
+            },
+            {
+                "period": "2025",
+                "metric": "employees",
+                "value": 500,
+                "unit": "count",
+                "source": "Grounded Analysis",
+                "estimate": true
+            }
+        ],
+        "projected_growth": [],
+        "key_milestones": [
+            {
+                "year": "2013",
+                "milestone": "Company founded by Ivan Zhao and Simon Last."
+            },
+            {
+                "year": "2016",
+                "milestone": "Notion 1.0 launched, reaching #1 on Product Hunt for a month."
+            },
+            {
+                "year": "2018",
+                "milestone": "Notion 2.0 released, integrating notes, tasks, wikis, and databases."
+            },
+            {
+                "year": "2019",
+                "milestone": "Reached 1 million users."
+            },
+            {
+                "year": "2020",
+                "milestone": "Achieved $2 billion valuation and 'unicorn status' after a $50 million investment."
+            },
+            {
+                "year": "2021",
+                "milestone": "Acquired Automate.io to expand integration capabilities."
+            },
+            {
+                "year": "2021",
+                "milestone": "Valuation increased to $10 billion after a $275 million Series C funding round."
+            },
+            {
+                "year": "2022",
+                "milestone": "Reached 20 million users."
+            },
+            {
+                "year": "2022",
+                "milestone": "Launched Notion AI, an integrated generative AI writing assistant."
+            },
+            {
+                "year": "2023",
+                "milestone": "Surpassed 30 million active users, with over 4 million paying customers."
+            },
+            {
+                "year": "2023",
+                "milestone": "Released Notion Projects, a dedicated project management tool."
+            },
+            {
+                "year": "2024",
+                "milestone": "Announced reaching 100 million users."
+            },
+            {
+                "year": "2025",
+                "milestone": "Released Notion Mail, a Gmail-based client with AI integration."
+            }
+        ],
+        "growth_drivers": [
+            "All-in-one platform model reducing the need for multiple specialized tools.",
+            "High degree of customization and flexibility, appealing to a broad user base.",
+            "Successful freemium model driving user acquisition and conversion to paid plans.",
+            "Strong word-of-mouth marketing and community-led growth.",
+            "Accelerated adoption of remote and hybrid work models.",
+            "Early and deep integration of AI features (Notion AI) as a key differentiator.",
+            "Expansion into enterprise-grade features, attracting larger corporate clients.",
+            "Lean operational structure contributing to profitability."
+        ],
+        "growth_challenges": [
+            "Intense competition from both specialized startups (Coda, Airtable) and established incumbents (Microsoft, Atlassian).",
+            "Maintaining platform performance, stability, and scalability as the user base grows rapidly.",
+            "Addressing data security and privacy concerns, especially with increasing AI integration.",
+            "Sustaining revenue growth by converting a sufficient percentage of free users to paid plans.",
+            "The need for continuous innovation to stay ahead in the fast-evolving productivity and AI software market.",
+            "Navigating the complexities of global expansion, including localization and regulatory compliance."
+        ],
+        "chart_series": {
+            "periods": [
+                "2019",
+                "2022",
+                "2023",
+                "2024"
+            ],
+            "values": [
+                1000000,
+                20000000,
+                30000000,
+                100000000
+            ],
+            "metric": "Users"
+        },
+        "sources": [
+            "Grounded Analysis provided in the prompt.",
+            "Additional Search Results provided in the prompt."
+        ]
+    },
+    "sources": [
+        {
+            "title": "wikipedia.org",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEt6N0X_FBI5PLuLmw6Opq6CXk55otqDJnWRriq4JkQkaeQCy-nwcC9Ca6SJ9HA_QZvYg5TSnEVuXjD3o65m_urjsQqhrFBL8ESpzzn2RdcV2o700XrQgQBTocPuDi7LI27_3lrJMY1qMjoN5fPnTTi4qxvrGzJ9w==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "productcoalition.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEaZmLP-16clcDMN6gyzy5eczy0ED6LKiPj3A6nY2Y824gx1SI5UqYoiuNGVkfxNM_5zciUkCgXQuoDCWaaG_oKlhzU7qE_wbYWOlNGJXPf2ahy6JhVwjIwUdcOEGnZJB-Gtw1z6v1ruzYbHhHH3f0R5MHcfWKIuQgR5AhcO1rRApwjvg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHDLKw87F5O-zD6brMo5zQVM8Ej2SlrAHlglYT0FrnGkC5ng4i3TzsrJRhKfIE3VHxPNUZSjANzqcDe6CxemqCR2Gu-w3GIfnYeRe9PYWN9gnn-RRRl5xiuCdRkQRBROSXPAzdEaErc9qCHz4rNgoRkMGNal-M9jk_huESsDXcnGmsigQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "bullet.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEeWrb8HpLo1EsNBQUV9vIE_RDnfXTnBsR7jkgkynvWRYaQ9GIo3dx4zLcwVuXyRCs5pkFpvnSd4YgVtKQ4Ls6i1z4ZzYo7-_VIo-qhfe6aBfIcaJ_Ec5GN2ZCeuRCaQCkD8PybqKtZU19VuVklYkTNvuNyal3_QtdOSoY0GoInKNHjHLF9Q0qySnoK",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "cybernewscentre.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH7byTsb9NP_ZCJNZhacJfDt-LvKx1zu7o9LitHEHpD1LqGpnOjQCDPkcyEnTOzsTUk0cnpQWt7lOe_O18NuMwkiclXayBbbPiz9xJ-IYql2rh0p5yiLCZfy-wEzLLhWtskOddsxg2FaouIsSxigk-jgKpvzncWky5UO0nmOfmX1VEPKgfwPjLqQocMrCRNGjeQ8lYJieWbVppDl0thFZQfBuNwNykl-7Iesn_e",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "startuptalky.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHHguDRB2_2TFvJ5ri54IwYWWe1-RTqY_IKVr7ZD4Y43xm0sfaLuwpYeb8fcPMM7pi7ohhVrpMuK0wSi5JfAg3q0eZ-MUl0EUZW3xjswp1QKTXGuKgXxKlEerefAIP-EyD6w4Z5dI0UFqc=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "contrary.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF3uNc89IvyVXy2-OluscHdBJ6S1KLPEDd67SFbvt6EZ-U7oD-Mou0E2cdVghV673nN8iMM905KOg_94BN-gJn6NJE6wbSQbkjmMCFDeHrUZVSj2p_rp3CcZNG7iLqKmWw38VTlEb4-",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notionavenue.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH49M4r19_8pRPJi9ktV9wzthW6YfrDb5i-Wbxj3zSsjHTrIr2HXCHZa_Pf7FgmFG7N2d5gIyAtVA0baTAxK4pgi0M3JchiukYO1jSnZS9J7ivU8qKaqgIJRK73_JAiazhwfU0fPIFNRw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "kitrum.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGcDbw-nHX2wB6pp8-ZM6dye32uUkBh0n4a8ZAeTVydN_f3b6UDUuRNd7XbSryzcIogL0iyxWD47ngLG8c81JkaTm1kbMB6N8xZVv31dDkfaTzxv4Y8rUSAa1mT0U1bnA-m6WzYg-ytLyyGiBOE67HmBfgMWEFyfXcgiiBS4-RW5kkl2nWJUCA=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "forbes.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHBktt1SG_TmpfXN5dFPGRo21rzwIIpce8wAuEJ8EaKRHhmM4vvvx7H3awnXYqfCuRr1sP87BL1mdnl7zlDkLXEPfYvyushOyVfMok5E9rRTL_i-atQ3gcjPb0l-WuFZLRdrqrT",
+            "type": "grounding",
+            "relevance": "high"
+        }
+    ],
+    "confidence": 70,
+    "duration": 48.264,
+    "completedAt": "2025-11-02T10:55:38.353Z",
+    "success": true
+}
+
+{
+    "startupId": "b7bda1be-28d8-4d39-9ab6-62fe8119aaa2",
+    "startupName": "Notion",
+    "section": "risk_and_investment_rationale",
+    "data": {
+        "why_invest": [
+            "Explosive user and revenue growth, reaching 100 million users and an estimated $300 million in annual revenue by 2024.",
+            "Dominant market position with a reported 56.92% share in the collaborative workspaces sector.",
+            "Successful expansion into the lucrative enterprise market, with the customer ratio shifting from 90:10 (individual:company) to 50:50.",
+            "Strong backing from top-tier venture capital firms like Sequoia Capital and Coatue, validating its strategy and potential with a $10 billion valuation.",
+            "Pioneering integration of advanced AI features (Agents, Connectors) creates a significant product differentiator and enhances user value.",
+            "Proven product-led growth model with a high conversion rate (~13%) from free to paying users, indicating strong perceived value."
+        ],
+        "why_not_invest": [
+            "The high $10 billion valuation may already price in significant future growth, potentially limiting upside for new investors.",
+            "Operates in an intensely competitive market against specialized tools (Asana, ClickUp) and well-resourced tech giants (Microsoft, Google).",
+            "The platform's high degree of customizability can result in a steep learning curve, which may hinder initial adoption for some user segments.",
+            "Dependence on third-party AI models (e.g., GPT-5, Claude) could introduce risks related to cost, performance, and strategic dependency.",
+            "Sustaining growth requires continuous, rapid innovation to stay ahead of competitors and justify premium pricing in a freemium model."
+        ],
+        "key_strengths": [
+            "A highly flexible and customizable 'all-in-one' platform that consolidates multiple productivity tools.",
+            "A powerful, organic community that drives word-of-mouth marketing and user-generated content (e.g., templates).",
+            "Advanced and deeply integrated AI capabilities that automate complex tasks and enhance productivity.",
+            "Strong brand recognition and a passionate user base that fosters loyalty and organic growth.",
+            "Effective freemium business model that lowers the barrier to entry and fuels a large user acquisition funnel."
+        ],
+        "key_risks": [
+            "Intense and increasing competition from both established tech giants and agile startups in the productivity software space.",
+            "Risk of technological obsolescence if the company fails to maintain its pace of innovation, particularly in AI.",
+            "Data security and privacy concerns are paramount, with any breach potentially causing significant reputational damage and user churn.",
+            "Platform complexity can be a double-edged sword, potentially overwhelming new users and creating a barrier to adoption.",
+            "Maintaining platform performance and scalability as the user base grows exponentially presents a significant technical challenge."
+        ],
+        "competitive_moats": [
+            "High switching costs due to deep user investment in creating customized workflows, databases, and integrated knowledge bases.",
+            "Strong network effects, where the platform's value increases as more users and teams join, collaborate, and share templates.",
+            "The 'all-in-one' product approach creates a comprehensive ecosystem that is difficult for single-feature competitors to replicate.",
+            "Continuous innovation in AI, positioning Notion as a leader in intelligent workspaces and creating a technological barrier to entry.",
+            "A powerful brand and a cult-like community that fosters deep user loyalty and organic advocacy."
+        ],
+        "risk_level": {
+            "level": "Medium",
+            "explanation": "Notion has a strong market position, proven growth, and clear competitive moats. However, it faces intense competition, high execution risk related to its ambitious AI roadmap, and a lofty valuation. These factors balance its significant potential, placing it in the medium-risk category for a late-stage venture investment."
+        },
+        "recommended_action": "Buy",
+        "target_investment_usd": null,
+        "expected_return_pct": null,
+        "time_horizon_years": null,
+        "sources": [
+            "https://techcrunch.com/2021/10/08/notion-raises-275m-at-a-10b-valuation-as-the-workplace-software-wars-heat-up/",
+            "https://www.businessofapps.com/data/notion-statistics/"
+        ]
+    },
+    "sources": [
+        {
+            "title": "judkin.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH1UeHDK4OxPy98jxXUMh5Cks_ud_7hfLq8fLZHwCiSrqN0fNEjMQjsUObLMfyl9wrXQwKS0OSSUObtDliLpS63bEg82FjQUBoYzuNfyaUD2NHJ_03d-FSJSTL2QF5YuQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "reddit.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE8fYFtu3OczfJ8kBULk7dnwUYcDLDHSQE0Rw4akMWMN9M46tQEqxPBAK2xxBwIzc8OpiLcbCxNYq9EAyR7GOOTUl2mfMxo3d2Ap5K1as05UEDaSOxmeTmcKa58nTxeE1N8Xh_9-9w_qL6EDbiF8s0aZtr-IESJiRdD5ltJDkOYKXTM-Rzg6QGtjF_cio7OGvwu2iQ=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "exitadvisors.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG25bK45szAzMIoCTKl_sf3_X04vuTmmFdC73q9i32jVk1iwtkhsjMw3UCDzUzV0JYILerT3hNYHRhZi7wbIonwZV5dedzeWgzYBMjTPfHxeyn30slrMNDiKhR6-rl7KhI8YGZAx4iP41UNJS8ammY2yD3i5MSPgeELwZJBBhJb_Gk=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "ajinkyabhat.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHDQveGVOgdAO-gGiG2zS_2SCc4Y4CB3my5wLmv5nlc4H1Lw84Ag3lpzAWVy6G8b2upGqBYyEE7XxjzketKoa-jNK524Sd0MD6bm9ycoRtv1HVC5jOfKMnrwIOzL1-EfXiwTtRVR-dqg1ZBy7K0AjZ28aqDPDo=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "papermark.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEa0VhyW5Mtlke2Ty3U946Fb9Cl1xu5bvHrJKzPSd0fw0oyIq3kiXwKMtXX06t8EwG5AWSNKrhnsWio43PLudxHQcHEpznu4Tj3zb1wWFdYyr8UoDDCrGvCPuWfLBCf-J5Scm8UJ2BXMut2OMu0felHhsytNA==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "simple.ink",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH49iNFFl1mHdkaXgjLvnxduFeNl81fW-7X4_jFYcjvdwIht5-EjAXeRsZXZRDj_DMV8X9wPppE48bbN-bfJS6WooRm1Tjd6tPPZxtqwZIIY76GvLJ5zQOaSDXo2V4vvunaww==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "diversification.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGQPbAisM8vGEI_HnOur7Sd7UHAp5PU6uTRJkLDrOIruLRW3ngxq3ai7epL6KIe2TR-sNhTLKyrnlW2m90K07xqtwEvPPMUdOw4bQJFJkD80RbNzpv4DDfc-Ztf0SZRRwDzqZcf_gNEewG4g68nbP0FTn8Tu8KSkco=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.site",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQER8OM9b1nnh5i1Y6OztyZq-Cb49e8Fsh3ZIY2sE3xLGHzRPQZBVV-9jbxog9Nmt2apSqVwlWr_VMV9wtlkaDYGQILOax9NXTg8lCOYgmJhXwsurTQ4rFJEMMaeRqxqF560L0riKPWaX2KFrxMrb4VMGciHqKwNho5rv9iMEO0QSjWjzrhO_3mNmsaIV1r3eA9D7J4=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "investopedia.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHavQ7QdE1ta3XbMnx3508s7yP98wEzwmnATjXwNUD1hLVj6XywO6uSu9rRPEHZD_oRqGk3j6jZ0VO99GyGx_lxP_iqdsIc5u5mCNLg9wnQa9KkysTg0z_wBJvWCgKKANBqd1B1ku58FFDxFuhxFJAEYdpjxM01",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "medium.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEM6MhUSy7CUJELeBveMq6OjUap3tnYrbtyHJ695CUQQeoMZ3IPBrK9UWJyz9qgXft9vaj72K1bqWBIE5mqP5BeY6hCbcMUSUXzFTJD5bwqSokycHAyFvMgsNFcsN3WSjdUC8bK99fvC0llT4azBN5xfQP4ex2nPcD08rzW-ulTO4AjmFDMOrFGc1r9S_LCl3niPx-HzrfI80tEM930KzcuVQHt_Je-pH6P3OeodZQ=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEI3cidcp-8cLhPLOBHNKD4b4dJ8E-oj9oW0NTmE-Oa8jbnFNHKIkxjL59j7K62F36r7olNDZKmTldVijS13oMfXP43d269qMad05x-z_yHAKbfc364UoQPH7TtXqfuanVeZjD0rFy4f3hpUg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "investopedia.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFCbicsJMwU0LJwLlnjZfo4_HX3sPPVXp36y21xwkOZeCeNwNlx_gial9ZAaftIXadi8kHEg2opNuy0tkcn2IGZPinz4a3aw6w4Ay6YitD2L6e49kFJaXy4ruUZY6UTxp-k8RtIdiyq",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "financestrategists.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE9pl6-4GAXvaACz8gibgpCHX3MecBRyePmXJqUL0OS2KCpk_mO3G40Yz7KIOvhiabeN3ycXG3MFmx54vjR-oFy4Ta64TxklY7U7lUG1k5K4YgEZA0ovr8uQdR5mfbvUmUgWvKM27pzSjREhuqknYYzQtaKrqpQVJ98-nNy0HW4ANcWocbzYiyc1fqnHGayF1C8wHIacWC5woqjP1lB",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "youtube.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFTK4ms9T0ZEBiYgmMhsnEvdtYUkQJd2NfjI-FQUey6wbw863Auy5AxfcmiALQhsOoE2SUO9XikAIYKRQWM0SIDo2uoI1YxMSbsIE0wVR0LYe788wS94N6ok62LCBs913gOi1tncQ==",
+            "type": "grounding",
+            "relevance": "high"
+        }
+    ],
+    "confidence": 70,
+    "duration": 65.694,
+    "completedAt": "2025-11-02T10:55:57.704Z",
+    "success": true
+}
+
+{
+    "startupId": "b7bda1be-28d8-4d39-9ab6-62fe8119aaa2",
+    "startupName": "Notion",
+    "section": "ipo_potential",
+    "data": {
+        "ipo_likelihood": "High",
+        "estimated_ipo_timeline": "2026-2028, contingent on favorable market conditions.",
+        "ipo_readiness_factors": [
+            "Rapid user growth, reaching over 20 million users by 2022 with continued strong adoption.",
+            "Achieved a $10 billion valuation in 2021, backed by top-tier investors like Sequoia and Coatue.",
+            "Proven freemium monetization model with growing enterprise adoption from clients like Nike and Amazon.",
+            "Continuous product expansion into new verticals, including AI, project management, and enterprise-grade features.",
+            "Strong brand recognition and a large, engaged community, driving significant organic growth."
+        ],
+        "estimated_ipo_valuation_usd": 15000000000,
+        "comparable_ipos": [
+            {
+                "company": "monday.com",
+                "valuation_usd": 6800000000,
+                "year": "2021",
+                "source": "https://www.reuters.com/technology/israeli-software-firm-mondaycom-valued-nearly-7-bln-nasdaq-debut-2021-06-10/"
+            },
+            {
+                "company": "Asana",
+                "valuation_usd": 5500000000,
+                "year": "2020",
+                "source": "https://www.forbes.com/sites/alexkonrad/2020/09/30/asana-direct-listing-opens-at-27-valuing-work-software-maker-at-55-billion/"
+            },
+            {
+                "company": "Atlassian",
+                "valuation_usd": 4400000000,
+                "year": "2015",
+                "source": "https://www.wsj.com/articles/atlassian-ipo-prices-at-21-a-share-1449710101"
+            }
+        ],
+        "market_conditions": "The tech IPO market is cautiously reopening after a 2022-2023 downturn. Investor sentiment favors companies with strong revenue growth and clear paths to profitability, a potentially favorable environment for a mature, high-growth company like Notion.",
+        "sources": [
+            "https://techcrunch.com/2021/10/08/notion-raises-275m-on-a-10b-valuation-as-it-takes-on-the-workplace-suite/",
+            "https://www.forbes.com/sites/alexkonrad/2021/10/08/notion-raises-at-10-billion-valuation-in-new-era-of-workplace-collaboration/"
+        ]
+    },
+    "sources": [
+        {
+            "title": "contrary.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH6em_LVMLO974c5skx1WBhW2XdnJWl0uxUoYw-NvZeF4mjP9FWTQ1oawaAZGD_zuEj8B5I0oWd3-CO98c_rxbR6f10njzzf3vVymdwTXOo0em4PkMVgc19fDG4JBYfro-fr5z8HKsO",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "bullet.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFrI-hBgcbzn7tV3Moo8oNDam2oD_xsMoXNCAxbHzy9JcZ-i1CBQizSa6OyvFkjprvk6_CcA3EAeqEZFZ1kznz5V4NW3bDAUICTShS5tkXeb9IscE9aOiWu1j_V2befBXyTZ1FDRZtXpqd8ErwbcsI0A1DoKMGmshdlrkF97FTTFD-P_ZzZAZoqrVJG",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGQhaU526xD2AunBDadWMWIsBg_U74OHP-F3a4W5SCp_BtbsRt8wmgsPRPgQhVwCeBW6YjylXAYih6356HeWzE8FQWvoTdMfJcFEvMZ3YOgXa15FzuP2C0uBpgm8RaldhAs_TuSF-PIlN7tcHiB0nmO2GqjLZAkY81o-6rjAPVIOTDkgg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "wikipedia.org",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH_COiVv6OZWzjSB22P3JwYWuUqWSm0oCFU6LWM6qiL-bFrrBr4Y4O7LyT6qrXMlr5AgArWTS6jFJwE0UCuethx1oBxOoQRjlD59yC1Cd_5NqLMFpzIxPt73_ipask4p1VDr7DQwmYSGKXlQt8GVAeainxtWiqGJw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "cybernewscentre.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHYKrOg6nD6zfDD3i7evIts3VGbiCo5d0iFKNOdoGnqNNWohLuOWkYvFmWUeRy1iJeJg1YuWoS6kU40dvbRbN0QwetOLHEtTvEjLZ8ytCG_ffK9nbxgSTT4CvjJssS4-gyCELB_QSFOabXg3QQm-8kmAt_Bm3vkXfRyhWEMFUzNf5SOj8tdEvVI8TLFj9tm2UjXK_PXBV-O9dpTPoNVQKBs__PE4l2jfsvLNI48",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQER-E3w1gC7SdGBm8PlCdFlsdgkmCfYqei0OHTgOifQlxTUg56U6-w4qG-ovObtLMnmGQRA--tIBPT6OF8jSyUNG-uwMPLuqWJahTtV3yhwPjsxhbJ8ITopgld04hRTyQaKb9v2OCahNt2a7iyfFA==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHEpQ_JCkxGh2-vyubK4127gVWyxcpICifywiUenviZ9w-BlwvpRGyfeQe_xIhLqLXfa8QENwTGgMpPPHvVvVWd4dbskkNF_PlSC-hEl8OrLogtGZ7m3DQrlZRwp0po37Zfo4Ay_ECnH6E-jcDdVC4ndLn8bISy1A==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notionavenue.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG7Y_LQMvBuNICTvzytRTTEhVeXOAfPyipoVG3BksEBhtWiBUXNxhvOu86Zbg3X4eQYOCC0OvEaC2fm1PFqaEw_ktNgUAF33zy0802TA5KQ3rgoi2iF5_NGVy1FSK5Vt8QUW-OOT6XBow==",
+            "type": "grounding",
+            "relevance": "high"
+        }
+    ],
+    "confidence": 70,
+    "duration": 57.44,
+    "completedAt": "2025-11-02T10:56:01.174Z",
+    "success": true
+}
+
+{
+    "startupId": "b7bda1be-28d8-4d39-9ab6-62fe8119aaa2",
+    "startupName": "Notion",
+    "section": "employee_satisfaction",
+    "data": {
+        "glassdoor_rating": {
+            "value": 4.5,
+            "as_of": "2024-06",
+            "url": "https://www.glassdoor.com/Overview/Working-at-Notion-EI_IE2263353.htm"
+        },
+        "reviews_summary": "Notion is highly rated by employees who are passionate about the product and their talented colleagues. The company offers excellent benefits and high-impact work. However, its rapid growth contributes to challenges with work-life balance, lean staffing, and organizational chaos.",
+        "top_pros": [
+            "Passionate and talented colleagues",
+            "Excellent compensation and benefits",
+            "High-impact work on a beloved product",
+            "Strong company mission and vision"
+        ],
+        "top_cons": [
+            "Poor work-life balance due to fast pace",
+            "Organizational chaos and frequent re-orgs",
+            "Lean teams can lead to burnout",
+            "Lack of clear career progression paths"
+        ],
+        "work_culture": "A fast-paced, mission-driven culture fueled by smart, passionate employees dedicated to the product. It's collaborative and high-impact, but the rapid growth can lead to organizational ambiguity and intense workloads, impacting work-life balance.",
+        "leadership_rating": 4.1,
+        "sources": [
+            "https://www.glassdoor.com/Reviews/Notion-Reviews-E2263353.htm",
+            "https://www.comparably.com/companies/notion"
+        ]
+    },
+    "sources": [
+        {
+            "title": "wikipedia.org",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEnbjr3CMZfoMaWfoobdReIw8gCqLvVcB6ZW8do2mBt0M2ZEqyeS1otVU38GtMuENeDMl3QnuZubttZvduwDKEzSwU-_DNF8lftQIu6V1Ez003sveIkdMLwqq_hhyMZS9hCJzuZeKjzNEaEgMNlr1nSNuQjGI-1kA==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "contrary.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEkeenOk0AAvBeooYNwj2IPDU371IsmRwW5RIPdTVtIvpjeMlTFGpm4X82iFfdzDs3ypQE5PmMPrA2-u_LWukGCk7Ztt3vJy17-UM5V5M_nb1ghoLHmVjMDU1cqb1n_JytltUq2CaAx",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "thegoodtrade.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHt6Dc7DmPMg_2xf-F-klI8s-ENRlivWQdDfjT3E2hYp_Z0eYPjrW3i4jEYWH41ZCAan8QvSuE0AMUSqHwPZsAom09Hb0Spll7-4CraFcAd6qQl0Fux05HwdlKQX5oAwtb76w1qZkS5HWC26dD4MZp4",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "medium.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHmdFgPQtEQVQEB8fKd3fhLPNOklMS4upSGP47b_T9oWSFxsn4KFXcn56gFIzVwt-guyYiXW5z_AbdKjEiNXxE4G8mriwa-70IYsiOy0n5ldUmnBHpqSlRlT73L55Fm5lGzxC3BYMxT3DtkV-_nxHFJSQqH1s4Lr66ava0awiyhkiGfrSEEGn7__usIDCU3czc=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notionavenue.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGSD_bVNsFSjnYSmipYuG39VtYnkAJOT7WwANufPgfOESEVrmkQSaJxHj45m3Sp3A5oKkkYp_yUgRz6BoGb954exc5kplkEN5b9HtLbvNpQvSOoLCTMjgg53mePwepeDMVUK65kYJxgzGYB",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "promptloop.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGD-aU0s3IpsNEsiw_ppZeGuY85BUky1UbYunhGzlm4vOwt7EtcwpU6a3M4mj6BXOwdKRu8jJC5SZYPRE30bkzYPF-o7a_3jdxb67gnVqT12ula4WIKdQqokgGtmklwTInt6a1gehx8WA0OtBLIRw1-ppncsD1W",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "bennybuildsit.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHRZ4_Lz-Jg3hxdU9r0qhguf2Jrc3CVUyuQjFkOdqJdZpeDAcybUDt4RvxTIqCURQ_m2iXlJvVgLorbQdtPyFozickgHX_YeZMkWHeMe1PEf2xpi3WNnVI2H1qsYFLXXaGyDDlErJfL4w==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "bullet.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGoPhhL25FJC9a65_vunMATY7kObnP0Yv3NaFYVGl-8T6QTxjZX2DkxnwgYOxgZP3y58-7Dgm61Xpv82pMBc9XL75UM4PynygiQYsaKXhI6_ouHIfHEP1QHJE2r7KZgUPJUe5kqkEBgugdIRaXJyu3cQ_-LFc8sRG-SUCt2tGGxlFS2V63sAKSD10Gp",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "taptwicedigital.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGGh_I8ff4wk0BBHDjUAE-u3X7VFsR-zB4CDGn_tIqBmbw9iS3AomR9iiOubWLpJ_JS8LnNXS91HrCx9UTpzpLi9GcaulI-3JEZO_YMwtCAD8BVwfhBTB3FkwNbG9rytqT98FM=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "sqmagazine.co.uk",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGR7xe9GTQOD049b9Oahl7gLeWXWqaZW8fSLSzZ3j6YMBXQ4V73V5_t6fZC1CPkg3AF6vfX2Y6EmDCbIJFOvO5PwdB75B5JAsmfJmi8nvQ_0It8KNBfsdNCWoq_LlAFI0hZXWvXCjE=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "startupbooted.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGEWPYfjc8p64_ArxQUeoH9sASMbeGbczU5QP9aYhUsoB2yzd_VhEyppLHqBF9_bCwX8itwhgdAS7JR2rHmKiMw6OX9276p4z1xuHSObBsokEItkhuThUiqU_aJuurae5uUWG71spJUd9g=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF1rWOmWfKjTaRrEuwlvfJR_YKYI7rDgbXu25-RgjZTnGbKZksNjfORtOapmV7d8rtfmRBwmSZG56yx9hTIQA0Dz1OmHWXTYTFCkvfcIAKmnQEEk4kAqDSs3qRj4yGEJ91sFD6uB_0=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "iveybusinessreview.ca",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFJhgYRse1XHp0CKFu9n74fi_Ydz1r0_M15vGyZTKpWrrMcUvsx-WyWkEQ43t-WH3m5Or3hB_w6KEl1HWsMiLXMqrGdxS3nEZpy2LQrHKpIA-Inf5NlA6_ug-DOpdhCPqVbHELyQU0Kw90s37rSAZwMYf-QUrwSAmCcdb5sIorC5KQXxX48HYEfzZY6op4=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "texau.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEkFovOkipBbJLJuA6iVsl114llxmsFYt6r0Ki_D73FURiIcIaiqziCT9w1YAWQwvJGHW6ev1nqRjItEM0eI_7XRHfbRBWFsvjATGcOCZvuvQHk8aLe6_4PcLkD0o2Z-IE=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "feather.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG-FC5gIwK6iQeshyZicCawe6QNZpsZ3WSdqTgk9dr5qtrgBxa6NveKHeu1SMcYPkPNaVsmKUwnMLlum7-CG8YO3ECP_GinA_nFXRZWM3hBgEfBEpCcCQEhCBZsLj5tCvxvu6I=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "salestools.io",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHUFkdC7Q_oZPBOpoBaaLixBBGvjpjw8K9uYT3ilepsA1JJyKj5_7i8keUQMTamp66vCgARnIxNT3DBH5299AMZq45qWG5GlovFkvp_I6vHhilQEBkO0YiuY6vgV9Q0DtEd9Q_0NoQ7uRlSNdA6KIG7FA==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.vip",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFLEgQMzAYWTgr_zdoo3qzwkxf2dnzZVt1ar6bsJTMz3Q2Jeawt6dbtqNxMKa96IlZqLgI_b40g5C-DA-n8K106OWym0uQ4NFriSxzhZVhNUGqc2a5yDxyGkrfYuLrC-1rELQxoDUQp6gUQtFIy5pOgxqeKt_7SAsyybqsT0HHCHmKhFfDNclC4WbLLQ0_RyQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "growjo.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHyN9G3T9UL3aSa4q1Vpk0mi_lBf5biiL8OYlLfbti4ok0pinzI91y20LpN8Oov8RozAzIFHQcq1Wid-o6xfOnhhnsrF49HndNM-_Df_EjLRzAz-vk9Cx4cAs1cAw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "sqmagazine.co.uk",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEvzD7odIOlazKNvNBy3PVLMJR4PjSXJ-J9Gnu3Fgv0iWsDELliXVY7tdxwc-75WvEuZQKIpIk3s2R9KcnbXn8fiPgT6RNyTPz-9n75lhToZJTZ_CctQImgQESQKX8FE9-xE86vrQa-6YchpT83rOVCnZwB",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "startupdb.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH4jh39jRY4CBY_EFURvpd3OlMRaLOVW13pEXwRAwPreFh2X-uUTiBQEfzUuTceMp94HjyjpIdY_KQTGLflKjjJPKRH92UZFKDfRvk5HWxN-o6A7JNi0sKLWfvy7g1kshp36hOq",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "judkin.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHoJTrhPXy0hyYnAomiFF9H8jt915tgbBwiANQEVUqIwdg9APsBU-lm92tJnwg74xuAU8U_E13FJiNK8YTFWqW4QskkiR0PhybJtaLLEJzP85tp01DEr7sdlX7-Lb7hWNQ=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "wellfound.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHPXcGk8aksPtdefTLDhpuTmNmtBZ6isQblXu6jkBVmPOUzcX5Y9mfCy-saRL87hiTSOfdJlCzQ65eSpDQKyepQzPu3iWQUkkCvKA1gI-BJJgswEmYbTkZCZMOpAGSZO_XgNi3ummF0ijo6_LY=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "forbes.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHKk-2u3Djqkh-Ng8N0phuZSlxWTFtYjhBRcQrqBtxQzrMcSdzCvpI-ccqf7GXIqL4G3hQFg2-eg0Jg9K6Ucs6naqmKpZKlx9fcG0ENfT3uR0tskhUV0oHvv6yMJ-i0JLZ9waYv",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "techbuzz.ai",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGZ27OUKWmiJcfZgUB2iSICGUQnwFCev3vP7FH3GAc4KXb70ecCuRFTdlkGFhWH3Y6UfM7loRWDwuSRjsfwRrzwbykPLxe6rKUQruUjH5vjsnU5uFfpYr4QumffJylSsjf88rKg9QBtp-msTz_wrxzIdWkNqaB-eBhwCli1vU-yN4b7Ls40qJkC-F9hy1KvsTsx1C-JlMqOIVlVeb5FlWRPgg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "reddit.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEeDDDC8YuYS4ZKBRUBdBWD_iEPQKLZhR3qWHt06PYAwNEIzUL2bwb2H2Co4V8JViTlONXbcoSdO7393ipUwFwDAiys4U978goifKxykUSMTJaWOZ7kLDemzT050MGs-JAPb3nxLjTFNqFIxXiU74WZsoQsbsU-b57D68sQA5vwThzpXhVwmRZOqHtkrYwySD4Re33ltzFWeOV4",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "kitrum.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEqzA5oRXp3uxSSCzMMdPZmdBHPcjUbyR63GAjEg9lVQmG-TWtFTVVKK6NvD3xShE9sB3fTkaye-DhUo0zgb-rV_6fkpyA1pYLdXGuikCTQvNSy7WshOdFjqbx4tW3A8Fz5KjubthhBwet4sD3FpWXXLGGaCIgGfp0GmAR9HbNJI0moOIbq5Wo=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notionavenue.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHT1W6nc94DiChKGVbzQ8_PQkGo2m8yq4fcl8xjT2o2lwMJf88Iq_J7iaa89DTn5wnxA5-j-YN0BxU8eEIXbYfFy1oNJJepHlOe3yOT2Nlk-xbYF-wKuTdYn3HRYKslkEFEvOZppFeqDw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "cybernewscentre.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGsrqieWxZRGnD3MS1uZhORr-Aq-lSNbFgBPg1pcEuMdbeaPFx9smS6MADM0bxX2xleqJk7H9jT0bhmIEszaiwi4MJ93HMR-tEcedJmWZsM6y-Qt-P3u2EU6ymKjaQlPB521bP_lownOjRdHkudI3adBYxv2iJi8V3I9igilWnQBRvVpj8SYeJsXI_h1268bNIwPnq2-qAVZ2r1USZBFFGsg1JW2iLogDDPJ_Ov",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGxQiDqrz5dKzFuVsCEwTBLzpjFDxYrAklDfUl90QWJRywahfAtT9t5RZ8t970FCtB99O440X3e4hyH3hi9rbLjRC8O1BB00zZ5ysLfSuAM_ePdxhPxXxL-gPSvImvcv-6OjzEQ4mQmw5wVcOZw0zoh8HLhXoDLBh0LTXeM",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "simple.ink",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQESBlnmxGvvhxdeDymBg_RdK6vaFCfOcAIBu6DauFHzPc_jP8HoxcT0YY4WWdSqtimtXNDdUYnnf65uU5rVA35VcZv_0dIlpoLpcnK4dBn7JGDfVQaSylKRiXS5GuDSN4nQ_zk=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "pitchbook.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGvEjpgXDmVMk25LPX68DFPVrXSwDP-yZhHfq8LDO9jws1eVgyVNQHAzVBDq-FpvKAU6nYpRuLDgwoILQCW9MyXJW5lK3OUo3N3l9JCXFKRyWBt7h5shSa7bVF29DORUlIAaFNHNDx7ZfFUkA==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "unifygtm.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFEz-k5SAuVFhWsZtKuEZNNnxZ243z8zjOcHFF13zoBo-gSEcaueiromyZMNkqRGJh7By9yQdlusxrJNDxo4CkeoPoyGOiUwGL-abPA_iZMhHLimB7Qw2eM4Kzh86dQJ2_dHtmLgqY_TfHRIKUL",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "techinasia.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGV1nYcPJDzKT7Dylrhn54xqnuiAiDIq96RBhVZ8mSW1UoMY6okZ0W-gW8lGxbmc0s8MD3U2CGx3EUQTwpKLGLM1Nh1WhMJw3BBzhKMsrGDemlMDAyOy8ClWh01GpADzxOhCcvjaahqVHL_OdfccoHOCVJIwF4goi_fI3_-iGdQDn1q",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "arr.club",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG9jdu7XrIK0qHgPgkvBJKySlhvEvCJ3EMZtGnsvws_s86XJKS8XDgBgzSncZEYWQ07RC-wkSCGbmsn8IiQNTDPQe1m6xs_sTeDR3uOz1zSNLd75uTIvGWxGAkeBqTJDaD-aLw2JQL97u8mpw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "fueler.io",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFx_-VSicwu-JbhBjlhX9Zs31ZQJDBfYz7W3AwJ8UMuuA9kxSrhmWHUkGvmoaC3mfGkuCuCCFbzrL-9PEfojEbDJOAqFdVEzxPrJIL9Aj_rDagRkLUvS9Z3nFtbi6Q2ByNzj0ZI8H_OAx98VMlr5dn5CLHyFea2wt11TRbKTzmPlGLJ",
+            "type": "grounding",
+            "relevance": "high"
+        }
+    ],
+    "confidence": 70,
+    "duration": 100.772,
+    "completedAt": "2025-11-02T10:57:02.867Z",
+    "success": true
+}
+
+
+{
+    "startupId": "b7bda1be-28d8-4d39-9ab6-62fe8119aaa2",
+    "startupName": "Notion",
+    "section": "customer_feedback",
+    "data": {
+        "nps_score": {
+            "value": 54,
+            "as_of": "2023-09",
+            "source": "https://www.retently.com/blog/notion-nps-score/"
+        },
+        "g2_rating": {
+            "value": 4.7,
+            "url": "https://www.g2.com/products/notion/reviews"
+        },
+        "trustpilot_rating": {
+            "value": 3.3,
+            "url": "https://www.trustpilot.com/review/www.notion.so"
+        },
+        "capterra_rating": {
+            "value": 4.7,
+            "url": "https://www.capterra.com/p/176835/Notion/"
+        },
+        "positive_themes": [
+            "High degree of flexibility and customization",
+            "All-in-one workspace combining notes, tasks, wikis, and databases",
+            "Powerful and versatile database functionality",
+            "Clean, minimalist, and aesthetically pleasing user interface",
+            "Strong community support and a vast library of user-created templates",
+            "Effective for both personal and team collaboration"
+        ],
+        "negative_themes": [
+            "Steep learning curve for advanced features",
+            "Performance can be slow, especially with large databases or pages",
+            "Mobile application is less powerful and can be clunky compared to desktop",
+            "Search functionality can be slow or ineffective within large workspaces",
+            "Can become overly complex and disorganized without a clear system"
+        ],
+        "common_complaints": [
+            "Slow loading times for pages with many blocks or large databases.",
+            "Historically, the lack of a robust offline mode was a major issue (though recently addressed).",
+            "The mobile app lacks full feature parity with the desktop version.",
+            "Notifications can be overwhelming or difficult to manage.",
+            "Table functionality is not as powerful as dedicated spreadsheet software like Excel or Google Sheets."
+        ],
+        "customer_retention_pct": {
+            "value": null,
+            "source": null
+        },
+        "sources": [
+            "https://www.g2.com/products/notion/reviews",
+            "https://www.capterra.com/p/176835/Notion/",
+            "https://www.trustpilot.com/review/www.notion.so",
+            "https://www.retently.com/blog/notion-nps-score/",
+            "https://www.forbes.com/sites/alexkonrad/2021/10/08/notion-raises-275-million-at-10-billion-valuation/"
+        ]
+    },
+    "sources": [
+        {
+            "title": "wikipedia.org",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHyP56h56qxQ-qJqQatQY5Ix-UYmEacR-IlrMpbRrfS_O7FL-8xzWPSXqV_L-JzThln_yhaoGe-y_PSl4kgi0MHcysj7X2lHKzSajp_uXQlII55dNx3kmcncSAyZnkgxdI6Es6J3nnkRn4QKn_d7Qnwt0EJMb2zDw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "bullet.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFjtln2q_09VkkHpOgv1NctC2HRLQiTQucg74g16x3noaFrkazU-oTHNaKo2jCfEsAdmflwPJaC88mB63Ei4ajt74SbwLuQ_VVy4parMLsgGIezAZ-AF08bMmg-n4KtbekoaGgsBmulP_d5-ljZRVDjltrm2GK10WuoRR5cKyIbkc9iJr5USuCS13r2",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "kitrum.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGx3pZNJXmJ6dh0dpyLPD2hpFlRy9Jx9SnIdFvcSrFk5I75-aQA3sqYmhcUHZTpH4fcSGJkFCYikwM8AYbDzB6nr2TVHt33g0vAfmGaQbXsU04KIxveHcWRSyUl2xJ7veRtb4uz5XyCTITfLmDj22kwpLDuVrvNf2sNKtkc78C0sNgA4HkiKDk=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "cybernewscentre.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF7DrtZeXAfrsDpa6sjvy2lCY734IlFT8glQmprnYhPDCMjfDAQmdrFNBfhiXNgQ5xH0xvlmf_1rRIgElGjc4Rvu5dHvJmK_7kjihmCQNsiTzzsGSoupsYUqksA4SJLBcBHTB_hHMlqNrceV4kqHIglhmFclaWhAFxqoXT9YJjArvGWnFNCaBTcE-VqjtCzHSuf4yZmkOnP1iyQ9Q-SQDAOXDzxY7MeEY6u0LXW",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "productcoalition.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGcaSg5KQlOgpNehICYwWmTF9FJE7l_c5-TXcwoL1xAI6KcEsUk0a6BhwGdl4xevT8DSWb--I3XH4tK2DXYgEFu5yGY-8v_EoPAVBjuhR7JjHJCkGeoaiyBwnM7QQ2gBZvhPOgkPXE31BkLex9b-HJ659jRNWmBPhXCdvB0Jd2RA9HNEQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "contrary.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGK0UfxyV1BP3acuGqMCjlHq08Ge6kqvAi4IZKqb4C9QdPzqU1GVg4LjrADqUq3M0R-eKv9ciFo-9ZAIvj-wKYQwvM993A4DIdRKrdxeI0pTqLNiNZmgEJbowIwBYNLhcFr1imOLhkJ",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "fueler.io",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE_GYaLsZt3PDxIWVoqIJSmhKRhED3M-FmrZGlKzEpqRH503TDnCLyDDDTt1qHzxV_qHGKrD-NszE50nYclk3d0w3ylyOjrAyyXESVrI0giFJ06DEQ8nouvWjUt8h49eb9RvJQtuj4pm58DPa47Vf-3iNlnexJLvEjRbW3LXi_iyyI6",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFRbs5xTq6avZ0DUyIPZT3BC0Jd4XKoAVhmmGDNAPZPtzqpaQTi0UxumJWS6ZkCuI-JA1NwMk1-KMBoDBFex0LEteo8PGJclc8X0s9YahW_DY9XJyIizKUUlCa7jo9b79mhugi3s1--BIR-vOmKTg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "workat.tech",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHbvRkid8nkAcUMpAdRwrFs9kg4Vggw6hDVLv8YwcUlnKg_FJHxrvT_2E1GPEtk4T9vMhxkPc52ZPxXbp78FQGG_hRMpH1JBaOoKNwt4-iWEJFHjX6KBXh5hNhz9Uw=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "canvasbusinessmodel.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEsMtOqzikcHF8gJIrYPwIlUP6Ys0gmhSKZIyPePJzS5yEIZCqmkbySI63U8EUfQnkgC6Fe7KwaQqqH5dIgFGHVj8Gflh5T9MKRUXby2SqyMTU_071qOY8gQ-Ka8h1j6jGVawBRps1jWBGdDKIG9vH0IP3OHP51QA==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "cordmagazine.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGlgRpvZ-PO7YGglNFkeqtN1jZ2ytbH6gjfLwoa7BGIKIed4o4W8IvIfPNSzy3lxceBRscBgKpicAx6-bFUzBTk6sbIQQRb2iHgj1k0m5Ae8DjCZ7sxniPQCwPsYmm-ys0JU253ZxuSUuEJzoSmy059HhRDdyVyz51Xlyzi3ngqp1IVEmyRVFKqdlxIFTz1fc1aaK26PvjayDBiblhN1sOxDlCcNs2oEAwm_Hz3disGKpDqxoCe3xXRr3w=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "sequoiacap.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEDO-ZcaGhwKBPFwCZvtx__hKZpSY2hH2peIXjWAF-XrV117f1nqR3_GXh9lB-SARxaB4Bnl-SrQ-xJu4xzae1-_-x2ZG-cy-tcgvOr-T4Xkom8KVQYePnJTtEcL5gE7pmweCYry9CVMc6koQ==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "startupbooted.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG-W6ZsVdcQdTmb3mNSH1n6VUrp7c4s58feIsfRBAJ7iSdJA8tG5JKMeAfOLYrpj_o-iuNe2-khDAadnIlpUO_BUGtsZPUvdEYJp3SLVIAsBMiRSbdZAp4imrYVoLLUpsT97ldH40s-2Wc=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "feather.so",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF2RB0XqPrPNNckCyUCXJm1nFY5vARI47nDX4tzKwvnZm8ZpTjv1rR9ry9yDc0sLz68Mb-LQcQsTRmCXUsK-yBCtKsmXX2SNY5mtuynWiXHcccQjTxFKzkbzKRrY4u_GfOnrfg=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "sqmagazine.co.uk",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF1POvjFdYZI3lhpoi-uN6iLoyPCZbNuxWIaS6dxnrc7RDu79Ly3Pfd0TyN4hxLCoTZErb6RU_3Z9kS-BFNw6gU8j2UeZD_MUgNfeuHI1Eq3p93Roo91WSnXa1_uM5cZ4alYzAcMyM=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "texau.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG0ib9QCkSMyCse4UOnf4hHeokZcUuUv3i-V6VXrkjFQHWAGV8GC0h0ni9IIwJGrDZO-P8sqRyM7p3peMEUkNTP21XvWENKJSnuf7-bCgtdqSg1MEd_Kq26xclnKRMjiGw=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE6ZlpX7RZ848yi4jS4X4T57-5U7R5C9zd1rUKX2V6RvDAn8ZpIDN_-PK0CmcqRNC7KrKxb_1Tayk4sIh-tLs5-WOBJQyUh5qWsOOb-eW94JLgD3wvj4rL7Z27vcRHJXXTa3ewuCIQ=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "taptwicedigital.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHqIDNloBbiW59VoU_7plOsytOXpGH8smc7WK9naVp4DzNirUX7MsN6ef4Y_l96WSM5y9ft9lq3-TrZcnJczCmkoL_P97u7uChBCbLS_AJGxlaKTq8_jjucqqWFKRPW7kDmY3A=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "salestools.io",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEQCsWm0O_-sAiawsTBeDYSk0NZCwpHnLgpPgwHB4ueeDJ71laDvQbHNzvJMLxpVom5OdVIwPQn7XEVFhXcWLxbqiNyr1iaxCSbd1ZOAUpeoSTkRI7WG6r315s9g8aMqfb5gajM6dht_dlo68O8YcPlew==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notion.vip",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGZmd_y2j3uQ_PJJFVop0Q3kTrcuH1Xhgi5RHiDQapPyyqsZ2Sp7KXaX6VpA8mFGoDu9hU04Pgvdrvrg81pXgD_T8GW6N_JupN8nAORw8lQL4uWkYznDqqoPOTUT49T5k4eAXperFW1VL0UqelTplXYecU4imN93CoF99-4YIhK0nGxqQuGTkg04-ysQOB3Ng==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "pitchbook.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGexgvbzW6sgV_6i15ihhzYTewWmcInxb9BklxwVT-3Itmg3AjLOSqilADn1-MFDbzXuXUNZmR8QsbWgR50YgR-Jo9AVAyz_DI16ExopIesFNDGV2DdEY0QNeay_9_JBk8Y2O7w1YQq_VkFJA==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "simple.ink",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGq0U4O9FaHEYSlZoTQ_5YS7YSd1wXYkM5wE2NaEfQ_at_44SxsLNdoor_tvb1jpHEx-oxEYq3eOAtGDjaDIQQwftiQs0T5tKx_LmdlpeGgnAmiNgt3OTrGkXqjE_EbIuMkowo=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "forbes.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF8DZ7ZJndgNjTk5FcQ9du0ByjIC4FqD2-hjPwtLHDkn9VsQtJ1_YjTMzNNP_95TPLbTba_XRTwD4y6AyFWShw4H1oileFe4bY7ykjpbMe6p3VdMqZplQzqqfMbETYOZbLYJ0BW",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "techbuzz.ai",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFAaY5wS7mTElXarKVtnDmpNrAYvuQh1FndKnyS1dignbyEuJED9YmmPHMSxMFtLEWZ9vbaS6fYo50lkgNCrxdwwlA-_CcaiPU8vcarDhOMeDaOaZm2faBprdZIKL_esNEQXXj2X3pPn1ztC8Vd3tLAf7zvz5Sg4fcMaGGbZ6j6Aoxrp31MID0DhKdbSqAK-MdjQJLecgzUV9l_KU1jJP5gOg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "notionavenue.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH5AYo8d4gPmU50Y-Tf9JHx9UGXMmhCvvZuC0rEIBdQvf2F4Ilr1Yvh4mcK7Fwij6-VV2SA1a9utsjsOQa4o1gorcTVY3XpNPJ1CClNmc-K_ZFW3HFY0YMnISZsr-PoTy8vCD71Gdbrhw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "craft.co",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFRtbnohlPlOgKjP0q8zWCRvccsW68y-RfYLfoSSnzotWoqZF7ttbb-MY-GP5_duDX8VeL312tXW3_xPwfOHuLp0JU6zz668HUQxDOs5p3ncqOR1bvXq3tQRwLXhuSKTFjaTw==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "clay.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHQCM-ZQuIxSnL6ykn0mFzl1Ezvvf4EUSyz6iIN9gILkDbJR0Wn4NGVELwsSJ8Ghu6xRFhsbOZGDFP4jUdiqMB5kyOG-_4nbh4tibUZQzBN94f7cgpcPzmE6j7KtiA7u7dYvmsAlFGmsR0=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "theorg.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEYnPLb_X2I_cPBCUzxNY3oFJJj12NNvWWBcLiYGI4MPbQdydOcdK4e4f0GmLcXMqpvARuApOtmt4csvSXl-NJjlsgKevaULO2ObmU3kXtvNLRaOyjgm5CFLm6Vgvee9lp36YEn01fLSJrreRRjZg==",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "techinasia.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG2YYN9jpPmnOP-o_uFeiiw9lIP5PEgHueLLnDwjUDV5CwDvXGtaRzgYFSowW2szX--D7RXa4T9U8ZCpiYtzHAIGbw-nXpLSgTMIuEjTk1BEV_2_VbHctw_J4NiY4ZLdKXxn9cXIHb8GGngv3D7s7vJD_bFJrMt6lCQdknrJ-FM6aZX",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "judkin.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFj29NEYFvuFC4Br4hHlWFePvbdImfqDioL_xFRn07urvlFRuY_VmBlD2aN_dxVjBKUbPD9cta0ITuzxp4tayUfSwzmRyzM3J-zHrQ1aL-peHheD6XsZVknaVprpAN8Ti0=",
+            "type": "grounding",
+            "relevance": "high"
+        },
+        {
+            "title": "lennysnewsletter.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHdr32Q2yfpARQEvnwXxjM9O0xOmEvMXY9R8cPjUEmv9HWe9eWz0viE63tyc4jFlWRlMhPs01yGs0KsdAQuIT4oe-edKZCIMbgB42ESn1jcyoU81Bk9ekPYj3Bj75El8K9Yw-Pcnhv7PP_-kOt9PLCfgA1rT6U=",
+            "type": "grounding",
+            "relevance": "high"
+        }
+    ],
+    "confidence": 70,
+    "duration": 46.69,
+    "completedAt": "2025-11-02T10:56:24.166Z",
+    "success": true
+}
+
+
+

@@ -241,6 +241,7 @@ export default function Analysis({ params }: AnalysisProps) {
   >("loading");
   const [isRefreshingPublicData, setIsRefreshingPublicData] = useState(false);
   const [hasSuccessfulRetry, setHasSuccessfulRetry] = useState(false);
+  const [sectionLoadingStates, setSectionLoadingStates] = useState<Record<string, boolean>>({});
 
   const { data, isLoading, error, refetch } = useQuery<AnalysisData>({
     queryKey: ["/api/analysis", id],
@@ -281,88 +282,256 @@ export default function Analysis({ params }: AnalysisProps) {
   // Extract public data from analysis data (stored in startup.analysisData)
   useEffect(() => {
     // Don't override if we have successfully retried and fetched public data
+    // OR if we have locally loaded sections that aren't in server data yet
+    const hasLocalSections = publicData?.synthesizedInsights?.data && 
+      Object.keys(publicData.synthesizedInsights.data).length > 0;
+    
     if (hasSuccessfulRetry && publicData && publicDataStatus === "success") {
+      return;
+    }
+    
+    // Don't override if we have locally loaded sections - preserve them!
+    if (hasLocalSections && publicDataStatus === "success") {
+      return;
+    }
+    
+    // Don't override if we have locally loaded sections even if status is loading
+    // This prevents useEffect from clearing data after loadSection completes
+    if (hasLocalSections) {
       return;
     }
 
     if (data?.startup?.analysisData) {
       const analysisData = data.startup.analysisData as any;
       if (analysisData.publicSourceDueDiligence) {
-        // Public data available
-        setPublicData(analysisData.publicSourceDueDiligence);
+        // Public data available - normalize structure to ensure synthesizedInsights.data exists
+        const serverPublicData = analysisData.publicSourceDueDiligence;
+        
+        // Merge with existing local data to preserve sections loaded via loadSection
+        const existingLocalData = publicData?.synthesizedInsights?.data || {};
+        
+        // Handle both old flat structure and new nested structure
+        // If data is flat (sections at root level), wrap it in synthesizedInsights.data
+        if (serverPublicData.synthesizedInsights?.data) {
+          // Already in correct structure - merge with local data
+          const mergedData = {
+            ...serverPublicData.synthesizedInsights.data,
+            ...existingLocalData // Local data takes precedence (newer)
+          };
+          
+          setPublicData({
+            ...serverPublicData,
+            synthesizedInsights: {
+              ...serverPublicData.synthesizedInsights,
+              data: mergedData
+            }
+          });
+        } else {
+          // Old flat structure - migrate to nested structure
+          const sections = [
+            'company_overview', 'corporate_structure', 'employee_metrics', 'funding_history',
+            'financial_health', 'market_position', 'competitor_analysis', 'recent_news_developments',
+            'growth_trajectory', 'risk_and_investment_rationale', 'ipo_potential',
+            'employee_satisfaction', 'customer_feedback'
+          ];
+          
+          const sectionData: any = {};
+          sections.forEach(section => {
+            // Prefer local data if it exists, otherwise use server data
+            sectionData[section] = existingLocalData[section] || serverPublicData[section];
+          });
+          
+          // Migrate to new structure - merge with local data
+          const normalizedData = {
+            ...serverPublicData,
+            synthesizedInsights: {
+              data: {
+                ...sectionData,
+                ...existingLocalData // Local data takes precedence
+              },
+              summary: serverPublicData.summary || '',
+              keyFindings: serverPublicData.keyFindings || [],
+              confidence: serverPublicData.confidence || 70
+            }
+          };
+          
+          setPublicData(normalizedData);
+        }
         setPublicDataStatus("success");
       } else if (analysisData.analysisType) {
         // Analysis is complete but public data is missing - it failed during parallel execution
-        setPublicData(null);
-        setPublicDataStatus("failed");
+        // Don't override if we have local data loaded
+        if (!hasLocalSections) {
+          setPublicData(null);
+          setPublicDataStatus("failed");
+        }
       } else {
         // Still loading (old background mode, shouldn't happen with new parallel execution)
-        setPublicDataStatus("loading");
+        if (!hasLocalSections) {
+          setPublicDataStatus("loading");
+        }
       }
     }
-  }, [data, hasSuccessfulRetry, publicData, publicDataStatus]);
+  }, [data, hasSuccessfulRetry, publicDataStatus]);
 
-  // Function to retry public data analysis
-  const handleRefreshPublicData = async () => {
+  // Function to load a single section
+  const loadSection = async (sectionKey: string) => {
     if (!id) return;
 
-    setIsRefreshingPublicData(true);
-    setPublicDataStatus("loading");
-    setHasSuccessfulRetry(false); // Reset the flag
+    setSectionLoadingStates((prev) => ({ ...prev, [sectionKey]: true }));
 
     try {
       const response = await fetch(
-        getApiUrl(`/api/public-data-analysis/${id}`),
+        getApiUrl(`/api/public-data-analysis/${id}/section/${sectionKey}`),
         {
           method: "POST",
         }
       );
 
       if (!response.ok) {
-        throw new Error("Failed to refresh public data analysis");
+        throw new Error(`Failed to load section ${sectionKey}`);
       }
 
       const result = await response.json();
 
-      // Update the public data with the new result
-      if (result.publicData) {
-        // Create a new object reference to ensure React detects the change
-        const newPublicData = {
-          ...result.publicData,
+      // Update the public data with the new section result
+      // Ensure data structure matches what UI expects: synthesizedInsights.data[sectionKey]
+      setPublicData((prev: any) => {
+        // Handle both old flat structure and new nested structure
+        const existingSynthesizedInsights = prev?.synthesizedInsights || {};
+        const existingData = existingSynthesizedInsights?.data || {};
+        
+        // Merge sources if available
+        const existingSources = prev?.sources || [];
+        const newSources = result?.sources || [];
+        const combinedSources = [...existingSources, ...newSources];
+        
+        // Create new data object to ensure React detects the change
+        const newData = {
+          ...existingData,
+          [sectionKey]: result.data,
+        };
+        
+        return {
+          ...prev,
+          synthesizedInsights: {
+            ...existingSynthesizedInsights,
+            data: newData,
+          },
+          // Also keep flat structure for backward compatibility
+          [sectionKey]: result.data,
+          sources: combinedSources,
           _refreshTimestamp: Date.now(),
         };
-        setPublicData(newPublicData);
-        setPublicDataStatus("success");
-        setHasSuccessfulRetry(true); // Mark as successful retry
+      });
 
-        // Update localStorage with the new data
-        if (id) {
-          const existingData = localStorage.getItem(`analysis_${id}`);
-          if (existingData) {
-            try {
-              const parsed = JSON.parse(existingData);
-              parsed.startup = parsed.startup || {};
-              parsed.startup.analysisData = parsed.startup.analysisData || {};
-              parsed.startup.analysisData.publicSourceDueDiligence =
-                result.publicData;
-              localStorage.setItem(`analysis_${id}`, JSON.stringify(parsed));
-            } catch (e) {
-              console.error("Failed to update localStorage:", e);
-            }
+      // Update localStorage to match the structure
+      if (id) {
+        const existingData = localStorage.getItem(`analysis_${id}`);
+        if (existingData) {
+          try {
+            const parsed = JSON.parse(existingData);
+            parsed.startup = parsed.startup || {};
+            parsed.startup.analysisData = parsed.startup.analysisData || {};
+            
+            const existingPublicData = parsed.startup.analysisData.publicSourceDueDiligence || {};
+            const existingSynthesizedInsights = existingPublicData.synthesizedInsights || {};
+            const existingSectionData = existingSynthesizedInsights.data || {};
+            
+            parsed.startup.analysisData.publicSourceDueDiligence = {
+              ...existingPublicData,
+              synthesizedInsights: {
+                ...existingSynthesizedInsights,
+                data: {
+                  ...existingSectionData,
+                  [sectionKey]: result.data,
+                },
+              },
+              // Also keep flat structure for backward compatibility
+              [sectionKey]: result.data,
+              sources: [...(existingPublicData.sources || []), ...(result.sources || [])],
+            };
+            localStorage.setItem(`analysis_${id}`, JSON.stringify(parsed));
+          } catch (e) {
+            console.error("Failed to update localStorage:", e);
           }
         }
+      }
+    } catch (error) {
+      console.error(`Error loading section ${sectionKey}:`, error);
+    } finally {
+      setSectionLoadingStates((prev) => ({ ...prev, [sectionKey]: false }));
+    }
+  };
 
+  // Function to retry public data analysis - now loads sections progressively
+  const handleRefreshPublicData = async () => {
+    if (!id) return;
+
+    setIsRefreshingPublicData(true);
+    setPublicDataStatus("loading");
+    setHasSuccessfulRetry(false);
+
+    // Define critical sections that must complete before closing main loader
+    const criticalSections = [
+      'company_overview',
+      'corporate_structure',
+      'employee_metrics'
+    ];
+    
+    // Other sections can load in the background after main loader closes
+    const backgroundSections = [
+      'funding_history',
+      'financial_health',
+      'market_position',
+      'competitor_analysis',
+      'recent_news_developments',
+      'growth_trajectory',
+      'risk_and_investment_rationale',
+      'ipo_potential',
+      'employee_satisfaction',
+      'customer_feedback'
+    ];
+
+    try {
+      // Load critical sections first - these determine when to close main loader
+      const criticalPromises = criticalSections.map(section => loadSection(section));
+      await Promise.allSettled(criticalPromises);
+
+      // Close main loader - critical sections are done
+      setIsRefreshingPublicData(false);
+      
+      // Update status based on critical sections
+      await new Promise(resolve => setTimeout(resolve, 200));
+      const updatedData = publicData?.synthesizedInsights?.data || {};
+      const hasCriticalData = criticalSections.some(section => updatedData[section]);
+      
+      if (hasCriticalData) {
+        setPublicDataStatus("success");
+        setHasSuccessfulRetry(true);
+      }
+
+      // Load remaining sections in the background (these will show individual loaders)
+      const backgroundPromises = backgroundSections.map(section => loadSection(section));
+      
+      // Don't wait for background sections - they load progressively with individual loaders
+      Promise.allSettled(backgroundPromises).then(() => {
+        // Final status update after all sections complete
+        const finalData = publicData?.synthesizedInsights?.data || {};
+        const hasData = Object.keys(finalData).length > 0;
+        if (hasData) {
+          setPublicDataStatus("success");
+          setHasSuccessfulRetry(true);
+        }
+        
         // Invalidate and refetch the query to ensure consistency
         queryClient.invalidateQueries({ queryKey: ["/api/analysis", id] });
-      } else {
-        setPublicDataStatus("failed");
-        setHasSuccessfulRetry(false);
-      }
+      });
+
     } catch (error) {
       console.error("Error refreshing public data:", error);
       setPublicDataStatus("failed");
       setHasSuccessfulRetry(false);
-    } finally {
       setIsRefreshingPublicData(false);
     }
   };
@@ -844,9 +1013,13 @@ export default function Analysis({ params }: AnalysisProps) {
                 <p className="text-sm font-medium text-muted-foreground">
                   Overall Score
                 </p>
-                <p className="text-2xl font-bold">
-                  {analysis.overallScore}/100
-                </p>
+                {analysis?.overallScore != null || startup?.overallScore != null ? (
+                  <p className="text-2xl font-bold">
+                    {(analysis?.overallScore ?? startup?.overallScore ?? 0)}/100
+                  </p>
+                ) : (
+                  <div className="h-8 w-16 bg-muted animate-pulse rounded mt-1" />
+                )}
               </div>
               <Star className="h-8 w-8 text-yellow-500" />
             </div>
@@ -860,16 +1033,22 @@ export default function Analysis({ params }: AnalysisProps) {
                 <p className="text-sm font-medium text-muted-foreground">
                   Risk Level
                 </p>
-                <p
-                  className={`text-2xl font-bold ${getRiskColor(
-                    analysis.riskLevel
-                  )}`}
-                >
-                  {analysis.riskLevel}
-                </p>
+                {analysis?.riskLevel || startup?.riskLevel ? (
+                  <p
+                    className={`text-2xl font-bold ${getRiskColor(
+                      analysis?.riskLevel || startup?.riskLevel || ""
+                    )}`}
+                  >
+                    {analysis?.riskLevel || startup?.riskLevel || "N/A"}
+                  </p>
+                ) : (
+                  <div className="h-8 w-20 bg-muted animate-pulse rounded mt-1" />
+                )}
               </div>
               <AlertTriangle
-                className={`h-8 w-8 ${getRiskColor(analysis.riskLevel)}`}
+                className={`h-8 w-8 ${getRiskColor(
+                  analysis?.riskLevel || startup?.riskLevel || ""
+                )}`}
               />
             </div>
           </CardContent>
@@ -882,11 +1061,13 @@ export default function Analysis({ params }: AnalysisProps) {
                 <p className="text-sm font-medium text-muted-foreground">
                   Target Investment
                 </p>
-                <p className="text-2xl font-bold">
-                  {analysis.recommendation?.targetInvestment
-                    ? formatCurrency(analysis.recommendation.targetInvestment)
-                    : "N/A"}
-                </p>
+                {analysis?.recommendation?.targetInvestment ? (
+                  <p className="text-2xl font-bold">
+                    {formatCurrency(analysis.recommendation.targetInvestment)}
+                  </p>
+                ) : (
+                  <div className="h-8 w-24 bg-muted animate-pulse rounded mt-1" />
+                )}
               </div>
               <TrendingUp className="h-8 w-8 text-green-500" />
             </div>
@@ -900,11 +1081,13 @@ export default function Analysis({ params }: AnalysisProps) {
                 <p className="text-sm font-medium text-muted-foreground">
                   Expected Return
                 </p>
-                <p className="text-2xl font-bold">
-                  {analysis.recommendation?.expectedReturn
-                    ? `${analysis.recommendation.expectedReturn}x`
-                    : "N/A"}
-                </p>
+                {analysis?.recommendation?.expectedReturn != null ? (
+                  <p className="text-2xl font-bold">
+                    {analysis.recommendation.expectedReturn}x
+                  </p>
+                ) : (
+                  <div className="h-8 w-16 bg-muted animate-pulse rounded mt-1" />
+                )}
               </div>
               <TrendingUp className="h-8 w-8 text-blue-500" />
             </div>
@@ -1459,6 +1642,8 @@ export default function Analysis({ params }: AnalysisProps) {
             status={publicDataStatus}
             onRefresh={handleRefreshPublicData}
             isRefreshing={isRefreshingPublicData}
+            sectionLoadingStates={sectionLoadingStates}
+            onLoadSection={(sectionKey: string) => loadSection(sectionKey)}
           />
         </TabsContent>
 
