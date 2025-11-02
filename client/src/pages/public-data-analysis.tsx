@@ -12,7 +12,7 @@ import {
   Briefcase, FileText, Eye, MessageSquare
 } from 'lucide-react';
 import { getApiUrl } from '@/lib/config';
-import { authenticatedFetch } from '@/lib/api';
+import { authenticatedFetchJSON } from '@/lib/api';
 
 interface DueDiligenceData {
   companyOverview: any;

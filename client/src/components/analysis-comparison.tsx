@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { getApiUrl } from "@/lib/config"
-import { authenticatedFetch } from "@/lib/api"
+import { authenticatedFetchJSON } from "@/lib/api"
 import { TrendingUp, TrendingDown, Minus, GitCompare, AlertCircle } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
 
@@ -55,15 +55,9 @@ export default function AnalysisComparison({ analysisData }: ComparisonProps) {
   const { data: marketTrends, isLoading, error } = useQuery<MarketTrends>({
     queryKey: ['market-trends'],
     queryFn: async () => {
-      const response = await authenticatedFetch(getApiUrl('/api/market-trends'), {
+      return await authenticatedFetchJSON(getApiUrl('/api/market-trends'), {
         method: 'GET',
       })
-      
-      if (!response.ok) {
-        throw new Error(`Failed to fetch market trends: ${response.statusText}`)
-      }
-      
-      return response.json()
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
   })

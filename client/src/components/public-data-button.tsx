@@ -3,7 +3,7 @@ import { Globe, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { getApiUrl } from "@/lib/config";
-import { authenticatedFetch } from "@/lib/api";
+import { authenticatedFetchJSON } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
 interface PublicDataButtonProps {
