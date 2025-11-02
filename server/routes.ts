@@ -298,17 +298,9 @@ app.get("/api/health", (req: Request, res: Response) => {
 
       let analysisResult: any;
 
-      // NEW: Use deep analysis if requested
-      if (useDeepAnalysis) {
-        console.log('⚠️ Deep reasoning analysis not yet implemented - using standard analysis');
-        // TODO: Implement enhancedReasoningService.analyzeWithDeepThinking
-        analysisResult = await analyzeStartupDocuments(documentData);
-        analysisResult.analysisType = 'standard';
-      } else {
-        // Standard analysis
-        analysisResult = await analyzeStartupDocuments(documentData);
-        analysisResult.analysisType = 'standard';
-      }
+      // Analyze documents
+      analysisResult = await analyzeStartupDocuments(documentData);
+      analysisResult.analysisType = 'standard';
 
       console.log('✅ Document analysis completed');
 
@@ -525,8 +517,7 @@ app.get("/api/health", (req: Request, res: Response) => {
         name: doc.fileName
       }));
 
-      // TODO: Implement deep analysis with enhancedReasoningService
-      // For now, use standard analysis
+      // Analyze documents
       const analysisResult = await analyzeStartupDocuments(documentData);
 
       // Extract scores for storage

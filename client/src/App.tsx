@@ -19,8 +19,7 @@ import RiskPage from "@/pages/risk";
 import BenchmarksPage from "@/pages/benchmarks";
 import NotFound from "@/pages/not-found";
 import ComparisonPage from "@/pages/comparison";
-import ResearchTestPage from "@/pages/research-test"; // NEW: Hybrid Research Test
-import PublicDataAnalysisPage from "@/pages/public-data-analysis"; // NEW: Public Source Due Diligence
+import PublicDataAnalysisPage from "@/pages/public-data-analysis";
 import SignInPage from "@/pages/signin"; // NEW: Sign In
 import SignUpPage from "@/pages/signup"; // NEW: Sign Up
 
@@ -104,7 +103,6 @@ function AppContent() {
                 <Route path="/benchmarks" element={<ProtectedRoute><BenchmarksPage /></ProtectedRoute>} />
                 <Route path="/benchmarks/comparison/:startupId" element={<ProtectedRoute><ComparisonWrapper /></ProtectedRoute>} />
                 <Route path="/risk" element={<ProtectedRoute><RiskPage /></ProtectedRoute>} />
-                <Route path="/research-test" element={<ProtectedRoute><ResearchTestPage /></ProtectedRoute>} />
                 <Route path="/public-data-analysis/:startupId" element={<ProtectedRoute><PublicDataAnalysisPage /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

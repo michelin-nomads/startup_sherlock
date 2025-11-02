@@ -5,19 +5,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development tsx server/index.ts",
-    "dev:debug": "NODE_ENV=development tsx --inspect=9229 server/index.ts",
-    "dev:debug-brk": "NODE_ENV=development tsx --inspect-brk=9229 server/index.ts",
     "build": "vite build",
-    "build:client": "vite build",
     "start": "NODE_ENV=production tsx server/index.ts",
-    "railway": "NODE_ENV=production tsx server/index.ts",
     "check": "tsc",
-    "db:push": "drizzle-kit push",
-    "db:migrate": "psql \"$DATABASE_URL\" -f migrations/001_initial_enhanced_schema.sql",
-    "db:test": "psql \"$DATABASE_URL\" -c \"SELECT 1\"",
-    "db:tables": "psql \"$DATABASE_URL\" -c \"\\dt\"",
-    "gcloud:setup": "./scripts/setup-google-cloud.sh",
-    "gcloud:backup": "gcloud sql export sql $DB_INSTANCE_NAME gs://$GCS_BUCKET/backups/backup-$(date +%Y%m%d-%H%M%S).sql --database=$DB_NAME"
+    "db:migrate": "psql \"$DATABASE_URL\" -f migrations/003_add_authentication.sql"
   },
   "dependencies": {
     "@google-cloud/storage": "^7.17.2",
