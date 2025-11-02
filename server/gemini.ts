@@ -1,6 +1,7 @@
 import "dotenv/config";
 import * as fs from "fs";
 import { GoogleGenAI } from "@google/genai";
+import { BENCHMARK_CONFIG } from "./aiConfig";
 
 // DON'T DELETE THIS COMMENT
 // Follow these instructions when using this blueprint:
@@ -1171,7 +1172,7 @@ const fallbackBenchmarks: IndustryBenchmark[] = [
 ];
 
 export async function generateIndustryBenchmarks(): Promise<IndustryBenchmark[]> {
-  const models = ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-1.5-pro"];
+  const models = ["gemini-2.5-flash", "gemini-2.5-pro"]; // Use faster flash model first
   
   for (const model of models) {
     try {
@@ -1196,6 +1197,7 @@ IMPORTANT: Return ONLY the JSON array, no markdown, no code blocks, no explanati
       const result = await ai.models.generateContent({
         model: model,
         contents: prompt,
+        config: BENCHMARK_CONFIG, // Use optimized config for faster generation
       });
       const text = result.text;
 
@@ -1283,7 +1285,7 @@ const fallbackMetrics: BenchmarkMetrics = {
 };
 
 export async function generateBenchmarkMetrics(): Promise<BenchmarkMetrics> {
-  const models = ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-1.5-pro"];
+  const models = ["gemini-2.5-flash", "gemini-2.5-pro"]; // Use faster flash model first
   
   for (const model of models) {
     try {
@@ -1319,6 +1321,7 @@ Make the data realistic and varied. Use actual percentage values for trends. Ret
       const result = await ai.models.generateContent({
         model: model,
         contents: prompt,
+        config: BENCHMARK_CONFIG, // Use optimized config for faster generation
       });
       const text = result.text;
 
@@ -1915,4 +1918,38 @@ IMPORTANT: Return ONLY the JSON array, no markdown, no code blocks, no explanati
     }
   }
   return fallbackIndustryRisks[industry] || fallbackIndustryRisks['AI/ML']; // Should not be reached
+}
+
+/**
+ * Generate chatbot response with context awareness
+ * Multi-model fallback for reliability
+ */
+export async function generateChatResponse(prompt: string): Promise<string> {
+  const models = ["gemini-2.0-flash-exp", "gemini-2.5-flash"];
+  
+  for (const model of models) {
+    try {
+      console.log(`🤖 Generating chat response with ${model}...`);
+      
+      const result = await ai.models.generateContent({ 
+        model: model, 
+        contents: prompt 
+      });
+      
+      const text = result.text;
+      
+      if (!text) {
+        throw new Error('Empty response from AI model');
+      }
+
+      console.log(`✅ ${model} chat response generated`);
+      return text.trim();
+      
+    } catch (error) {
+      console.log(`❌ ${model} failed, trying next model...`);
+      if (model === models[models.length - 1]) throw error;
+    }
+  }
+  
+  throw new Error('All models failed');
 }

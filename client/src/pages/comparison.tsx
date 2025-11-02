@@ -461,7 +461,7 @@ export default function Comparison({ params }: ComparisonProps) {
             {/* Action Buttons */}
             <div className="flex gap-3 justify-center">
                 <Button asChild>
-                    <Link to="/analysis">View Full Analysis</Link>
+                    <Link to={`/analysis/${startupId}`}>View Full Analysis</Link>
                 </Button>
                 <Button variant="outline" asChild>
                     <Link to="/benchmarks">Back to Benchmarks</Link>

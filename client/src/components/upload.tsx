@@ -153,32 +153,115 @@ export function Upload() {
     }
   })
 
-  const handleFileUpload = (fileList: File[]) => {
-    const newFiles: UploadedFile[] = fileList.map(file => ({
+  // Optimize image before upload (client-side compression)
+  const optimizeImage = async (file: File): Promise<File> => {
+    // Skip non-images and already small files (< 200KB)
+    if (!file.type.startsWith('image/') || file.size < 200 * 1024) {
+      return file;
+    }
+
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new window.Image();
+        img.onload = () => {
+          // Calculate new dimensions (max 1920x1920, maintain aspect ratio)
+          let width = img.width;
+          let height = img.height;
+          const maxDim = 1920;
+
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = (height / width) * maxDim;
+              width = maxDim;
+            } else {
+              width = (width / height) * maxDim;
+              height = maxDim;
+            }
+          }
+
+          // Create canvas and compress
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Convert to JPEG blob (85% quality)
+            canvas.toBlob(
+              (blob) => {
+                if (blob) {
+                  // Create File object - using window.File to ensure proper typing
+                  const fileName = file.name.replace(/\.\w+$/, '.jpg');
+                  const FileConstructor = window.File;
+                  const optimizedFile = new FileConstructor(
+                    [blob], 
+                    fileName, 
+                    { type: 'image/jpeg', lastModified: Date.now() }
+                  );
+                  
+                  const oldSize = (file.size / 1024).toFixed(0);
+                  const newSize = (blob.size / 1024).toFixed(0);
+                  console.log(`🖼️ Optimized ${file.name}: ${oldSize}KB → ${newSize}KB`);
+                  
+                  resolve(optimizedFile);
+                } else {
+                  resolve(file);
+                }
+              },
+              'image/jpeg',
+              0.85
+            );
+          } else {
+            resolve(file);
+          }
+        };
+        img.src = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleFileUpload = async (fileList: File[]) => {
+    // Show toast if optimizing images
+    const hasImages = fileList.some(f => f.type.startsWith('image/') && f.size >= 200 * 1024);
+    if (hasImages) {
+      toast({
+        title: "🖼️ Optimizing images...",
+        description: "Compressing large images for faster upload",
+      });
+    }
+
+    // Optimize images before upload
+    const optimizedFiles = await Promise.all(fileList.map(optimizeImage));
+
+    const newFiles: UploadedFile[] = optimizedFiles.map(file => ({
       id: Math.random().toString(36).substr(2, 9),
       name: file.name,
       size: file.size,
       type: file.type,
       status: 'uploading',
       progress: 0
-    }))
+    }));
 
-    setFiles(prev => [...prev, ...newFiles])
-    setIsUploading(true) // Show popup immediately
+    setFiles(prev => [...prev, ...newFiles]);
+    setIsUploading(true); // Show popup immediately
 
     // Start real upload (startupName is optional during upload)
     uploadMutation.mutate({
-      files: fileList,
+      files: optimizedFiles,
       startupName: startupName || '', // Allow empty startup name during upload
       description,
       industry
-    })
+    });
 
     // Simulate progress for UI
     newFiles.forEach(file => {
-      simulateUpload(file.id)
-    })
-  }
+      simulateUpload(file.id);
+    });
+  };
 
   const simulateUpload = (fileId: string) => {
     let progress = 0

@@ -100,13 +100,46 @@ Analyze startup documents, get comprehensive risk assessments, and make informed
 - Supported formats: PDF, Word, Excel, PowerPoint, images, text files
 - Upload multiple documents for comprehensive analysis
 
-### 3. **Analyze**
-- Click "Analyze" to process documents with AI
-- Review detailed analysis including:
-  - Overall startup score
-  - Risk assessment with flags
-  - Investment recommendation
-  - Key insights and recommendations
+## Currency Handling
+
+All financial values in the application are handled as follows:
+
+- **Backend Storage**: Financial data is stored in **USD** (as returned by public APIs like Crunchbase, PitchBook)
+- **Frontend Display**: All values are automatically converted to **INR** with Indian numbering format (Crores, Lakhs, Thousands)
+- **Exchange Rate**: **Fetched automatically from live API** (updates daily)
+  - Source: Free Currency API (https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api)
+  - Fallback: 1 USD = 89 INR if API unavailable
+- **Display Format**: ₹X.XXCr (Crores), ₹X.XXL (Lakhs), ₹X.XXK (Thousands) with 2 decimal places
+- **Investment Recommendations**: Generated in INR range (₹5Cr to ₹50Cr)
+
+### How Exchange Rates Work
+
+1. **Backend Service** (`server/exchangeRateService.ts`):
+   - Fetches latest USD to INR rate on server startup
+   - Updates automatically every 24 hours
+   - Caches rate in memory for fast access
+   - API endpoint: `GET /api/exchange-rate`
+
+2. **Frontend Manager** (`client/src/lib/exchangeRate.ts`):
+   - Fetches rate from backend on app load
+   - Caches in browser localStorage
+   - Auto-refreshes if older than 24 hours
+   - All currency displays use this live rate
+
+3. **Fallback System**:
+   - If API is unavailable, uses fallback rate (89 INR)
+   - System continues to work normally
+   - Automatically retries on next update cycle
+
+### Manual Exchange Rate Update
+
+The rate updates automatically, but if you need to manually update the fallback:
+1. Open `client/src/lib/utils.ts`
+2. Modify line 15: `export const USD_TO_INR_RATE = 89;`
+3. Open `server/exchangeRateService.ts`
+4. Modify line 18: `private readonly FALLBACK_RATE = 89;`
+
+## Project Structure
 
 ### 4. **Benchmarks**
 - Compare startups against industry standards

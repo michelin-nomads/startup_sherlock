@@ -250,6 +250,8 @@ export default function Analysis({ params }: AnalysisProps) {
       return analysisData;
     },
     enabled: !!id,
+    staleTime: Infinity, // Never consider the data stale
+    gcTime: 1000 * 60 * 60 * 24, // Keep in cache for 24 hours
     // Use local storage as fallback when server is unavailable
     placeholderData: (previousData) => {
       if (previousData) return previousData;
@@ -380,7 +382,8 @@ export default function Analysis({ params }: AnalysisProps) {
 
       return data;
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: Infinity, // Never consider stale
+    gcTime: 1000 * 60 * 60 * 24, // Keep in cache for 24 hours
     // Use local storage as fallback when server is unavailable
     placeholderData: (previousData) => {
       if (previousData) return previousData;
@@ -741,10 +744,10 @@ export default function Analysis({ params }: AnalysisProps) {
     );
   }
 
-  const { startup, analysis, documents } = data;
-  const {
-    synthesizedInsights: { data: publicSynthesizedData } = { data: {} },
-  } = publicData;
+  const startup = data?.startup || '';
+  const analysis = data?.analysis || {};
+  const documents = data?.documents || [];
+  const publicSynthesizedData = publicData?.synthesizedInsights?.data || {};
 
   const getDecisionColor = (decision: string) => {
     switch (decision) {
@@ -1058,6 +1061,12 @@ export default function Analysis({ params }: AnalysisProps) {
                             {doc.fileType} • Document {index + 1}
                           </p>
                         </div>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {flag.description}
+                        </p>
+                        <p className="text-sm font-medium">
+                          Impact: {flag.impact}
+                        </p>
                       </div>
                       <Badge
                         variant="outline"

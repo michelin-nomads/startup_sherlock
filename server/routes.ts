@@ -11,7 +11,7 @@ if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL environment variable is required');
 }
 const storage = initDatabaseStorage(process.env.DATABASE_URL);
-import { analyzeStartupDocuments, extractTextFromDocument, generateIndustryBenchmarks, generateBenchmarkMetrics, generateCustomIndustryBenchmarks, generateMarketRecommendation } from "./gemini";
+import { analyzeStartupDocuments, extractTextFromDocument, generateIndustryBenchmarks, generateBenchmarkMetrics, generateCustomIndustryBenchmarks, generateMarketRecommendation, generateChatResponse } from "./gemini";
 import { enhancedAnalysisService } from "./enhancedAnalysis";
 import { registerHybridResearchRoutes } from "./hybridResearchRoutes"; // NEW: Hybrid research routes
 import { startupDueDiligenceService } from "./startupDueDiligence"; // NEW: Public source due diligence
@@ -52,6 +52,14 @@ const upload = multer({
 });
 
 const documentProcessor = new DocumentProcessor();
+
+// Cache for market trends data (refreshes every hour)
+let marketTrendsCache: {
+  data: any;
+  timestamp: number;
+} | null = null;
+
+const CACHE_DURATION = 3 * 60 * 60 * 1000; // 3 hours in milliseconds (market trends change slowly)
 
 export async function registerRoutes(app: Express): Promise<Server> {
 // Health check (public)
@@ -772,16 +780,45 @@ app.get("/api/benchmark-metrics", async (req: Request, res: Response) => {
 // Market trends for analysis comparison
 app.get("/api/market-trends", async (req: Request, res: Response) => {
   try {
+    // Check cache validity
+    const now = Date.now();
+    if (marketTrendsCache && (now - marketTrendsCache.timestamp < CACHE_DURATION)) {
+      console.log(`✅ Returning cached market trends (age: ${Math.round((now - marketTrendsCache.timestamp) / 1000)}s)`);
+      return res.json(marketTrendsCache.data);
+    }
+
+    console.log('🔄 Cache expired or empty, generating fresh market trends...');
+
     const [benchmarks, metrics] = await Promise.all([
       generateIndustryBenchmarks(),
       generateBenchmarkMetrics()
     ]);
 
-    // Generate dynamic recommendation using Gemini
-    const recommendation = await generateMarketRecommendation(benchmarks, metrics);
-
     // Calculate average market trends from benchmarks
     const avgScore = benchmarks.reduce((sum, b) => sum + b.avgScore, 0) / benchmarks.length;
+    
+    // Calculate recommendation directly from data (no AI call needed - saves 3-5 seconds)
+    const avgGrowth = benchmarks.reduce((sum, b) => {
+      const growthStr = b.growth.replace('%', '').replace('+', '').trim();
+      return sum + (parseFloat(growthStr) || 0);
+    }, 0) / benchmarks.length;
+    
+    // Base investment scales with industry performance (₹5Cr to ₹50Cr range)
+    const baseInvestment = Math.max(50000000, Math.min(500000000, 
+      50000000 + (avgScore - 50) * 1000000 + (avgGrowth * 2000000)
+    ));
+    
+    // Calculate expected return based on score and growth (2x to 6x range)
+    const scoreMultiplier = 0.5 + (avgScore / 100);
+    const growthMultiplier = Math.min(1.5, avgGrowth / 20);
+    const expectedReturn = Math.max(2, Math.min(6, 
+      2 + (scoreMultiplier * 2) + (growthMultiplier * 1)
+    ));
+    
+    const recommendation = {
+      targetInvestment: Math.round(baseInvestment),
+      expectedReturn: Math.round(expectedReturn * 10) / 10 // Round to 1 decimal
+    };
     
     // Create market trend data structure
     const marketTrends = {
@@ -798,6 +835,12 @@ app.get("/api/market-trends", async (req: Request, res: Response) => {
         targetInvestment: recommendation.targetInvestment,
         expectedReturn: recommendation.expectedReturn
       }
+    };
+
+    // Update cache
+    marketTrendsCache = {
+      data: marketTrends,
+      timestamp: now
     };
 
     res.json(marketTrends);
@@ -1055,6 +1098,54 @@ app.post("/api/enhanced-analysis", authenticate, async (req: Request, res: Respo
 
   // NEW: Register Hybrid Research Routes (Gemini Grounding + Custom Search)
   registerHybridResearchRoutes(app);
+
+  // AI Chatbot endpoint for Q&A
+  app.post("/api/chat", async (req: Request, res: Response) => {
+    try {
+      const { startupId, persona, message, context, conversationHistory } = req.body;
+
+      if (!message || !persona) {
+        return res.status(400).json({ error: "Message and persona are required" });
+      }
+
+      // Build system prompt based on persona
+      let systemPrompt = "";
+      switch (persona) {
+        case "vc":
+          systemPrompt = "You are a seasoned Venture Capital analyst with 15+ years of experience. Focus on: scalability, market size, competitive moats, unit economics, burn rate, CAC/LTV ratios, and exit potential. Be analytical, data-driven, and ask tough questions about sustainability.";
+          break;
+        case "angel":
+          systemPrompt = "You are an experienced Angel Investor who backs early-stage founders. Focus on: team quality, founder vision, early traction, MVP validation, product-market fit, and go-to-market strategy. Be supportive but realistic, focus on founder strengths and early signals.";
+          break;
+        case "combined":
+          systemPrompt = "You are an investment advisor combining VC and Angel investor perspectives. Provide balanced analysis considering both metrics AND team quality. Address scalability, financials, team, product, and market opportunity. Give holistic investment recommendations.";
+          break;
+        default: // general
+          systemPrompt = "You are an AI assistant helping analyze startup investments. Provide clear, concise answers about the startup analysis. Be neutral and informative.";
+      }
+
+      // Build conversation context
+      let conversationContext = `${systemPrompt}\n\n`;
+      conversationContext += `STARTUP CONTEXT:\n${JSON.stringify(context, null, 2)}\n\n`;
+      
+      if (conversationHistory && conversationHistory.length > 0) {
+        conversationContext += "PREVIOUS CONVERSATION:\n";
+        conversationHistory.forEach((msg: any) => {
+          conversationContext += `${msg.role === "user" ? "User" : "Assistant"}: ${msg.content}\n`;
+        });
+      }
+      
+      conversationContext += `\nUser: ${message}\nAssistant:`;
+
+      // Generate response
+      const response = await generateChatResponse(conversationContext);
+
+      res.json({ response });
+    } catch (error) {
+      console.error("Chat error:", error);
+      res.status(500).json({ error: "Failed to generate response" });
+    }
+  });
 
   const httpServer = createServer(app);
   return httpServer;

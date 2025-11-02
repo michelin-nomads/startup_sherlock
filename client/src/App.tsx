@@ -8,8 +8,9 @@ import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sid
 import { AppSidebar } from "@/components/app-sidebar";
 import { LoadingPage } from "@/components/loading-page";
 import { motion, AnimatePresence } from "framer-motion";
-import { AuthProvider } from "@/contexts/AuthContext";
-import { ProtectedRoute } from "@/components/protected-route";
+import { exchangeRateManager } from "@/lib/exchangeRate";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 // Pages
 import DashboardPage from "@/pages/dashboard";
@@ -19,9 +20,12 @@ import RiskPage from "@/pages/risk";
 import BenchmarksPage from "@/pages/benchmarks";
 import NotFound from "@/pages/not-found";
 import ComparisonPage from "@/pages/comparison";
-import PublicDataAnalysisPage from "@/pages/public-data-analysis";
+import ResearchTestPage from "@/pages/research-test"; // NEW: Hybrid Research Test
+import PublicDataAnalysisPage from "@/pages/public-data-analysis"; // NEW: Public Source Due Diligence
 import SignInPage from "@/pages/signin"; // NEW: Sign In
 import SignUpPage from "@/pages/signup"; // NEW: Sign Up
+import { ProtectedRoute } from "./components/protected-route";
+import { AuthProvider } from "./contexts/AuthContext";
 
 // Wrapper components to handle params
 function AnalysisWrapper() {
@@ -55,6 +59,9 @@ function AppHeader() {
             </div>
           </div>
         )}
+      </div>
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
       </div>
     </header>
   );
@@ -95,6 +102,15 @@ function AppContent() {
             <AppHeader />
             <main className="flex-1 overflow-auto p-6">
               <Routes>
+                <Route path="/" element={<DashboardPage />} />
+                <Route path="/upload" element={<UploadPage />} />
+                <Route path="/analysis" element={<AnalysisWrapper />} />
+                <Route path="/analysis/:id" element={<AnalysisWrapper />} />
+                <Route path="/benchmarks" element={<BenchmarksPage />} />
+                <Route path="/benchmarks/comparison/:startupId" element={<ComparisonWrapper />} />
+                <Route path="/risk" element={<RiskPage />} />
+                <Route path="/research-test" element={<ResearchTestPage />} />
+                <Route path="/public-data-analysis/:startupId" element={<PublicDataAnalysisPage />} />
                 {/* Protected Routes */}
                 <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
                 <Route path="/upload" element={<ProtectedRoute><UploadPage /></ProtectedRoute>} />
@@ -121,28 +137,40 @@ function App() {
     "--sidebar-width-icon": "4rem",   // default icon width
   };
 
+  // Initialize exchange rate on app load
+  useEffect(() => {
+    exchangeRateManager.initialize().catch(err => {
+      console.error('Failed to initialize exchange rate:', err);
+    });
+  }, []);
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
-          <Router>
-            <Routes>
-              {/* Public Auth Routes */}
-              <Route path="/signin" element={<SignInPage />} />
-              <Route path="/signup" element={<SignUpPage />} />
-              
-              {/* Protected App Routes */}
-              <Route path="/*" element={
-                <SidebarProvider style={style as React.CSSProperties}>
-                  <AppContent />
-                </SidebarProvider>
-              } />
-            </Routes>
-            <Toaster />
-          </Router>
-        </TooltipProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+    <ThemeProvider defaultTheme="dark" storageKey="startup-sherlock-theme">
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <TooltipProvider>
+            <Router>
+              <Routes>
+                {/* Public Auth Routes */}
+                <Route path="/signin" element={<SignInPage />} />
+                <Route path="/signup" element={<SignUpPage />} />
+
+                {/* Protected App Routes */}
+                <Route
+                  path="/*"
+                  element={
+                    <SidebarProvider style={style as React.CSSProperties}>
+                      <AppContent />
+                    </SidebarProvider>
+                  }
+                />
+              </Routes>
+              <Toaster />
+            </Router>
+          </TooltipProvider>
+        </AuthProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 
