@@ -98,8 +98,14 @@ export function Upload() {
       })
 
       if (!response.ok) {
-        const errorText = await response.text()
-        throw new Error(errorText || 'Upload failed')
+        try {
+          const errorData = await response.json()
+          // Extract friendly message from JSON error response
+          throw new Error(errorData.message || errorData.error || 'Upload failed')
+        } catch (parseError) {
+          // If JSON parsing fails, use status text
+          throw new Error(response.statusText || 'Upload failed')
+        }
       }
 
       return response.json()
