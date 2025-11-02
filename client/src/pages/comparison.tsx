@@ -69,9 +69,9 @@ export default function Comparison({ params }: ComparisonProps) {
 
     // Fetch analysis data for the startup
     const { data: analysisData, isLoading: analysisLoading, error: analysisError } = useQuery<AnalysisData>({
-        queryKey: ['/api/document-analysis', startupId],
+        queryKey: ['/api/analysis', startupId],
         queryFn: async () => {
-            return await authenticatedFetchJSON(getApiUrl(`/api/document-analysis/${startupId}`))
+            return await authenticatedFetchJSON(getApiUrl(`/api/analysis/${startupId}`))
         },
         enabled: !!startupId
     })

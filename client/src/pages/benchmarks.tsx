@@ -221,9 +221,9 @@ export default function BenchmarksPage() {
 
   // Fetch analysis data for selected startup
   const { data: selectedAnalysisData, isLoading: analysisLoading, isFetching: analysisFetching } = useQuery<AnalysisData>({
-    queryKey: ['/api/document-analysis', selectedStartupId],
+    queryKey: ['/api/analysis', selectedStartupId],
     queryFn: async () => {
-      const analysisData = await authenticatedFetchJSON(getApiUrl(`/api/document-analysis/${selectedStartupId}`))
+      const analysisData = await authenticatedFetchJSON(getApiUrl(`/api/analysis/${selectedStartupId}`))
       
       // Save to local storage for persistence
       if (analysisData && selectedStartupId) {

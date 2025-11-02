@@ -238,9 +238,9 @@ export default function Analysis({ params }: AnalysisProps) {
   const [hasSuccessfulRetry, setHasSuccessfulRetry] = useState(false);
 
   const { data, isLoading, error, refetch } = useQuery<AnalysisData>({
-    queryKey: ['/api/document-analysis', id],
+    queryKey: ['/api/analysis', id],
     queryFn: async () => {
-      const analysisData = await authenticatedFetchJSON(getApiUrl(`/api/document-analysis/${id}`))
+      const analysisData = await authenticatedFetchJSON(getApiUrl(`/api/analysis/${id}`))
       
       // Save to local storage for persistence
       if (analysisData && id) {
@@ -353,7 +353,7 @@ export default function Analysis({ params }: AnalysisProps) {
         }
         
         // Invalidate and refetch the query to ensure consistency
-        queryClient.invalidateQueries({ queryKey: ['/api/document-analysis', id] });
+        queryClient.invalidateQueries({ queryKey: ['/api/analysis', id] });
       } else {
         setPublicDataStatus('failed');
         setHasSuccessfulRetry(false);
@@ -438,7 +438,7 @@ export default function Analysis({ params }: AnalysisProps) {
 
       // Refetch the analysis data to show the new enhanced sections
       queryClient.invalidateQueries({
-        queryKey: ["/api/document-analysis", id],
+        queryKey: ["/api/analysis", id],
       });
       setIsEnhancedAnalysisLoading(false);
     },

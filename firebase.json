@@ -1,43 +1,13 @@
 {
-  "hosting": {
-    "public": "client/dist",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ],
-    "headers": [
-      {
-        "source": "**",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache, no-store, must-revalidate"
-          },
-          {
-            "key": "Pragma",
-            "value": "no-cache"
-          },
-          {
-            "key": "Expires",
-            "value": "0"
-          }
-        ]
-      }
-    ]
-  },
-  "functions": {
-    "source": "functions",
-    "runtime": "nodejs18"
-  },
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  }
+  "type": "service_account",
+  "project_id": "startup-sherlock",
+  "private_key_id": "46be9c9f872eadab63bf884b706db968485e9a8c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCm4qXDGGr4SUD/\nyAdpWZh+nldhcNL4hvUbYs4XZMZqvd5ZhoTkQqcJSoUmS/8+gY0nLl34cFJFTQBV\nzcICswveFvEB8NPp+5BBZAjypVqj+ZM4nTBzQTyRtLMW5gG9wlFSBg7J54cNK6Lu\nhT1hsYMTBNkqomcydocECyuBKNU0MbWwYtL4U8QhEvbFRHOaHX7pYhlw7poI5+CQ\nD1QQ48OLbh0h3roeE5X7GyFl5zSw6cI+UbXOYd0U4hW8BL0iobi8i+mlDVOxxd7v\nPVgCXB7pLIVZMSM7PwO7MNsWhIM3CfbbdWtiqfuDY3LE/PKR3ehtj03j6c3xR8Ak\ntUmoHBpLAgMBAAECggEAHFd9g0aQVB5MtaPI7nFS3p4RhPDeQ2rYEZCUI5DvyYz5\nSAb6ZrGTIJbRShG6BWmHCVJsjxa0QiSzm97XxhGWQF9xCr1Vn/UjKJfOlTbTz+lA\nwWqgodJAcRZZG9hwD0QC/4Ub2dpCK1Bv2UYziHXXJtG59+2gzQcoIt2qw8Klgrlw\nRPs+Xv94C3UkcoPtcs0wYbUhUP4+/LA+WRSFhTYqhjYXPu+6iwp0rqGZFHuXyuMR\n04UzyMKgG3ml27JMQCu/BBKL1aDkrLiR9fgKqt08laxBvJuNhIPfsmXr7PuMT6b1\nKnrjVQHahCjSSa5QFxQUpwpQ/dCvssT/kFBg6sYxwQKBgQDR1+ngE9uY1g2nHfYj\nqVzV9k2AGsMNopJAwKLiIWsPuhlCIsZcrAX2UoTPXsTasGn6COQD0ATWzN9jIB7k\nSx0RpKgKpgSwHs6rRsE8I+1gO/0GMsL4D2llOZRBFG3S1MuOhMyCbYAlpu7Ezlov\nl8zQj8slxUoDwn/fyMHLiDi2+wKBgQDLl84c7rtDAjf2GI2/5F0J8lsM2CKf4g0O\nOujpgA/2X6WZ4VsImbrTqVze7fSqWyYbsDrJjCGpihMiuv3QsFMgol2YDrQgboyx\nI35ZKx6rGtWfbGpY/MniQrxtaV/wqqrcafq0nCsuLy6njr/6YIJDis1+jdFkEj5e\njtSY3wAI8QKBgFsKMrR9yQsQ6xFzBUPJibZmSo9mjPNQceVX7hLvbrR/B9BSp/6y\nv09z05zoP72lRgUtcEdbK45Jii1GVUC0eeMarbEY//WtF/rlEpbV+3mB7S+QPFhE\nz3QUPAbUJyWOHtYxNUzs1uj++J437JazZC+kAv3bD1Z8PuBHCBUWf4ybAoGAR2jw\nn49Q2XkOvd/w4CyuQY3jR8cLpf64y5P4G+aSMr1rrWSw9HxPXmxaKctW9OXRoQaY\nKBdhu0C144mo+yjNj3XD1FDb90AvUvZ7G7WXJTbdVPTG/H12Jkl4I/xA7X4/Pd5i\nVDUupB1ihNz6E00Eg8JMv6XomuwXOj1o7lHRhlECgYAGT9HXVZLQQ5nO6jCt6LiS\nhNsDzc33zUSqp1ufbhPnGauaYKzqqxYlLUU+AdyeD06pdkPRmHbG6A5gJfKC4i/S\nGJezYxqx5RERHygZAl5k9miVxllQmMwTiQ7ijEUt0W82bWZgHDsOlOaMsSk3Nz+k\n1p48V4igo6oVBG3tRx1VbA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@startup-sherlock.iam.gserviceaccount.com",
+  "client_id": "115634453431361463077",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40startup-sherlock.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
 }
