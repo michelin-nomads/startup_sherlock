@@ -36,10 +36,6 @@ firestore.rules
 firestore.indexes.json
 .firebase/
 
-# Railway files
-railway.json
-.railwayignore
-
 # Service account keys (will use env vars)
 *service-account*.json
 firebase-service-account-key.json
